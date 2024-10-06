@@ -1,0 +1,6 @@
+@backend_buygi_HostAddress = http://localhost:5085
+
+GET {{backend_buygi_HostAddress}}/login/
+Accept: application/json
+
+###
