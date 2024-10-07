@@ -2,47 +2,29 @@
 using RFService.RepoLib;
 using System.Data;
 
-/*
- * 
-        private readonly IDbConnection _dbConnection;
-
-        public LocalPasswordDapper(IDbConnection dbConnection)
-        {
-            _dbConnection = dbConnection;
-        }
-
-        public LocalPassword? GetSingleFor(GetOptions? options)
-        {
-            var sql = "SELECT * FROM acc.LocalPasswords";
-            return _dbConnection.Query<LocalPassword>(sql).ToList();
-        }*/
-
 namespace RFDapper.DapperLib
 {
-    public abstract class DapperBase<Entity>
+    public abstract class DapperBase<Entity>(IDbConnection Connection)
         where Entity : class
     {
-        protected virtual IDbConnection Connection { get; set; }
         protected virtual string Schema { get; } = "dbo";
         protected abstract string TableName { get; }
-
-        public DapperBase(IDbConnection connection)
-        {
-            Connection = connection;
-        }
 
         public string GetSelectQuery(GetOptions? options)
         {
             var sql = $"SELECT * FROM [{Schema}].[{TableName}]";
-            if (options != null && options.Filters != null)
+            if (options != null)
             {
-                var properties = options.Filters.GetType().GetProperties();
-                string separator = "  WHERE ";
-                foreach (var p in properties)
+                if (options.Filters != null)
                 {
-                    string name = p.Name;
-                    sql += $"{separator}{name} = @{name}";
-                    separator = " AND ";
+                    var properties = options.Filters.GetType().GetProperties();
+                    string separator = "  WHERE ";
+                    foreach (var p in properties)
+                    {
+                        string name = p.Name;
+                        sql += $"{separator}{name} = @{name}";
+                        separator = " AND ";
+                    }
                 }
             }
 
