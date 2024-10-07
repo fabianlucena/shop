@@ -6,15 +6,11 @@ using RFService.RepoLib;
 
 namespace RFAuth.Services
 {
-    public class UserService : ServiceTimestampsIdUuid<IUserRepo, User>, IUserService
+    public class UserService(IUserRepo repo) : ServiceTimestampsIdUuid<IUserRepo, User>(repo), IUserService
     {
-        public UserService(IUserRepo repo)
-            : base(repo) { }
-
-
-        public async Task<User> GetSingleForUsername(string username)
+        public async Task<User> GetSingleForUsernameAsync(string username)
         {
-            return await _repo.GetSingle(new GetOptions
+            return await _repo.GetSingleAsync(new GetOptions
             {
                 Filters = new { username }
             });

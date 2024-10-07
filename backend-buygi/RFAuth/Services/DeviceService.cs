@@ -7,14 +7,11 @@ using RFAuth.IRepo;
 
 namespace RFAuth.Services
 {
-    public class DeviceService : ServiceTimestampsIdUuid<IDeviceRepo, Device>, IDeviceService
+    public class DeviceService(IDeviceRepo deviceRepo) : ServiceTimestampsIdUuid<IDeviceRepo, Device>(deviceRepo), IDeviceService
     {
-        public DeviceService(IDeviceRepo deviceRepo)
-            :base(deviceRepo) { }
-
-        public override async Task<Device> ValidateForCreation(Device data)
+        public override async Task<Device> ValidateForCreationAsync(Device data)
         {
-            data = await base.ValidateForCreation(data);
+            data = await base.ValidateForCreationAsync(data);
 
             if (string.IsNullOrEmpty(data.Token))
             {
@@ -24,29 +21,29 @@ namespace RFAuth.Services
             return data;
         }
 
-        public async Task<Device> Create()
+        public async Task<Device> CreateAsync()
         {
-            return await Create(new Device { Token = "" }); 
+            return await CreateAsync(new Device { Token = "" }); 
         }
 
-        public async Task<Device?> GetSingleOrNullForToken(string token)
+        public async Task<Device?> GetSingleOrNullForTokenAsync(string token)
         {
-            return await _repo.GetSingleOrNull(new GetOptions
+            return await _repo.GetSingleOrNullAsync(new GetOptions
             {
                 Filters = new { Token = token }
             });
         }
 
-        public async Task<Device> GetSingleForTokenOrCreate(string? token)
+        public async Task<Device> GetSingleForTokenOrCreateAsync(string? token)
         {
             var device = string.IsNullOrWhiteSpace(token)?
                 null:
-                await GetSingleOrNullForToken(token);
+                await GetSingleOrNullForTokenAsync(token);
 
 
             if (device == null)
             {
-                device = await Create();
+                device = await CreateAsync();
             }
 
             return device;

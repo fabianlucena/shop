@@ -7,14 +7,11 @@ using RFService.Exceptions;
 
 namespace RFAuth.Services
 {
-    public class SessionService : ServiceTimestampsIdUuid<ISessionRepo, Session>, ISessionService
+    public class SessionService(ISessionRepo repo) : ServiceTimestampsIdUuid<ISessionRepo, Session>(repo), ISessionService
     {
-        public SessionService(ISessionRepo repo)
-            :base(repo) { }
-
-        public override async Task<Session> ValidateForCreation(Session data)
+        public override async Task<Session> ValidateForCreationAsync(Session data)
         {
-            data = await base.ValidateForCreation(data);
+            data = await base.ValidateForCreationAsync(data);
 
             if (data.UserId == 0)
             {
@@ -34,7 +31,7 @@ namespace RFAuth.Services
             return data;
         }
 
-        public async Task<Session> CreateForUserIdAndDeviceId(Int64 userId, Int64 deviceId)
+        public async Task<Session> CreateForUserIdAndDeviceIdAsync(Int64 userId, Int64 deviceId)
         {
             var session = new Session
             {
@@ -44,12 +41,12 @@ namespace RFAuth.Services
                 AutoLoginToken = "",
             };
 
-            return await Create(session);
+            return await CreateAsync(session);
         }
 
-        public async Task<Session> CreateForUserAndDevice(User user, Device device)
+        public async Task<Session> CreateForUserAndDeviceAsync(User user, Device device)
         {
-            return await CreateForUserIdAndDeviceId(user.Id, device.Id);
+            return await CreateForUserIdAndDeviceIdAsync(user.Id, device.Id);
         }
     }
 }

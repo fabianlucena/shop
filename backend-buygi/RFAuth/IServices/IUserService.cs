@@ -5,6 +5,6 @@ namespace RFAuth.IServices
 {
     public interface IUserService : IService<User>
     {
-        Task<User> GetSingleForUsername(string username);
+        Task<User> GetSingleForUsernameAsync(string username);
     }
 }

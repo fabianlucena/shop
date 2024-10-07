@@ -28,6 +28,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RFAuthDapper\RFAuthDapper.csproj" />
+    <ProjectReference Include="..\RFAuth\RFAuth.csproj" />
+    <ProjectReference Include="..\RFRegister\RFRegister.csproj" />
+    <ProjectReference Include="..\RFUserEmailDapper\RFUserEmailDapper.csproj" />
   </ItemGroup>
 
 </Project>

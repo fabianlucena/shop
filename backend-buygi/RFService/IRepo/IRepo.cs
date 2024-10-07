@@ -4,9 +4,9 @@ namespace RFService.IRepo
 {
     public interface IRepo<Entity>
     {
-        Task<Entity> Insert(Entity data);
-        Task<Entity> GetSingle(GetOptions? options = null);
-        Task<Entity?> GetSingleOrNull(GetOptions? options = null);
-        Task<IEnumerable<Entity>> GetList(GetOptions? options = null);
+        Task<Entity> InsertAsync(Entity data);
+        Task<Entity> GetSingleAsync(GetOptions? options = null);
+        Task<Entity?> GetSingleOrNullAsync(GetOptions? options = null);
+        Task<IEnumerable<Entity>> GetListAsync(GetOptions? options = null);
     }
 }

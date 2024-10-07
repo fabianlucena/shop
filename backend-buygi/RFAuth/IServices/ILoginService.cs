@@ -4,6 +4,6 @@ namespace RFAuth.IServices
 {
     public interface ILoginService
     {
-        Task<AuthorizationData> Login(LoginData loginData);
+        Task<AuthorizationData> LoginAsync(LoginData loginData);
     }
 }

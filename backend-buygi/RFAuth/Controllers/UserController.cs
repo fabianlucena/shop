@@ -13,11 +13,15 @@ namespace RFAuth.Controllers
     public class UserController(ILogger<UserController> logger, IUserService userService, IMapper mapper) : ControllerBase
     {
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetAsync()
         {
             logger.LogInformation("Recuperando ususarios");
 
-            var res = (await userService.GetList()).Select(mapper.Map<User,UserResponse>);
+
+            var list = await userService.GetListAsync();
+            var res = list.Select(mapper.Map<User, UserResponse>);
+
+            //var res = (await userService.GetListAsync()).Select(mapper.Map<User,UserResponse>);
             return Ok(new DataRowsResult(res));
         }
     }

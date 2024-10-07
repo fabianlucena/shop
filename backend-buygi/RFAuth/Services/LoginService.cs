@@ -11,25 +11,25 @@ namespace RFAuth.Services
         private readonly IDeviceService _deviceService = deviceService;
         private readonly ISessionService _sessionService = sessionService;
 
-        public async Task<AuthorizationData> Login(LoginData loginData)
+        public async Task<AuthorizationData> LoginAsync(LoginData loginData)
         {
             if (string.IsNullOrWhiteSpace(loginData.Username)) {
                 throw new ArgumentNullException(nameof(loginData.Username));
             }
-            var user = await _userService.GetSingleForUsername(loginData.Username);
+            var user = await _userService.GetSingleForUsernameAsync(loginData.Username);
 
             if (string.IsNullOrWhiteSpace(loginData.Password)) {
                 throw new ArgumentNullException(nameof(loginData.Password));
             }
 
-            var password = await _passwordService.GetSingleForUser(user);
+            var password = await _passwordService.GetSingleForUserAsync(user);
             var check = _passwordService.Verify(loginData.Password, password);
             if (!check) {
                 throw new BadPasswordException();
             }
 
-            var device = await _deviceService.GetSingleForTokenOrCreate(loginData?.DeviceToken);
-            var session = await _sessionService.CreateForUserAndDevice(user, device);
+            var device = await _deviceService.GetSingleForTokenOrCreateAsync(loginData?.DeviceToken);
+            var session = await _sessionService.CreateForUserAndDeviceAsync(user, device);
 
             return new AuthorizationData
             {

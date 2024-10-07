@@ -5,6 +5,6 @@ namespace RFAuth.IServices
 {
     public interface IDeviceService : IService<Device>
     {
-        Task<Device> GetSingleForTokenOrCreate(string? token);
+        Task<Device> GetSingleForTokenOrCreateAsync(string? token);
     }
 }

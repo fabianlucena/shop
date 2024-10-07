@@ -8,7 +8,7 @@
 
         public required string Username { get; set; }
 
-        public required string DisplayName { get; set; }
+        public required string FullName { get; set; }
 
         public DateTime CreatedAt { get; set; }
 

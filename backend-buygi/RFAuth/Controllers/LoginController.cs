@@ -11,9 +11,9 @@ namespace RFAuth.Controllers
         private readonly ILoginService _loginService = loginService;
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] LoginData loginData)
+        public async Task<IActionResult> PostAsync([FromBody] LoginData loginData)
         {
-            return Ok(await _loginService.Login(loginData));
+            return Ok(await _loginService.LoginAsync(loginData));
         }
     }
 }

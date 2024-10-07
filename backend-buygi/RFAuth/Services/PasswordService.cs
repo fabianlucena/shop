@@ -6,16 +6,8 @@ using RFService.RepoLib;
 
 namespace RFAuth.Services
 {
-    public class PasswordService : ServiceTimestamps<IPasswordRepo, Password>, IPasswordService
+    public class PasswordService(IPasswordRepo repo) : ServiceTimestamps<IPasswordRepo, Password>(repo), IPasswordService
     {
-        private readonly IUserService _userService;
-
-        public PasswordService(IPasswordRepo repo, IUserService userService)
-            :base(repo)
-        {
-            _userService = userService;
-        }
-
         public string Hash(string rawPassword)
         {
             return BCrypt.Net.BCrypt.HashPassword(rawPassword);
@@ -31,14 +23,14 @@ namespace RFAuth.Services
             return Verify(rawPassword, password.Hash);
         }
 
-        public async Task<Password> GetSingleForUserId(Int64 userId)
+        public async Task<Password> GetSingleForUserIdAsync(Int64 userId)
         {
-            return await _repo.GetSingle(new GetOptions { Filters = new { userId } });
+            return await _repo.GetSingleAsync(new GetOptions { Filters = new { userId } });
         }
 
-        public async Task<Password> GetSingleForUser(User user)
+        public async Task<Password> GetSingleForUserAsync(User user)
         {
-            return await GetSingleForUserId(user.Id);
+            return await GetSingleForUserIdAsync(user.Id);
         }
     }
 }

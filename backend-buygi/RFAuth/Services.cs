@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using RFAuth.IServices;
 using RFAuth.Services;
 
@@ -15,14 +14,7 @@ namespace RFAuth
             services.AddScoped<ISessionService, SessionService>();
             services.AddScoped<ILoginService, LoginService>();
 
-            var mapperConfig = new MapperConfiguration(m =>
-            {
-                m.AddProfile(new MappingProfile());
-            });
-
-            IMapper mapper = mapperConfig.CreateMapper();
-
-            services.AddSingleton(mapper);
+            services.AddAutoMapper(typeof(MappingProfile).Assembly);
         }
     }
 }

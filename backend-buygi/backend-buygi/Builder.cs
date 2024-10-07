@@ -1,6 +1,9 @@
 ﻿using Microsoft.Data.SqlClient;
 using RFAuth;
 using RFAuthDapper;
+using RFRegister;
+using RFUserEmail;
+using RFUserEmailDapper;
 using System.Data;
 
 namespace backend_buygi
@@ -23,6 +26,17 @@ namespace backend_buygi
 
             services.AddRFAuth();
             services.AddRFAuthDapper();
+            services.AddRFUserEmail();
+            services.AddRFUserEmailDapper();
+            services.AddRFRegister();
+
+            if (builder.Configuration.GetValue<bool>("CreateDapperTables")) {
+                using var connection = new SqlConnection(dbConnectionString);
+                connection.Open();
+
+                ConfigureRFAuthDapper.Setup(connection);
+                ConfigureRFUserEmailDapper.Setup(connection);
+            }
         }
     }
 }

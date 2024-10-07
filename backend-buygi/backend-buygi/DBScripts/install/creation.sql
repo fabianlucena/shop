@@ -11,16 +11,15 @@ IF NOT EXISTS (SELECT TOP 1 1 FROM sys.objects WHERE object_id = OBJECT_ID(N'aut
 		DeletedAt datetime NULL,
 		IsEnabled bit DEFAULT 1 NOT NULL,
 		Username nvarchar(255) NOT NULL,
-		DisplayName nvarchar(255) NOT NULL,
+		FullName nvarchar(255) NOT NULL,
 		CONSTRAINT auth_Users_PK PRIMARY KEY (Id),
 		CONSTRAINT auth_Users_UK_Uuid UNIQUE (Uuid),
-		CONSTRAINT auth_Users_UK_Username UNIQUE (Username),
-		CONSTRAINT auth_Users_UK_DisplayName UNIQUE (DisplayName)
+		CONSTRAINT auth_Users_UK_Username UNIQUE (Username)
 	);
 GO
 
 IF NOT EXISTS (SELECT TOP 1 1 FROM auth.users WHERE Username = 'admin')
-	INSERT INTO auth.users(Uuid, IsEnabled, Username, DisplayName, CreatedAt, UpdatedAt, DeletedAt)
+	INSERT INTO auth.users(Uuid, IsEnabled, Username, FullName, CreatedAt, UpdatedAt, DeletedAt)
 	VALUES(NEWID(), 1, N'admin', N'Administrador', GETDATE(), GETDATE(), NULL);
 GO
 
