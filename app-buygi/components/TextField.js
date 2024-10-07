@@ -12,7 +12,8 @@ export default function TextField({
   nullable = false,
   style,
   inputStyle,
-  labelStyle
+  labelStyle,
+  secureTextEntry
 }) {
   const [isNull, setIsNull] = useState(false);
   const [localValue, setLocalValue] = useState('');
@@ -61,6 +62,7 @@ export default function TextField({
         style={{...styles.input, ...inputStyle}}
         value={localValue ?? ''}
         onChangeText={onChangeTextHandler}
+        secureTextEntry={secureTextEntry}
       />
     </Field>
   );

@@ -3,25 +3,15 @@ import { View } from 'react-native';
 import TextField from '../components/TextField';
 import Button from '../components/Button';
 import Background from '../components/Background';
-import { Api } from '../libs/api';
 import styles from '../libs/styles';
+import login from '../libs/login';
 
-export default function LoginScreen({setLogged}) {
+export default function LoginScreen() {
   const [username, setUsername] = useState('admin');
   const [password, setPassword] = useState('1234');
 
-  function login() {
-    const body = { username, password };
-    Api.postJson('/login', { body })
-      .then(res => res.json(res))
-      .then(data => {
-        console.log(data)
-        if (data?.authorizationToken) {
-          Api.headers.Authorization = 'Bearer: ' + data.authorizationToken;
-          setLogged(true);
-        }
-      })
-      .catch(err => console.error(err));
+  function loginHandler() {
+    login({ username, password });
   }
 
   return (
@@ -36,10 +26,11 @@ export default function LoginScreen({setLogged}) {
         <TextField
           value={password}
           onChangeValue={setPassword}
+          secureTextEntry={true} 
         >
           Contraseña
         </TextField>
-        <Button onPress={login}  >Ingresar</Button>
+        <Button onPress={loginHandler} >Ingresar</Button>
       </View>
     </Background>
   );

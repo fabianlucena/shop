@@ -4,7 +4,8 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from './screens/LoginScreen';
 import HomeScreen from './screens/HomeScreen';
 import { Api } from './libs/api';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import login, { setOnLoginSuccess, setOnLoginError } from './libs/login';
 
 const Stack = createNativeStackNavigator();
 const navigationRef = createNavigationContainerRef();
@@ -12,8 +13,14 @@ const navigationRef = createNavigationContainerRef();
 export default function App() {
   const [loggued, setLogged] = useState(!!Api.headers.Authorization);
 
+  useEffect(() => {
+    setOnLoginSuccess(() => setLogged(true));
+    setOnLoginError(err => console.error(err));
+    login();
+  }, []);
+
   if (!loggued) {
-    return (<LoginScreen setLogged={setLogged} />);
+    return (<LoginScreen />);
   }
 
   return (

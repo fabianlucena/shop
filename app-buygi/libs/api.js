@@ -15,8 +15,11 @@ export class Api {
       options.headers = {...this.headers, ...options.headers};
     }
 
-    console.log(url);
-    console.log(options);
+    if (this.debug) {
+      console.log(url);
+      console.log(options);
+    }
+
     return fetch(url, options);
   }
 
