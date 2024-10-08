@@ -1,4 +1,4 @@
-﻿using RFUserEmailDapper.Dapper;
+﻿using RFUserEmailDapper.Tables;
 using System.Data;
 
 namespace RFUserEmailDapper
@@ -7,7 +7,7 @@ namespace RFUserEmailDapper
     {
         public static void Setup(IDbConnection connection)
         {
-            (new UserEmailDapper(connection)).CreateTable();
+            (new UsersEmails(connection)).CreateTable();
         }
     }
 }

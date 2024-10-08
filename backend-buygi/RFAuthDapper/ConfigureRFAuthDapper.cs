@@ -1,4 +1,4 @@
-﻿using RFAuthDapper.Dapper;
+﻿using RFAuthDapper.Tables;
 using System.Data;
 
 namespace RFAuthDapper
@@ -7,10 +7,10 @@ namespace RFAuthDapper
     {
         public static void Setup(IDbConnection connection)
         {
-            (new DeviceDapper(connection)).CreateTable();
-            (new UserDapper(connection)).CreateTable();
-            (new PasswordDapper(connection)).CreateTable();
-            (new SessionDapper(connection)).CreateTable();
+            (new Devices(connection)).CreateTable();
+            (new Users(connection)).CreateTable();
+            (new Passwords(connection)).CreateTable();
+            (new Sessions(connection)).CreateTable();
         }
     }
 }

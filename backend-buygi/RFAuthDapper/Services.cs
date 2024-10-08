@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using RFAuth.IRepo;
-using RFAuthDapper.Dapper;
+using RFAuthDapper.Tables;
 
 namespace RFAuthDapper
 {
@@ -8,10 +8,10 @@ namespace RFAuthDapper
     {
         public static void AddRFAuthDapper(this IServiceCollection services)
         {
-            services.AddScoped<IUserRepo, UserDapper>();
-            services.AddScoped<IPasswordRepo, PasswordDapper>();
-            services.AddScoped<IDeviceRepo, DeviceDapper>();
-            services.AddScoped<ISessionRepo, SessionDapper>();
+            services.AddScoped<IUserRepo, Users>();
+            services.AddScoped<IPasswordRepo, Passwords>();
+            services.AddScoped<IDeviceRepo, Devices>();
+            services.AddScoped<ISessionRepo, Sessions>();
         }
     }
 }

@@ -1,12 +1,9 @@
 ﻿using Dapper;
 using RFService.RepoLib;
 using RFService.ServicesLib;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Reflection;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace RFDapper.DapperLib
 {
@@ -29,21 +26,21 @@ namespace RFDapper.DapperLib
             {
                 var columnQuery = p.Name;
 
-                var type = p.PropertyType;
-                if (type == typeof(long))
+                var propertyType = p.PropertyType;
+                if (propertyType == typeof(long))
                     columnQuery += " BIGINT";
-                else if (type == typeof(string))
+                else if (propertyType == typeof(string))
                     columnQuery += $" NVARCHAR({p.GetCustomAttribute<MaxLengthAttribute>()?.Length ?? 255})";
-                else if (type == typeof(Guid))
+                else if (propertyType == typeof(Guid))
                     columnQuery += " UNIQUEIDENTIFIER";
-                else if (type == typeof(DateTime))
+                else if (propertyType == typeof(DateTime))
                     columnQuery += " DATETIME";
-                else if (type == typeof(DateTime?))
+                else if (propertyType == typeof(DateTime?))
                     columnQuery += " DATETIME";
-                else if (type == typeof(bool))
+                else if (propertyType == typeof(bool))
                     columnQuery += " BIT";
                 else
-                    throw new Exception($"Unknown type {type.Name}");
+                    throw new Exception($"Unknown type {propertyType.Name}");
 
                 if (p.GetCustomAttribute<AutoincrementAttribute>() != null)
                 {
@@ -53,7 +50,7 @@ namespace RFDapper.DapperLib
 
                 if (p.CustomAttributes.Any(a => a.AttributeType.Name == "RequiredMemberAttribute"))
                     columnQuery += " NOT NULL";
-                else if (Nullable.GetUnderlyingType(type) != null)
+                else if (Nullable.GetUnderlyingType(propertyType) != null)
                     columnQuery += " NULL";
                 else
                     columnQuery += " NOT NULL";
@@ -61,25 +58,23 @@ namespace RFDapper.DapperLib
                 if (p.GetCustomAttribute<UniqueAttribute>() != null)
                     postQueries.Add($"CONSTRAINT [{Schema}_{TableName}_UK_{p.Name}] UNIQUE ([{p.Name}])");
 
-                var foreignKey = p.GetCustomAttribute<ForeignKeyAttribute>();
-                if (foreignKey != null)
-                {
-                    var foreignSchema = Schema;
-                    var foreignTableName = foreignKey.Name;
-                    var foreignColumn = "Id";
-
-                    postQueries.Add($"CONSTRAINT [{Schema}_{TableName}_{p.Name}_FK_{p.Name}] FOREIGN KEY([{p.Name}]) REFERENCES [{foreignSchema}.{foreignTableName}]([{foreignColumn}])");
-                }
-
                 columnsQueries.Add(columnQuery);
             }
 
-            var columnsQuery = string.Join(",\r\n\t", [.. columnsQueries]);
-            if (postQueries.Count > 0)
-                columnsQuery += ",\r\n\t" + string.Join(",\r\n\t", [.. postQueries]);
+            var foreigns = this.GetType().GetCustomAttributes<ForeignAttribute>();
+            foreach (var foreign in foreigns)
+            {
+                postQueries.Add($"CONSTRAINT [{Schema}_{TableName}_{foreign.Column}_FK_{foreign.ForeignSchema}_{foreign.ForeignTable}_{foreign.ForeignColumn}]"
+                    + $" FOREIGN KEY([{foreign.Column}]) REFERENCES [{foreign.ForeignSchema}].[{foreign.ForeignTable}]([{foreign.ForeignColumn}])"
+                );
+            }
 
-            query = $@"IF NOT EXISTS (SELECT TOP 1 1 FROM sys.objects WHERE object_id = OBJECT_ID(N'{Schema}.{TableName}') AND type in (N'U'))
-	            CREATE TABLE [{Schema}].[{TableName}] ({columnsQuery}) ON [PRIMARY]";
+            var columnsQuery = string.Join(",\r\n\t\t", [.. columnsQueries]);
+            if (postQueries.Count > 0)
+                columnsQuery += ",\r\n\t\t" + string.Join(",\r\n\t\t", [.. postQueries]);
+
+            query = $"IF NOT EXISTS (SELECT TOP 1 1 FROM sys.objects WHERE object_id = OBJECT_ID(N'{Schema}.{TableName}') AND type in (N'U'))"
+	            + $"\r\n\tCREATE TABLE [{Schema}].[{TableName}] (\r\n\t\t{columnsQuery}\r\n\t) ON [PRIMARY]";
 
             Connection.Query(query);
         }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using RFUserEmail.IRepo;
-using RFUserEmailDapper.Dapper;
+using RFUserEmailDapper.Tables;
 
 namespace RFUserEmailDapper
 {
@@ -8,7 +8,7 @@ namespace RFUserEmailDapper
     {
         public static void AddRFUserEmailDapper(this IServiceCollection services)
         {
-            services.AddScoped<IUserEmailRepo, UserEmailDapper>();
+            services.AddScoped<IUserEmailRepo, UsersEmails>();
         }
     }
 }
