@@ -2,6 +2,6 @@
 {
     public abstract class EntityTimestampsIdUuidEnabled : EntityTimestampsIdUuid
     {
-        public bool IsEnabled { get; set; }
+        public bool IsEnabled { get; set; } = true;
     }
 }
