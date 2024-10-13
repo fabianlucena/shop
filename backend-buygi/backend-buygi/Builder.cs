@@ -1,9 +1,11 @@
 ﻿using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.DependencyInjection;
 using RFAuth;
 using RFAuthDapper;
 using RFRegister;
 using RFUserEmail;
 using RFUserEmailDapper;
+using System;
 using System.Data;
 
 namespace backend_buygi
@@ -30,14 +32,17 @@ namespace backend_buygi
 
             services.AddRFAuthDapper();
             services.AddRFUserEmailDapper();
+        }
 
-            if (builder.Configuration.GetValue<bool>("CreateDapperTables"))
+        public static void ConfigureRepo(this WebApplication app)
+        {
+            if (app.Configuration.GetValue<bool>("CreateDapperTables"))
             {
-                using var connection = new SqlConnection(dbConnectionString);
-                connection.Open();
+                using var scope = (app.Services.CreateScope());
+                var serviceProvider = scope.ServiceProvider;
 
-                RFAuthDapper.Setup.ConfigureRFAuthDapper(connection);
-                RFUserEmailDapper.Setup.ConfigureRFUserEmailDapper(connection);
+                RFAuthDapper.Setup.ConfigureRFAuthDapper(serviceProvider);
+                RFUserEmailDapper.Setup.ConfigureRFUserEmailDapper(serviceProvider);
             }
         }
 
@@ -48,9 +53,9 @@ namespace backend_buygi
                 using var scope = (app.Services.CreateScope());
                 var serviceProvider = scope.ServiceProvider;
 
-                RFAuth.Setup.ConfigureRFAuthAsync(serviceProvider).Wait();
-                RFUserEmail.Setup.ConfigureRFUserEmail(serviceProvider).Wait();
-                RFRegister.Setup.ConfigureRFRegister(serviceProvider).Wait();
+                RFAuth.Setup.ConfigureRFAuth(serviceProvider);
+                RFUserEmail.Setup.ConfigureRFUserEmail(serviceProvider);
+                RFRegister.Setup.ConfigureRFRegister(serviceProvider);
             }
         }
     }

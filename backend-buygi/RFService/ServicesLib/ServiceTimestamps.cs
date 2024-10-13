@@ -1,5 +1,7 @@
 ﻿using RFService.EntitiesLib;
 using RFService.IRepo;
+using RFService.RepoLib;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace RFService.ServicesLib
 {
@@ -15,6 +17,11 @@ namespace RFService.ServicesLib
             data.UpdatedAt = DateTime.UtcNow;
 
             return data;
+        }
+
+        public override Task<IEnumerable<Entity>> GetListAsync(GetOptions? options)
+        {
+            return base.GetListAsync(options);
         }
     }
 }

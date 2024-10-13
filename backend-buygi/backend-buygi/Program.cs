@@ -17,6 +17,7 @@ namespace backend_buygi
 
             var app = builder.Build();
 
+            app.ConfigureRepo();
             app.ConfigureData();
 
             app.UsePathBase("/api");

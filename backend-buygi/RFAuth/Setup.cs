@@ -6,11 +6,16 @@ namespace RFAuth
 {
     public static class Setup
     {
-        public static async Task ConfigureRFAuthAsync(IServiceProvider provider)
+        public static void ConfigureRFAuth(IServiceProvider services)
         {
-            var userTypeService = provider.GetService<IUserTypeService>() ??
+            ConfigureRFAuthAsync(services).Wait();
+        }
+
+        public static async Task ConfigureRFAuthAsync(IServiceProvider services)
+        {
+            var userTypeService = services.GetService<IUserTypeService>() ??
                 throw new Exception("Can't get IUserTypeService");
-            var userType = await userTypeService.GetSingleOrDefaultForNameAsync("user") ??
+            var userType = (await userTypeService.GetSingleOrDefaultForNameAsync("user")) ??
                 await userTypeService.CreateAsync(new UserType
                 {
                     Name = "user",
@@ -18,9 +23,9 @@ namespace RFAuth
                     IsTranslatable = true,
                 });
 
-            var userService = provider.GetService<IUserService>() ??
+            var userService = services.GetService<IUserService>() ??
                 throw new Exception("Can't get IUserService");
-            var user = await userService.GetSingleOrDefaultForUsernameAsync("admin") ??
+            var user = (await userService.GetSingleOrDefaultForUsernameAsync("admin")) ??
                 await userService.CreateAsync(new User
                 {
                     TypeId = userType.Id,
@@ -28,7 +33,7 @@ namespace RFAuth
                     FullName = "Administrador",
                 });
 
-            var passwordService = provider.GetService<IPasswordService>() ??
+            var passwordService = services.GetService<IPasswordService>() ??
                 throw new Exception("Can't get IPasswordService");
             var password = await passwordService.GetSingleOrDefaultForUserAsync(user);
             if (password == null)
