@@ -16,7 +16,6 @@
   <ItemGroup>
     <ProjectReference Include="..\RFAuth\RFAuth.csproj" />
     <ProjectReference Include="..\RFDapper\RFDapper.csproj" />
-    <ProjectReference Include="..\RFService\RFService.csproj" />
   </ItemGroup>
 
 </Project>

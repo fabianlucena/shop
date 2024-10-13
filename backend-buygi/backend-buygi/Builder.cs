@@ -25,17 +25,32 @@ namespace backend_buygi
             });
 
             services.AddRFAuth();
-            services.AddRFAuthDapper();
             services.AddRFUserEmail();
-            services.AddRFUserEmailDapper();
             services.AddRFRegister();
 
-            if (builder.Configuration.GetValue<bool>("CreateDapperTables")) {
+            services.AddRFAuthDapper();
+            services.AddRFUserEmailDapper();
+
+            if (builder.Configuration.GetValue<bool>("CreateDapperTables"))
+            {
                 using var connection = new SqlConnection(dbConnectionString);
                 connection.Open();
 
-                ConfigureRFAuthDapper.Setup(connection);
-                ConfigureRFUserEmailDapper.Setup(connection);
+                RFAuthDapper.Setup.ConfigureRFAuthDapper(connection);
+                RFUserEmailDapper.Setup.ConfigureRFUserEmailDapper(connection);
+            }
+        }
+
+        public static void ConfigureData(this WebApplication app)
+        {
+            if (app.Configuration.GetValue<bool>("UpdateData"))
+            {
+                using var scope = (app.Services.CreateScope());
+                var serviceProvider = scope.ServiceProvider;
+
+                RFAuth.Setup.ConfigureRFAuthAsync(serviceProvider).Wait();
+                RFUserEmail.Setup.ConfigureRFUserEmail(serviceProvider).Wait();
+                RFRegister.Setup.ConfigureRFRegister(serviceProvider).Wait();
             }
         }
     }

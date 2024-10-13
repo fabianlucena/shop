@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using RFUserEmail.IRepo;
-using RFUserEmailDapper.Tables;
 
 namespace RFUserEmailDapper
 {

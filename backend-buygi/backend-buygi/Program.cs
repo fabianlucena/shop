@@ -16,6 +16,9 @@ namespace backend_buygi
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
+
+            app.ConfigureData();
+
             app.UsePathBase("/api");
 
             // Configure the HTTP request pipeline.

@@ -28,9 +28,19 @@ namespace RFAuth.Services
             return await _repo.GetSingleAsync(new GetOptions { Filters = new { userId } });
         }
 
+        public async Task<Password?> GetSingleOrDefaultForUserIdAsync(Int64 userId)
+        {
+            return await _repo.GetSingleOrDefaultAsync(new GetOptions { Filters = new { userId } });
+        }
+
         public async Task<Password> GetSingleForUserAsync(User user)
         {
             return await GetSingleForUserIdAsync(user.Id);
+        }
+
+        public async Task<Password?> GetSingleOrDefaultForUserAsync(User user)
+        {
+            return await GetSingleOrDefaultForUserIdAsync(user.Id);
         }
     }
 }

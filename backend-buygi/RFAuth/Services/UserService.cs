@@ -15,5 +15,12 @@ namespace RFAuth.Services
                 Filters = new { username }
             });
         }
+        public async Task<User?> GetSingleOrDefaultForUsernameAsync(string username)
+        {
+            return await _repo.GetSingleOrDefaultAsync(new GetOptions
+            {
+                Filters = new { username }
+            });
+        }
     }
 }
