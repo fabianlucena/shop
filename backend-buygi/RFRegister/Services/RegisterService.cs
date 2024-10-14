@@ -8,7 +8,7 @@ using RFRegister.IServices;
 
 namespace RFRegister.Services
 {
-    public class RegisterService(IUserService userService, IUserEmailService userEmailService, IMapper mapper) : IRegisterService
+    public class RegisterService(IUserService userService, IPasswordService passwordService, IUserEmailService userEmailService, IMapper mapper) : IRegisterService
     {
         public async Task RegisterAsync(RegisterData registerData)
         {
@@ -32,7 +32,14 @@ namespace RFRegister.Services
                 throw new ArgumentNullException(registerData.EMail);
             }
 
-            var user = await userService.CreateAsync(mapper.Map<RegisterData,User>(registerData));
+            var user = await userService.CreateAsync(mapper.Map<RegisterData, User>(registerData));
+
+            await passwordService.CreateAsync(new Password
+            {
+                UserId = user.Id,
+                Hash = passwordService.Hash(registerData.Password),
+            });
+
             await userEmailService.CreateAsync(new UserEmail {
                 UserId = user.Id,
                 Email = registerData.EMail

@@ -8,19 +8,19 @@ namespace RFService.ServicesLib
         where Repo : IRepo<Entity>
         where Entity : EntityTimestampsIdUuidEnabledName
     {
-        public async Task<Entity> GetSingleForNameAsync(string Name)
+        public async Task<Entity> GetSingleForNameAsync(string name)
         {
             return await _repo.GetSingleAsync(new GetOptions
             {
-                Filters = { { Name, Name } }
+                Filters = { { "Name", name } }
             });
         }
 
-        public async Task<Entity?> GetSingleOrDefaultForNameAsync(string Name)
+        public async Task<Entity?> GetSingleOrDefaultForNameAsync(string name)
         {
             return await _repo.GetSingleOrDefaultAsync(new GetOptions
             {
-                Filters = { { Name, Name } }
+                Filters = { { "Name", name } }
             });
         }
 

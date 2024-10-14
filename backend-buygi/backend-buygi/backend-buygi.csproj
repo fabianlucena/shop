@@ -14,12 +14,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="DBScripts\Operations\Delete all tables.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.8.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ContainerPort Include="8081" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="DBScripts\Operations\Delete all tables.sql" />
   </ItemGroup>
 
   <ItemGroup>

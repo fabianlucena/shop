@@ -6,7 +6,7 @@ using RFService.IRepo;
 
 namespace RFAuth.Services
 {
-    public class UserService(IRepo<User> repo) : ServiceTimestampsIdUuidEnabled<IRepo<User>, User>(repo), IUserService
+    public class UserService(IRepo<User> repo, IUserTypeService userTypeService) : ServiceTimestampsIdUuidEnabled<IRepo<User>, User>(repo), IUserService
     {
         public async Task<User> GetSingleForUsernameAsync(string username)
         {
@@ -22,6 +22,19 @@ namespace RFAuth.Services
             {
                 Filters = { { "Username", username } }
             });
+        }
+
+        public override async Task<User> ValidateForCreationAsync(User data)
+        {
+            data = await base.ValidateForCreationAsync(data);
+
+            if (data.TypeId <= 0)
+            {
+                data.Type ??= await userTypeService.GetSingleForNameAsync("user");
+                data.TypeId = data.Type.Id;
+            }
+
+            return data;
         }
 
         public override GetOptions SanitizeForAutoGet(GetOptions options)
