@@ -1,5 +1,6 @@
 ﻿using RFService.EntitiesLib;
 using RFService.IRepo;
+using RFService.RepoLib;
 
 namespace RFService.ServicesLib
 {
@@ -11,12 +12,33 @@ namespace RFService.ServicesLib
         {
             data = await base.ValidateForCreationAsync(data);
 
-            if (data.Uuid == Guid.Empty)
+            if (data.Uuid == null || data.Uuid == Guid.Empty)
             {
                 data.Uuid = Guid.NewGuid();
-            };
+            }
 
             return data;
+        }
+
+        public override GetOptions SanitizeForAutoGet(GetOptions options)
+        {
+            if (options.Filters.TryGetValue("Uuid", out object? value))
+            {
+                options = new GetOptions(options);
+                if (value != null
+                    && (Guid)value != Guid.Empty
+                )
+                {
+                    options.Filters = new Dictionary<string, object?> { { "Uuid", value } };
+                    return options;
+                }
+                else
+                {
+                    options.Filters.Remove("Uuid");
+                }
+            }
+
+            return base.SanitizeForAutoGet(options);
         }
     }
 }

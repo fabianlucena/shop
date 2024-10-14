@@ -10,14 +10,17 @@ namespace RFAuth.Entities
     [Index(nameof(AutoLoginToken), IsUnique = true)]
     public class Session : EntityTimestampsIdUuid
     {
+        [Required]
         [ForeignKey("User")]
         public Int64 UserId { get; set; }
         public User? User { get; set; }
 
+        [Required]
         [ForeignKey("Device")]
         public Int64 DeviceId { get; set; }
         public Device? Device { get; set; }
 
+        [Required]
         [MaxLength(255)]
         public required string Token { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using RFAuth.IServices;
-using System.Data;
+using RFAuth.Entities;
+using RFDapper;
 
 namespace RFAuthDapper
 {
@@ -8,14 +8,20 @@ namespace RFAuthDapper
     {
         public static void ConfigureRFAuthDapper(IServiceProvider services)
         {
-            var connection = services.GetService<IDbConnection>() ??
-                throw new Exception("No connection available");
+            CreateTable<Device>(services);
+            CreateTable<UserType>(services);
+            CreateTable<User>(services);
+            CreateTable<Password>(services);
+            CreateTable<Session>(services);
+        }
 
-            (new Devices(connection)).CreateTable();
-            (new UsersTypes(connection)).CreateTable();
-            (new Users(connection)).CreateTable();
-            (new Passwords(connection)).CreateTable();
-            (new Sessions(connection)).CreateTable();
+        public static void CreateTable<Entity>(IServiceProvider services)
+            where Entity : class
+        {
+            var dapperService = services.GetService<Dapper<Entity>>() ??
+                throw new Exception($"No service {typeof(Entity).Name}");
+
+            dapperService.CreateTable();
         }
     }
 }

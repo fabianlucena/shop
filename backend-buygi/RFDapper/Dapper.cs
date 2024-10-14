@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Microsoft.Extensions.Logging;
 using RFService.IRepo;
 using RFService.RepoLib;
 using RFService.ServicesLib;
@@ -7,22 +8,26 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Reflection;
+using System.Xml.Linq;
 
 namespace RFDapper
 {
     public class Dapper<Entity> : IRepo<Entity>
         where Entity : class
     {
+        private readonly ILogger<Dapper<Entity>> _logger;
         private readonly IDbConnection _connection;
         private readonly string _tableName;
         private readonly string _schema = "dbo";
 
+        public ILogger<Dapper<Entity>> Logger { get => _logger; }
         public IDbConnection Connection { get => _connection; }
         public string TableName { get => _tableName; }
         public string Schema { get => _schema; }
 
-        public Dapper(IDbConnection Connection)
+        public Dapper(ILogger<Dapper<Entity>> logger, IDbConnection Connection)
         {
+            _logger = logger;
             _connection = Connection;
             var tableAttribute = typeof(Entity).GetCustomAttribute<TableAttribute>();
             if (tableAttribute == null)
@@ -84,17 +89,6 @@ namespace RFDapper
                 {
                     var columnQuery = $"[{property.Name}] {sqlType}";
 
-                    if (property.CustomAttributes.Any(a => a.AttributeType.Name == "RequiredMemberAttribute"))
-                        columnQuery += " NOT NULL";
-                    else if (Nullable.GetUnderlyingType(propertyType) != null)
-                        columnQuery += " NULL";
-                    else if (nullable != null)
-                    {
-                        columnQuery += (bool)nullable ?
-                            " NULL" :
-                            " NOT NULL";
-                    }
-
                     var settedPk = false;
                     var databaseGeneratedAttribute = property.GetCustomAttribute<DatabaseGeneratedAttribute>();
                     if (databaseGeneratedAttribute != null)
@@ -107,8 +101,22 @@ namespace RFDapper
                         }
                     }
 
-                    if (!settedPk && property.GetCustomAttribute<KeyAttribute>() != null)
-                        postQueries.Add($"CONSTRAINT [{Schema}_{TableName}_PK_{property.Name}] PRIMARY KEY CLUSTERED ([{property.Name}])");
+                    if (!settedPk)
+                    {
+                        if (property.CustomAttributes.Any(a => a.AttributeType.Name == "RequiredAttribute"))
+                            columnQuery += " NOT NULL";
+                        else if (Nullable.GetUnderlyingType(propertyType) != null)
+                            columnQuery += " NULL";
+                        else if (nullable != null)
+                        {
+                            columnQuery += (bool)nullable ?
+                                " NULL" :
+                                " NOT NULL";
+                        }
+
+                        if (property.GetCustomAttribute<KeyAttribute>() != null)
+                            postQueries.Add($"CONSTRAINT [{Schema}_{TableName}_PK_{property.Name}] PRIMARY KEY CLUSTERED ([{property.Name}])");
+                    }
 
                     columnsQueries.Add(columnQuery);
                 }
@@ -171,6 +179,7 @@ namespace RFDapper
             query = $"IF NOT EXISTS (SELECT TOP 1 1 FROM sys.objects WHERE object_id = OBJECT_ID(N'{Schema}.{TableName}') AND type in (N'U'))"
                 + $"\r\n\tCREATE TABLE [{Schema}].[{TableName}] (\r\n\t\t{columnsQuery}\r\n\t) ON [PRIMARY]";
 
+            _logger.LogDebug(query);
             Connection.Query(query);
         }
 
@@ -179,17 +188,22 @@ namespace RFDapper
             var sql = $"SELECT * FROM [{Schema}].[{TableName}]";
             if (options != null)
             {
-                if (options.Filters != null)
+                if (options.Filters.Count > 0)
                 {
-                    var properties = options.Filters.GetType().GetProperties();
-                    string separator = "  WHERE ";
-                    foreach (var p in properties)
+                    var sqlFilters = new List<string>();
+                    foreach (var filter in options.Filters)
                     {
-                        string name = p.Name;
-                        sql += $"{separator}{name} = @{name}";
-                        separator = " AND ";
+                        sqlFilters.Add($"{filter.Key} = @{filter.Key}");
                     }
+
+                    sql += $" WHERE {string.Join(" AND ", sqlFilters)}";
                 }
+
+                if (options.Offset != null)
+                    sql += $" OFFSET {options.Offset}";
+
+                if (options.Top != null)
+                    sql += $" TOP {options.Top}";
             }
 
             return sql;
@@ -233,6 +247,7 @@ namespace RFDapper
         public async Task<Entity> InsertAsync(Entity data)
         {
             var query = GetInsertQuery(data);
+            Logger.LogDebug(query);
             var rows = await Connection.QueryAsync<long>(query, data);
             long id = rows.First();
             SetId(data, id);
@@ -241,17 +256,30 @@ namespace RFDapper
 
         public Task<Entity?> GetSingleOrDefaultAsync(GetOptions? options)
         {
-            return Connection.QuerySingleOrDefaultAsync<Entity>(GetSelectQuery(options), options?.Filters);
+            var query = GetSelectQuery(options);
+            Logger.LogDebug(query);
+            return Connection.QuerySingleOrDefaultAsync<Entity>(query, options?.Filters);
+        }
+
+        public Task<Entity?> GetFirstOrDefaultAsync(GetOptions? options)
+        {
+            var query = GetSelectQuery(options);
+            Logger.LogDebug(query);
+            return Connection.QueryFirstOrDefaultAsync<Entity>(query, options?.Filters);
         }
 
         public Task<Entity> GetSingleAsync(GetOptions? options)
         {
-            return Connection.QuerySingleAsync<Entity>(GetSelectQuery(options), options?.Filters);
+            var query = GetSelectQuery(options);
+            Logger.LogDebug(query);
+            return Connection.QuerySingleAsync<Entity>(query, options?.Filters);
         }
 
         public Task<IEnumerable<Entity>> GetListAsync(GetOptions? options)
         {
-            return Connection.QueryAsync<Entity>(GetSelectQuery(options), options?.Filters);
+            var query = GetSelectQuery(options);
+            Logger.LogDebug(query);
+            return Connection.QueryAsync<Entity>(query, options?.Filters);
         }
     }
 }

@@ -1,12 +1,12 @@
-﻿using RFAuth.IRepo;
-using RFAuth.Entities;
+﻿using RFAuth.Entities;
 using RFAuth.IServices;
-using RFService.ServicesLib;
+using RFService.IRepo;
 using RFService.RepoLib;
+using RFService.ServicesLib;
 
 namespace RFAuth.Services
 {
-    public class PasswordService(IPasswordRepo repo) : ServiceTimestamps<IPasswordRepo, Password>(repo), IPasswordService
+    public class PasswordService(IRepo<Password> repo) : ServiceTimestampsIdUuid<IRepo<Password>, Password>(repo), IPasswordService
     {
         public string Hash(string rawPassword)
         {
@@ -25,12 +25,12 @@ namespace RFAuth.Services
 
         public async Task<Password> GetSingleForUserIdAsync(Int64 userId)
         {
-            return await _repo.GetSingleAsync(new GetOptions { Filters = new { userId } });
+            return await _repo.GetSingleAsync(new GetOptions { Filters = { { "UserId", userId } } });
         }
 
         public async Task<Password?> GetSingleOrDefaultForUserIdAsync(Int64 userId)
         {
-            return await _repo.GetSingleOrDefaultAsync(new GetOptions { Filters = new { userId } });
+            return await _repo.GetSingleOrDefaultAsync(new GetOptions { Filters = { { "UserId", userId } } });
         }
 
         public async Task<Password> GetSingleForUserAsync(User user)
@@ -41,6 +41,27 @@ namespace RFAuth.Services
         public async Task<Password?> GetSingleOrDefaultForUserAsync(User user)
         {
             return await GetSingleOrDefaultForUserIdAsync(user.Id);
+        }
+
+        public override GetOptions SanitizeForAutoGet(GetOptions options)
+        {
+            if (options.Filters.TryGetValue("UserId", out object? value))
+            {
+                options = new GetOptions(options);
+                if (value != null
+                    && (Int64)value != 0
+                )
+                {
+                    options.Filters = new Dictionary<string, object?> { { "UserId", value } };
+                    return options;
+                }
+                else
+                {
+                    options.Filters.Remove("UserId");
+                }
+            }
+
+            return base.SanitizeForAutoGet(options);
         }
     }
 }

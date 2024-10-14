@@ -1,13 +1,13 @@
-﻿using RFAuth.IRepo;
-using RFAuth.Entities;
+﻿using RFAuth.Entities;
 using RFAuth.IServices;
 using RFService.ServicesLib;
 using RFAuth.Util;
 using RFService.Exceptions;
+using RFService.IRepo;
 
 namespace RFAuth.Services
 {
-    public class SessionService(ISessionRepo repo) : ServiceTimestampsIdUuid<ISessionRepo, Session>(repo), ISessionService
+    public class SessionService(IRepo<Session> repo) : ServiceTimestampsIdUuid<IRepo<Session>, Session>(repo), ISessionService
     {
         public override async Task<Session> ValidateForCreationAsync(Session data)
         {

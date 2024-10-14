@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System.Data;
+using RFDapper;
+using RFUserEmail.Entities;
 
 namespace RFUserEmailDapper
 {
@@ -7,10 +8,10 @@ namespace RFUserEmailDapper
     {
         public static void ConfigureRFUserEmailDapper(IServiceProvider services)
         {
-            var connection = services.GetService<IDbConnection>() ??
-                throw new Exception("No connection available");
+            var dapperService = services.GetService<Dapper<UserEmail>>() ??
+                throw new Exception($"No service UserEmail");
 
-            (new UsersEmails(connection)).CreateTable();
+            dapperService.CreateTable();
         }
     }
 }

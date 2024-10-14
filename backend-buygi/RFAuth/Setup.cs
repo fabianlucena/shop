@@ -15,8 +15,7 @@ namespace RFAuth
         {
             var userTypeService = services.GetService<IUserTypeService>() ??
                 throw new Exception("Can't get IUserTypeService");
-            var userType = (await userTypeService.GetSingleOrDefaultForNameAsync("user")) ??
-                await userTypeService.CreateAsync(new UserType
+            var userType = await userTypeService.GetOrCreateAsync(new UserType
                 {
                     Name = "user",
                     Title = "User",
@@ -25,8 +24,7 @@ namespace RFAuth
 
             var userService = services.GetService<IUserService>() ??
                 throw new Exception("Can't get IUserService");
-            var user = (await userService.GetSingleOrDefaultForUsernameAsync("admin")) ??
-                await userService.CreateAsync(new User
+            var user = await userService.GetOrCreateAsync(new User
                 {
                     TypeId = userType.Id,
                     Username = "admin",
@@ -35,15 +33,11 @@ namespace RFAuth
 
             var passwordService = services.GetService<IPasswordService>() ??
                 throw new Exception("Can't get IPasswordService");
-            var password = await passwordService.GetSingleOrDefaultForUserAsync(user);
-            if (password == null)
+            await passwordService.CreateIfNotExistsAsync(new Password
             {
-                await passwordService.CreateAsync(new Password
-                {
-                    UserId = user.Id,
-                    Hash = "$2a$11$fRe./FCGyNjS9Vao3IIBlOiVCx3C05NRBNFrHhVk32Qdw75Ia.Y5S",
-                });
-            }
+                UserId = user.Id,
+                Hash = "$2a$11$fRe./FCGyNjS9Vao3IIBlOiVCx3C05NRBNFrHhVk32Qdw75Ia.Y5S",
+            });
         }
     }
 }

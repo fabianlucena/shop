@@ -1,11 +1,11 @@
-﻿using RFService.ServicesLib;
+﻿using RFService.IRepo;
+using RFService.ServicesLib;
 using RFUserEmail.Entities;
-using RFUserEmail.IRepo;
 using RFUserEmail.IServices;
 
 namespace RFUserEmail.Services
 {
-    public class UserEmailService(IUserEmailRepo repo) : ServiceTimestampsIdUuid<IUserEmailRepo, UserEmail>(repo), IUserEmailService
+    public class UserEmailService(IRepo<UserEmail> repo) : ServiceTimestampsIdUuid<IRepo<UserEmail>, UserEmail>(repo), IUserEmailService
     {
     }
 }

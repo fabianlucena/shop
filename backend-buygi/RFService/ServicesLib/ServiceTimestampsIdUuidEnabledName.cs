@@ -12,7 +12,7 @@ namespace RFService.ServicesLib
         {
             return await _repo.GetSingleAsync(new GetOptions
             {
-                Filters = new { Name }
+                Filters = { { Name, Name } }
             });
         }
 
@@ -20,8 +20,29 @@ namespace RFService.ServicesLib
         {
             return await _repo.GetSingleOrDefaultAsync(new GetOptions
             {
-                Filters = new { Name }
+                Filters = { { Name, Name } }
             });
+        }
+
+        public override GetOptions SanitizeForAutoGet(GetOptions options)
+        {
+            if (options.Filters.TryGetValue("Name", out object? value))
+            {
+                options = new GetOptions(options);
+                if (value != null
+                    && !string.IsNullOrEmpty((string)value)
+                )
+                {
+                    options.Filters = new Dictionary<string, object?> { { "Name", value } };
+                    return options;
+                }
+                else
+                {
+                    options.Filters.Remove("Name");
+                }
+            }
+
+            return base.SanitizeForAutoGet(options);
         }
     }
 }

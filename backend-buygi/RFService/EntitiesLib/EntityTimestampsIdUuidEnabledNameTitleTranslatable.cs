@@ -4,6 +4,7 @@ namespace RFService.EntitiesLib
 {
     public abstract class EntityTimestampsIdUuidEnabledNameTitleTranslatable : EntityTimestampsIdUuidEnabledNameTitle
     {
-        public bool IsTranslatable { get; set; } = false;
+        [Required]
+        public bool? IsTranslatable { get; set; }
     }
 }

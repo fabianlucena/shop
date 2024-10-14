@@ -1,7 +1,12 @@
-﻿namespace RFService.EntitiesLib
+﻿using RFService.ServicesLib;
+using System.ComponentModel.DataAnnotations;
+
+namespace RFService.EntitiesLib
 {
+    [Index(nameof(Uuid), IsUnique = true)]
     public abstract class EntityTimestampsIdUuid : EntityTimestampsId
     {
-        public Guid Uuid { get; set; }
+        [Required]
+        public Guid? Uuid { get; set; }
     }
 }

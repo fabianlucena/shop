@@ -1,7 +1,10 @@
-﻿namespace RFService.EntitiesLib
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace RFService.EntitiesLib
 {
     public abstract class EntityTimestampsIdUuidEnabled : EntityTimestampsIdUuid
     {
-        public bool IsEnabled { get; set; } = true;
+        [Required]
+        public bool? IsEnabled { get; set; }
     }
 }

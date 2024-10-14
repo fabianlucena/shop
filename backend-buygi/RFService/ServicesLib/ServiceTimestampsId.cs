@@ -1,6 +1,7 @@
 ﻿using RFService.Exceptions;
 using RFService.EntitiesLib;
 using RFService.IRepo;
+using RFService.RepoLib;
 
 namespace RFService.ServicesLib
 {
@@ -18,6 +19,26 @@ namespace RFService.ServicesLib
             }
 
             return data;
+        }
+
+        public override GetOptions SanitizeForAutoGet(GetOptions options)
+        {
+            if (options.Filters.TryGetValue("Id", out object? value))
+            {
+                options = new GetOptions(options);
+                if (value != null
+                    && (Int64)value > 0
+                )
+                {
+                    options.Filters = new Dictionary<string, object?> { { "Id", value } };
+                    return options;
+                }
+                else {
+                    options.Filters.Remove("Id");
+                }
+            }
+
+            return base.SanitizeForAutoGet(options);
         }
     }
 }

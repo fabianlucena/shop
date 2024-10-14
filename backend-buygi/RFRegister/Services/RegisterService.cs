@@ -14,22 +14,22 @@ namespace RFRegister.Services
         {
             if (string.IsNullOrWhiteSpace(registerData.Username))
             {
-                throw new ArgumentNullException(nameof(registerData.Username));
+                throw new ArgumentNullException(registerData.Username);
             }
 
             if (string.IsNullOrWhiteSpace(registerData.Password))
             {
-                throw new ArgumentNullException(nameof(registerData.Password));
+                throw new ArgumentNullException(registerData.Password);
             }
 
             if (string.IsNullOrWhiteSpace(registerData.FullName))
             {
-                throw new ArgumentNullException(nameof(registerData.FullName));
+                throw new ArgumentNullException(registerData.FullName);
             }
 
             if (string.IsNullOrWhiteSpace(registerData.EMail))
             {
-                throw new ArgumentNullException(nameof(registerData.EMail));
+                throw new ArgumentNullException(registerData.EMail);
             }
 
             var user = await userService.CreateAsync(mapper.Map<RegisterData,User>(registerData));

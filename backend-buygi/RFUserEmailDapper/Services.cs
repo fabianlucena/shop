@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using RFUserEmail.IRepo;
+using RFDapper;
+using RFService.IRepo;
+using RFUserEmail.Entities;
 
 namespace RFUserEmailDapper
 {
@@ -7,7 +9,9 @@ namespace RFUserEmailDapper
     {
         public static void AddRFUserEmailDapper(this IServiceCollection services)
         {
-            services.AddScoped<IUserEmailRepo, UsersEmails>();
+            services.AddScoped<Dapper<UserEmail>, Dapper<UserEmail>>();
+
+            services.AddScoped<IRepo<UserEmail>, Dapper<UserEmail>>();
         }
     }
 }
