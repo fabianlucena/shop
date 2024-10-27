@@ -10,7 +10,7 @@ using RFService.RepoLib;
 namespace RFAuth.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("v1/[controller]")]
     public class UserController(ILogger<UserController> logger, IUserService userService, IMapper mapper) : ControllerBase
     {
         [HttpGet]
@@ -22,7 +22,6 @@ namespace RFAuth.Controllers
             var list = await userService.GetListAsync(new GetOptions { Include = { { "Type", new GetOptions() } }});
             var res = list.Select(mapper.Map<User, UserResponse>);
 
-            //var res = (await userService.GetListAsync()).Select(mapper.Map<User,UserResponse>);
             return Ok(new DataRowsResult(res));
         }
     }
