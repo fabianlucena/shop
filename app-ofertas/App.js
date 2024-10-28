@@ -11,6 +11,7 @@ import { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
 import { autoLogin, setOnLoginSuccess, setOnLoginError, setOnLogout } from './libs/login';
 import Background from './components/Background';
+import FancyText from './components/FancyText';
 import styles from './libs/styles';
 
 const Stack = createNativeStackNavigator();
@@ -34,9 +35,9 @@ export default function App() {
     return (
       <Background>
         <View style={styles.container}>
-          <Text>
+          <FancyText>
             Iniciando
-          </Text>
+          </FancyText>
         </View>
       </Background>
     );
