@@ -3,6 +3,7 @@ using RFService.EntitiesLib;
 using RFService.ServicesLib;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace RFUserEmail.Entities
 {
@@ -17,5 +18,8 @@ namespace RFUserEmail.Entities
 
         [Required]
         public required string Email { get; set; }
+
+        [Required]
+        public required bool? IsVerified { get; set; }
     }
 }

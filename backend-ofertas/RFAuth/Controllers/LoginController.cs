@@ -8,12 +8,10 @@ namespace RFAuth.Controllers
     [Route("[controller]")]
     public class LoginController(ILoginService loginService) : ControllerBase
     {
-        private readonly ILoginService _loginService = loginService;
-
         [HttpPost]
         public async Task<IActionResult> PostAsync([FromBody] LoginData loginData)
         {
-            return Ok(await _loginService.LoginAsync(loginData));
+            return Ok(await loginService.LoginAsync(loginData));
         }
     }
 }

@@ -4,6 +4,9 @@ using RFService.ServicesLib;
 using RFAuth.Util;
 using RFService.Exceptions;
 using RFService.IRepo;
+using RFService.RepoLib;
+using RFAuth.Exceptions;
+using System.Data.SqlTypes;
 
 namespace RFAuth.Services
 {
@@ -47,6 +50,31 @@ namespace RFAuth.Services
         public async Task<Session> CreateForUserAndDeviceAsync(User user, Device device)
         {
             return await CreateForUserIdAndDeviceIdAsync(user.Id, device.Id);
+        }
+
+        public async Task<Session> CreateForAutoLoginTokenAndDeviceAsync(string autoLoginToken, Device device)
+        {
+            var session = await GetSingleAsync(new GetOptions
+            {
+                Filters = {
+                    { "AutoLoginToken", autoLoginToken }
+                }
+            });
+
+            if (session.ClosedAt != null)
+            {
+                throw new SessionClosedException();
+            }
+
+            return await CreateForUserIdAndDeviceIdAsync(session.UserId, device.Id);
+        }
+
+        public async Task<bool> CloseForTokenAsync(string token)
+        {
+            return (await UpdateAsync(
+                new { ClosedAt = DateTime.UtcNow },
+                new GetOptions { Filters = { { "Token", token } } }
+            )) > 0;
         }
     }
 }

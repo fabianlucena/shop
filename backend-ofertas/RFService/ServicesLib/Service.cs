@@ -21,17 +21,22 @@ namespace RFService.ServicesLib
             return await _repo.InsertAsync(data);
         }
 
-        public virtual Task<IEnumerable<Entity>> GetListAsync(GetOptions? options)
+        public virtual Task<IEnumerable<Entity>> GetListAsync(GetOptions options)
         {
             return _repo.GetListAsync(options);
         }
 
-        public virtual Task<Entity?> GetSingleOrDefaultAsync(GetOptions? options = null)
+        public virtual Task<Entity> GetSingleAsync(GetOptions options)
+        {
+            return _repo.GetSingleAsync(options);
+        }
+
+        public virtual Task<Entity?> GetSingleOrDefaultAsync(GetOptions options)
         {
             return _repo.GetSingleOrDefaultAsync(options);
         }
 
-        public virtual Task<Entity?> GetFirstOrDefaultAsync(GetOptions? options = null)
+        public virtual Task<Entity?> GetFirstOrDefaultAsync(GetOptions options)
         {
             return _repo.GetFirstOrDefaultAsync(options);
         }
@@ -75,6 +80,11 @@ namespace RFService.ServicesLib
         public virtual Task CreateIfNotExistsAsync(Entity data)
         {
             return GetOrCreateAsync(data);
+        }
+
+        public virtual Task<int> UpdateAsync(object data, GetOptions options)
+        {
+            return _repo.UpdateAsync(data, options);
         }
     }
 }

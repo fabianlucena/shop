@@ -9,11 +9,13 @@ namespace RFService.IService
 
         Task<Entity> CreateAsync(Entity data);
 
-        Task<IEnumerable<Entity>> GetListAsync(GetOptions? options = null);
+        Task<IEnumerable<Entity>> GetListAsync(GetOptions options);
 
-        Task<Entity?> GetSingleOrDefaultAsync(GetOptions? options = null);
+        Task<Entity> GetSingleAsync(GetOptions options);
 
-        Task<Entity?> GetFirstOrDefaultAsync(GetOptions? options = null);
+        Task<Entity?> GetSingleOrDefaultAsync(GetOptions options);
+
+        Task<Entity?> GetFirstOrDefaultAsync(GetOptions options);
 
         GetOptions SanitizeForAutoGet(GetOptions options);
 
@@ -24,5 +26,7 @@ namespace RFService.IService
         Task<Entity> GetOrCreateAsync(Entity data);
 
         Task CreateIfNotExistsAsync(Entity data);
+
+        Task<int> UpdateAsync(object data, GetOptions options);
     }
 }

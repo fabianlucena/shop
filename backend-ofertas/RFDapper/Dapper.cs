@@ -7,6 +7,8 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
+using System.Dynamic;
+using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Xml.Linq;
 
@@ -183,21 +185,34 @@ namespace RFDapper
             Connection.Query(query);
         }
 
-        public string GetSelectQuery(GetOptions? options)
+        public string GetWhereQuery(GetOptions options, string prefix = "", IDictionary<string, object?>? allValues = null)
+        {
+            if (options.Filters.Count == 0)
+            {
+                return "";
+            }
+
+            var sqlFilters = new List<string>();
+            foreach (var filter in options.Filters)
+            {
+                var filterName = prefix + filter.Key;
+                sqlFilters.Add($"{filter.Key} = @{filterName}");
+
+                if (allValues != null)
+                    allValues[filterName] = filter.Value;
+            }
+
+            return $"WHERE {string.Join(" AND ", sqlFilters)}";
+        }
+
+        public string GetSelectQuery(GetOptions options)
         {
             var sql = $"SELECT * FROM [{Schema}].[{TableName}]";
             if (options != null)
             {
-                if (options.Filters.Count > 0)
-                {
-                    var sqlFilters = new List<string>();
-                    foreach (var filter in options.Filters)
-                    {
-                        sqlFilters.Add($"{filter.Key} = @{filter.Key}");
-                    }
-
-                    sql += $" WHERE {string.Join(" AND ", sqlFilters)}";
-                }
+                var sqlWhere = GetWhereQuery(options);
+                if (!string.IsNullOrEmpty(sqlWhere))
+                    sql += " " + sqlWhere;
 
                 if (options.Offset != null)
                     sql += $" OFFSET {options.Offset}";
@@ -237,6 +252,37 @@ namespace RFDapper
             return sql;
         }
 
+        public string GetUpdateQuery(object data, GetOptions options, IDictionary<string, object?> allValues)
+        {
+            var sqlWhere = GetWhereQuery(options, "filter_", allValues);
+            if (string.IsNullOrEmpty(sqlWhere))
+                throw new Exception("UPDATE without WHERE is forbidden");
+
+            var dataType = data.GetType();
+            var properties = dataType.GetProperties();
+            var columns = new List<string>();
+
+            foreach (var p in properties)
+            {
+                string name = p.Name;
+                var property = dataType.GetProperty(name) ??
+                        throw new Exception($"Unknown {name} property");
+                var propertyType = property.PropertyType;
+
+                if (propertyType.IsClass && propertyType.Name != "String")
+                    continue;
+
+                var valueName = "data_" + name;
+                allValues[valueName] = p.GetValue(data, null);
+
+                columns.Add($"[{name}]=@{valueName}");
+            }
+
+            var sql = $"UPDATE [{Schema}].[{TableName}] SET {string.Join(",", columns)} {sqlWhere}";
+
+            return sql;
+        }
+
         static void SetId(Entity data, long id)
         {
             var type = data.GetType();
@@ -254,32 +300,46 @@ namespace RFDapper
             return data;
         }
 
-        public Task<Entity?> GetSingleOrDefaultAsync(GetOptions? options)
+        public Task<Entity?> GetSingleOrDefaultAsync(GetOptions options)
         {
             var query = GetSelectQuery(options);
             Logger.LogDebug(query);
-            return Connection.QuerySingleOrDefaultAsync<Entity>(query, options?.Filters);
+            return Connection.QuerySingleOrDefaultAsync<Entity>(query, options.Filters);
         }
 
-        public Task<Entity?> GetFirstOrDefaultAsync(GetOptions? options)
+        public Task<Entity?> GetFirstOrDefaultAsync(GetOptions options)
         {
             var query = GetSelectQuery(options);
             Logger.LogDebug(query);
-            return Connection.QueryFirstOrDefaultAsync<Entity>(query, options?.Filters);
+            return Connection.QueryFirstOrDefaultAsync<Entity>(query, options.Filters);
         }
 
-        public Task<Entity> GetSingleAsync(GetOptions? options)
+        public Task<Entity> GetSingleAsync(GetOptions options)
         {
             var query = GetSelectQuery(options);
             Logger.LogDebug(query);
-            return Connection.QuerySingleAsync<Entity>(query, options?.Filters);
+            return Connection.QuerySingleAsync<Entity>(query, options.Filters);
         }
 
-        public Task<IEnumerable<Entity>> GetListAsync(GetOptions? options)
+        public Task<IEnumerable<Entity>> GetListAsync(GetOptions options)
         {
             var query = GetSelectQuery(options);
             Logger.LogDebug(query);
-            return Connection.QueryAsync<Entity>(query, options?.Filters);
+            return Connection.QueryAsync<Entity>(query, options.Filters);
+        }
+
+        static dynamic GetAllValuesObject()
+        {
+            return new ExpandoObject();
+        }
+
+        public async Task<int> UpdateAsync(object data, GetOptions options)
+        {
+            object allValues = GetAllValuesObject();
+            var query = GetUpdateQuery(data, options, (IDictionary<string, object?>)allValues);
+            Logger.LogDebug(query);
+            var rows = await Connection.QueryAsync<int>(query, allValues);
+            return rows.First();
         }
     }
 }

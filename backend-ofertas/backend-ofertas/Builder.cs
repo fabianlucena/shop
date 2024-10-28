@@ -14,6 +14,17 @@ namespace backend_buygi
     {
         public static void ConfigureServices(this WebApplicationBuilder builder)
         {
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("allowAll",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()    // Permite cualquier origen (no recomendable en producción)
+                               .AllowAnyMethod()    // Permite cualquier método (GET, POST, PUT, DELETE, etc.)
+                               .AllowAnyHeader();   // Permite cualquier encabezado
+                    });
+            });
+
             string dbConnectionString = builder.Configuration.GetConnectionString("dbConnection")
                 ?? throw new Exception("No DB connection founded, try adding a dbConnection property to ConnectionStrings on appsettings.json");
 

@@ -6,12 +6,14 @@ namespace RFService.IRepo
     {
         Task<Entity> InsertAsync(Entity data);
 
-        Task<Entity> GetSingleAsync(GetOptions? options = null);
+        Task<Entity> GetSingleAsync(GetOptions options);
 
-        Task<Entity?> GetSingleOrDefaultAsync(GetOptions? options = null);
+        Task<Entity?> GetSingleOrDefaultAsync(GetOptions options);
 
-        Task<Entity?> GetFirstOrDefaultAsync(GetOptions? options = null);
+        Task<Entity?> GetFirstOrDefaultAsync(GetOptions options);
 
-        Task<IEnumerable<Entity>> GetListAsync(GetOptions? options = null);
+        Task<IEnumerable<Entity>> GetListAsync(GetOptions options);
+
+        Task<int> UpdateAsync(object data, GetOptions options);
     }
 }

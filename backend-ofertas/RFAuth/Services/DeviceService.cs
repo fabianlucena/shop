@@ -26,7 +26,7 @@ namespace RFAuth.Services
             return await CreateAsync(new Device { Token = "" }); 
         }
 
-        public async Task<Device?> GetSingleOrNullForTokenAsync(string token)
+        public async Task<Device?> GetSingleOrDefaultForTokenAsync(string token)
         {
             return await _repo.GetSingleOrDefaultAsync(new GetOptions
             {
@@ -34,11 +34,16 @@ namespace RFAuth.Services
             });
         }
 
+        public async Task<Device> GetSingleForTokenAsync(string token)
+        {
+            return await GetSingleForTokenAsync(token);
+        }
+
         public async Task<Device> GetSingleForTokenOrCreateAsync(string? token)
         {
             var device = string.IsNullOrWhiteSpace(token)?
                 null:
-                await GetSingleOrNullForTokenAsync(token);
+                await GetSingleOrDefaultForTokenAsync(token);
 
             device ??= await CreateAsync();
 

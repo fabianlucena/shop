@@ -7,5 +7,7 @@ namespace RFAuth.IServices
     {
         Task<Session> CreateForUserIdAndDeviceIdAsync(Int64 userId, Int64 deviceId);
         Task<Session> CreateForUserAndDeviceAsync(User user, Device device);
+        Task<Session> CreateForAutoLoginTokenAndDeviceAsync(string autoLoginToken, Device device);
+        Task<bool> CloseForTokenAsync(string token);
     }
 }

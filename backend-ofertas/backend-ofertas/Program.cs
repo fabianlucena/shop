@@ -44,6 +44,7 @@ namespace backend_buygi
 
             app.UsePathBase("/api");
             app.UseRouting();
+            app.UseCors("allowAll");
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
