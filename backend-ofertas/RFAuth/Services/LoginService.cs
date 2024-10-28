@@ -2,69 +2,61 @@
 using RFAuth.Entities;
 using RFAuth.Exceptions;
 using RFAuth.IServices;
+using RFService.ServicesLib;
 
 namespace RFAuth.Services
 {
-    public class LoginService(IUserService userService, IPasswordService passwordService, IDeviceService deviceService, ISessionService sessionService) : ILoginService
+    public class LoginService(
+        IUserService userService,
+        IPasswordService passwordService,
+        IDeviceService deviceService,
+        ISessionService sessionService
+    ) : ServiceAttributes, ILoginService
     {
-        private readonly IUserService _userService = userService;
-        private readonly IPasswordService _passwordService = passwordService;
-        private readonly IDeviceService _deviceService = deviceService;
-        private readonly ISessionService _sessionService = sessionService;
-
-        public async Task<AuthorizationData> LoginAsync(LoginData loginData)
+        public async Task<LoginResponse> LoginAsync(LoginRequest request)
         {
-            Device? device;
-            Session? session;
+            if (string.IsNullOrWhiteSpace(request.Username))
+                throw new ArgumentNullException(nameof(LoginRequest.Username));
 
-            if (!string.IsNullOrWhiteSpace(loginData.Username)
-                || !string.IsNullOrWhiteSpace(loginData.Password))
-            {
-                if (string.IsNullOrWhiteSpace(loginData.Username))
-                {
-                    throw new ArgumentNullException(nameof(loginData.Username));
-                }
-                var user = await _userService.GetSingleForUsernameAsync(loginData.Username);
+            if (string.IsNullOrWhiteSpace(request.Password))
+                throw new ArgumentNullException(nameof(LoginRequest.Password));
 
-                if (string.IsNullOrWhiteSpace(loginData.Password))
-                {
-                    throw new ArgumentNullException(nameof(loginData.Password));
-                }
+            var user = await userService.GetSingleForUsernameAsync(request.Username);
+            var password = await passwordService.GetSingleForUserAsync(user);
+            var check = passwordService.Verify(request.Password, password);
+            if (!check)
+                throw new BadPasswordException();
 
-                var password = await _passwordService.GetSingleForUserAsync(user);
-                var check = _passwordService.Verify(loginData.Password, password);
-                if (!check)
-                {
-                    throw new BadPasswordException();
-                }
-
-                device = await _deviceService.GetSingleForTokenOrCreateAsync(loginData.DeviceToken);
-                session = await _sessionService.CreateForUserAndDeviceAsync(user, device);
-            }
-            else
-            {
-                if (string.IsNullOrWhiteSpace(loginData.AutoLoginToken)
-                    || string.IsNullOrWhiteSpace(loginData.DeviceToken))
-                {
-                    throw new ArgumentNullException(nameof(loginData.Username));
-                }
-
-                device = await _deviceService.GetSingleOrDefaultForTokenAsync(loginData.DeviceToken);
-                if (device == null)
-                {
-                    throw new UnknownDeviceException();
-                }
-
-                session = await _sessionService.CreateForAutoLoginTokenAndDeviceAsync(loginData.AutoLoginToken, device);
-            }
-
+            var device = await deviceService.GetSingleForTokenOrCreateAsync(request.DeviceToken);
+            var session = await sessionService.CreateForUserAndDeviceAsync(user, device);
             
-            return new AuthorizationData
+            return new LoginResponse
             {
                 AuthorizationToken = session.Token,
                 AutoLoginToken = session.AutoLoginToken,
                 DeviceToken = device.Token,
-            }; ;
+            };
+        }
+
+        public async Task<LoginResponse> AutoLoginAsync(AutoLoginRequest request)
+        {
+            if (string.IsNullOrWhiteSpace(request.AutoLoginToken))
+                throw new ArgumentNullException(nameof(AutoLoginRequest.AutoLoginToken));
+
+            if (string.IsNullOrWhiteSpace(request.DeviceToken))
+                throw new ArgumentNullException(nameof(AutoLoginRequest.DeviceToken));
+
+            var device = await deviceService.GetSingleOrDefaultForTokenAsync(request.DeviceToken)
+                ?? throw new UnknownDeviceException();
+
+            var session = await sessionService.CreateForAutoLoginTokenAndDeviceAsync(request.AutoLoginToken, device);
+
+            return new LoginResponse
+            {
+                AuthorizationToken = session.Token,
+                AutoLoginToken = session.AutoLoginToken,
+                DeviceToken = device.Token,
+            };
         }
     }
 }

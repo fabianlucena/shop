@@ -5,11 +5,11 @@ using RFRegister.IServices;
 namespace RFRegister.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("v1/[controller]")]
     public class RegisterController(IRegisterService registerService) : ControllerBase
     {
         [HttpPost]
-        public async Task<IActionResult> PostAsync([FromBody] RegisterData registerData)
+        public async Task<IActionResult> PostAsync([FromBody] RegisterRequest registerData)
         {
             await registerService.RegisterAsync(registerData);
             return Ok();

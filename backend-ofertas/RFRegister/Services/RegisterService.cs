@@ -10,7 +10,7 @@ namespace RFRegister.Services
 {
     public class RegisterService(IUserService userService, IPasswordService passwordService, IUserEmailService userEmailService, IMapper mapper) : IRegisterService
     {
-        public async Task RegisterAsync(RegisterData registerData)
+        public async Task RegisterAsync(RegisterRequest registerData)
         {
             if (string.IsNullOrWhiteSpace(registerData.Username))
             {
@@ -32,7 +32,7 @@ namespace RFRegister.Services
                 throw new ArgumentNullException(registerData.EMail);
             }
 
-            var user = await userService.CreateAsync(mapper.Map<RegisterData, User>(registerData));
+            var user = await userService.CreateAsync(mapper.Map<RegisterRequest, User>(registerData));
 
             await passwordService.CreateAsync(new Password
             {
@@ -42,7 +42,8 @@ namespace RFRegister.Services
 
             await userEmailService.CreateAsync(new UserEmail {
                 UserId = user.Id,
-                Email = registerData.EMail
+                Email = registerData.EMail,
+                IsVerified = false,
             });
         }
     }

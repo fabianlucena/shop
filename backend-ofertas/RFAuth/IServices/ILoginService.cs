@@ -1,9 +1,12 @@
 ﻿using RFAuth.DTO;
+using RFService.IService;
 
 namespace RFAuth.IServices
 {
-    public interface ILoginService
+    public interface ILoginService : IServiceAttributes
     {
-        Task<AuthorizationData> LoginAsync(LoginData loginData);
+        Task<LoginResponse> LoginAsync(LoginRequest request);
+
+        Task<LoginResponse> AutoLoginAsync(AutoLoginRequest request);
     }
 }

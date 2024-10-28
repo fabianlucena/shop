@@ -8,7 +8,7 @@ namespace RFRegister
     {
         public MappingProfile()
         {
-            CreateMap<RegisterData, User> ()
+            CreateMap<RegisterRequest, User> ()
                 .ForMember(dest => dest.IsEnabled, act => act.MapFrom(src => true)); // Set IsEnabled = true
         }
     }

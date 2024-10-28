@@ -2,7 +2,7 @@
 
 namespace RFRegister.DTO
 {
-    public class RegisterData : UserAddRequest
+    public class RegisterRequest : UserAddRequest
     {
         public required string EMail { get; set; }
 

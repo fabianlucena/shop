@@ -6,7 +6,7 @@ using RFAuth.Exceptions;
 namespace RFAuth.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("v1/[controller]")]
     public class LogoutController(ISessionService sessionService) : ControllerBase
     {
         [HttpPost]

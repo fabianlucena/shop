@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace RFService.EntitiesLib
+﻿namespace RFService.EntitiesLib
 {
     public abstract class Entity
     {

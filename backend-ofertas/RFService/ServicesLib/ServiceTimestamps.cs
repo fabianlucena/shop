@@ -18,7 +18,7 @@ namespace RFService.ServicesLib
             return data;
         }
 
-        public override Task<IEnumerable<Entity>> GetListAsync(GetOptions? options)
+        public override Task<IEnumerable<Entity>> GetListAsync(GetOptions options)
         {
             return base.GetListAsync(options);
         }

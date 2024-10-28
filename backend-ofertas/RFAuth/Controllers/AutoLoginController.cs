@@ -6,12 +6,12 @@ namespace RFAuth.Controllers
 {
     [ApiController]
     [Route("v1/[controller]")]
-    public class LoginController(ILoginService loginService) : ControllerBase
+    public class AutoLoginController(ILoginService loginService) : ControllerBase
     {
         [HttpPost]
-        public async Task<IActionResult> PostAsync([FromBody] LoginRequest request)
+        public async Task<IActionResult> PostAsync([FromBody] AutoLoginRequest request)
         {
-            var response = await loginService.LoginAsync(request);
+            var response = await loginService.AutoLoginAsync(request);
             await loginService.AddAttributesAsync(response);
             return Ok(response);
         }

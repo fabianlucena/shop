@@ -4,6 +4,6 @@ namespace RFRegister.IServices
 {
     public interface IRegisterService
     {
-        Task RegisterAsync(RegisterData registerData);
+        Task RegisterAsync(RegisterRequest registerData);
     }
 }
