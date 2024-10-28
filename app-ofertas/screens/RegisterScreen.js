@@ -3,6 +3,7 @@ import Button from '../components/Button';
 import Background from '../components/Background';
 import styles from '../libs/styles';
 import TextField from '../components/TextField';
+import FancyText from '../components/FancyText';
 import { useState, useEffect } from 'react';
 import { Api } from '../libs/api';
 
@@ -64,7 +65,7 @@ export default function RegisterScreen({ navigation }) {
   return (
     <Background>
       <View style={styles.container}>
-        <Text>{hint}</Text>
+        <FancyText>{hint}</FancyText>
         <TextField
           value={fullName}
           onChangeValue={setFullName}
