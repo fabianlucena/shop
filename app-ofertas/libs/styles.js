@@ -27,8 +27,15 @@ const styles = StyleSheet.create({
     margin: 5,
   },
 
+  disabledButton: {
+  },
+
   textButton: {
     textAlign: 'center',
+  },
+
+  disabledTextButton: {
+    color: '#606060',
   },
 
   field: {

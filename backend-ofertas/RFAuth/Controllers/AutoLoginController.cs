@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace RFAuth.Controllers
 {
     [ApiController]
-    [Route("v1/[controller]")]
+    [Route("v1/auto-login")]
     public class AutoLoginController(ILoginService loginService) : ControllerBase
     {
         [HttpPost]

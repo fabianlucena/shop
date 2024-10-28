@@ -9,7 +9,7 @@ import ChangePasswordScreen from './screens/ChangePassword';
 import { Api } from './libs/api';
 import { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
-import login, { setOnLoginSuccess, setOnLoginError, setOnLogout } from './libs/login';
+import { autoLogin, setOnLoginSuccess, setOnLoginError, setOnLogout } from './libs/login';
 import Background from './components/Background';
 import styles from './libs/styles';
 
@@ -25,7 +25,7 @@ export default function App() {
       setOnLoginSuccess(() => setLogged(true));
       setOnLogout(() => setLogged(false));
       setOnLoginError(err => console.error(err));
-      await login();
+      await autoLogin();
       setInitiated(true);
     })();
   }, []);

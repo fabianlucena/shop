@@ -28,5 +28,7 @@ namespace RFService.IService
         Task CreateIfNotExistsAsync(Entity data);
 
         Task<int> UpdateAsync(object data, GetOptions options);
+
+        Task<int> UpdateForIdAsync(object data, Int64 id, GetOptions? options = null);
     }
 }

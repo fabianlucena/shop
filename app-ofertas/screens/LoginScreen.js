@@ -4,7 +4,7 @@ import TextField from '../components/TextField';
 import Button from '../components/Button';
 import Background from '../components/Background';
 import styles from '../libs/styles';
-import login from '../libs/login';
+import { login } from '../libs/login';
 
 export default function LoginScreen({ navigation }) {
   const [username, setUsername] = useState('admin');

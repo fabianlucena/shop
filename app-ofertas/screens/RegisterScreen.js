@@ -1,19 +1,76 @@
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
 import Button from '../components/Button';
 import Background from '../components/Background';
 import styles from '../libs/styles';
 import TextField from '../components/TextField';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Api } from '../libs/api';
 
 export default function RegisterScreen({ navigation }) {
+  const [fullName, setFullName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmation, setConfirmation] = useState('');
   const [email, setEmail] = useState('');
+  const [hint, setHint] = useState('');
+  const [canRegister, setCanRegister] = useState('');
+
+  useEffect(() => {
+    if (!fullName) {
+      setHint('Debe proporcionar su nombre completo.');
+      setCanRegister(false);
+    } else if (!username) {
+      setHint('Debe proporcionar un nombre de usuario.');
+      setCanRegister(false);
+    } else if (!password) {
+      setHint('Debe proporcionar una contraseña.');
+      setCanRegister(false);
+    } else if (password != confirmation) {
+      setHint('La confirmación y la contraseña son distintas.');
+      setCanRegister(false);
+    } else if (!email) {
+      setHint('Debe proporcionar un correo electrónico.');
+      setCanRegister(false);
+    } else if(!/^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/.test(email)) {
+      setHint('La dirección de correo electrónico no es válida.');
+      setCanRegister(false);
+    } else {
+      setHint('Listo para enviar');
+      setCanRegister(true);
+    }
+  }, [fullName, username, password, confirmation, email]);
+
+  async function register() {
+    try {
+      const data = await Api.postJson(
+        '/v1/register',
+        {
+          body: {
+            fullName,
+            username,
+            password,
+            email,
+          }
+        }
+      );
+
+      navigation.navigate('Login');
+    } catch(err) {
+      console.error(err);
+      setHint('Ocurrió un error, no se creó la cuenta');
+    }
+  }
 
   return (
     <Background>
       <View style={styles.container}>
+        <Text>{hint}</Text>
+        <TextField
+          value={fullName}
+          onChangeValue={setFullName}
+        >
+          Su nombre completo
+        </TextField>
         <TextField
           value={username}
           onChangeValue={setUsername}
@@ -40,9 +97,12 @@ export default function RegisterScreen({ navigation }) {
         >
           Correo electrónico
         </TextField>
-        <View style={styles.sameLine}>
-          <Button onPress={() => navigation.navigate('Register')} >Registrarse</Button>
-        </View>
+        <Button
+          disabled={!canRegister}
+          onPress={register}
+        >
+          Registrarse
+        </Button>
       </View>
     </Background>
   );

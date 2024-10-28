@@ -8,8 +8,6 @@ namespace RFService.ServicesLib
         where Repo : IRepo<Entity>
         where Entity : EntityTimestamps
     {
-        protected readonly Repo _repo = repo;
-
         public virtual async Task<Entity> ValidateForCreationAsync(Entity data)
         {
             return await Task.Run(() => data);
@@ -18,27 +16,27 @@ namespace RFService.ServicesLib
         public virtual async Task<Entity> CreateAsync(Entity data)
         {
             data = await ValidateForCreationAsync(data);
-            return await _repo.InsertAsync(data);
+            return await repo.InsertAsync(data);
         }
 
         public virtual Task<IEnumerable<Entity>> GetListAsync(GetOptions options)
         {
-            return _repo.GetListAsync(options);
+            return repo.GetListAsync(options);
         }
 
         public virtual Task<Entity> GetSingleAsync(GetOptions options)
         {
-            return _repo.GetSingleAsync(options);
+            return repo.GetSingleAsync(options);
         }
 
         public virtual Task<Entity?> GetSingleOrDefaultAsync(GetOptions options)
         {
-            return _repo.GetSingleOrDefaultAsync(options);
+            return repo.GetSingleOrDefaultAsync(options);
         }
 
         public virtual Task<Entity?> GetFirstOrDefaultAsync(GetOptions options)
         {
-            return _repo.GetFirstOrDefaultAsync(options);
+            return repo.GetFirstOrDefaultAsync(options);
         }
 
         public virtual GetOptions SanitizeForAutoGet(GetOptions options)
@@ -84,7 +82,17 @@ namespace RFService.ServicesLib
 
         public virtual Task<int> UpdateAsync(object data, GetOptions options)
         {
-            return _repo.UpdateAsync(data, options);
+            return repo.UpdateAsync(data, options);
+        }
+
+        public virtual Task<int> UpdateForIdAsync(object data, Int64 id, GetOptions? options = null)
+        {
+            if (options == null)
+                options = new GetOptions();
+
+            options.Filters["Id"] = id;
+
+            return UpdateAsync(data, options);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace RFAuth.Services
     {
         public async Task<User> GetSingleForUsernameAsync(string username)
         {
-            return await _repo.GetSingleAsync(new GetOptions
+            return await repo.GetSingleAsync(new GetOptions
             {
                 Filters = { { "Username", username } }
             });
@@ -18,7 +18,7 @@ namespace RFAuth.Services
 
         public async Task<User?> GetSingleOrDefaultForUsernameAsync(string username)
         {
-            return await _repo.GetSingleOrDefaultAsync(new GetOptions
+            return await repo.GetSingleOrDefaultAsync(new GetOptions
             {
                 Filters = { { "Username", username } }
             });

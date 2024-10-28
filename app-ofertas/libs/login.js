@@ -16,23 +16,27 @@ export function setOnLoginError(newOnLoginError) {
   onLoginError = newOnLoginError;
 }
 
-export default async function login(body) {
-  if (!body) {
-    const autoLoginToken = await AsyncStorage.getItem('autoLoginToken');
-    if (!autoLoginToken) {
-      return;
-    }
-
-    body = {autoLoginToken};
+export async function autoLogin() {
+  const autoLoginToken = await AsyncStorage.getItem('autoLoginToken');
+  if (!autoLoginToken) {
+    return;
   }
 
+  return _login('/v1/auto-login', {autoLoginToken});
+}
+
+export async function login(body) {
+  return _login('/v1/login', body);
+}
+
+async function _login(url, body) {
   const deviceToken = await AsyncStorage.getItem('deviceToken');
   if (deviceToken) {
     body.deviceToken = deviceToken;
   }
 
   try {
-    const data = await Api.postJson('/login', { body });
+    const data = await Api.postJson(url, { body });
     if (data.deviceToken) {
       AsyncStorage.setItem('deviceToken', data.deviceToken);
     }
@@ -57,7 +61,7 @@ export default async function login(body) {
 }
 
 export async function logout() {
-  Api.postJson('/logout');
+  Api.postJson('/v1/logout');
 
   delete Api.headers.Authorization;
   AsyncStorage.removeItem('autoLoginToken');

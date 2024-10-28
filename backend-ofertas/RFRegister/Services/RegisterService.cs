@@ -27,9 +27,9 @@ namespace RFRegister.Services
                 throw new ArgumentNullException(registerData.FullName);
             }
 
-            if (string.IsNullOrWhiteSpace(registerData.EMail))
+            if (string.IsNullOrWhiteSpace(registerData.Email))
             {
-                throw new ArgumentNullException(registerData.EMail);
+                throw new ArgumentNullException(registerData.Email);
             }
 
             var user = await userService.CreateAsync(mapper.Map<RegisterRequest, User>(registerData));
@@ -42,7 +42,7 @@ namespace RFRegister.Services
 
             await userEmailService.CreateAsync(new UserEmail {
                 UserId = user.Id,
-                Email = registerData.EMail,
+                Email = registerData.Email,
                 IsVerified = false,
             });
         }

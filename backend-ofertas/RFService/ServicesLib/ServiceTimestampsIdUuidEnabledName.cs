@@ -10,7 +10,7 @@ namespace RFService.ServicesLib
     {
         public async Task<Entity> GetSingleForNameAsync(string name)
         {
-            return await _repo.GetSingleAsync(new GetOptions
+            return await repo.GetSingleAsync(new GetOptions
             {
                 Filters = { { "Name", name } }
             });
@@ -18,7 +18,7 @@ namespace RFService.ServicesLib
 
         public async Task<Entity?> GetSingleOrDefaultForNameAsync(string name)
         {
-            return await _repo.GetSingleOrDefaultAsync(new GetOptions
+            return await repo.GetSingleOrDefaultAsync(new GetOptions
             {
                 Filters = { { "Name", name } }
             });

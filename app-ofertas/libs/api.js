@@ -36,7 +36,7 @@ export class Api {
     }
 
     if (options.json) {
-      if (res.headers.get('content-type').startsWith('application/json')) {
+      if (res.headers.get('content-type')?.startsWith('application/json')) {
         res = res.json();
       }
     }
