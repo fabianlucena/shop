@@ -6,6 +6,11 @@ export function setOnLoginSuccess(newOnLoginSuccess) {
   onLoginSuccess = newOnLoginSuccess;
 }
 
+let onLogout;
+export function setOnLogout(newOnLogout) {
+  onLogout = newOnLogout;
+}
+
 let onLoginError;
 export function setOnLoginError(newOnLoginError) {
   onLoginError = newOnLoginError;
@@ -26,29 +31,37 @@ export default async function login(body) {
     body.deviceToken = deviceToken;
   }
 
-  Api.postJson('/login', { body })
-    .then(res => res.json(res))
-    .then(data => {
-      if (data.deviceToken) {
-        AsyncStorage.setItem('deviceToken', data.deviceToken);
+  try {
+    const data = await Api.postJson('/login', { body });
+    if (data.deviceToken) {
+      AsyncStorage.setItem('deviceToken', data.deviceToken);
+    }
+    
+    if (data.autoLoginToken) {
+      AsyncStorage.setItem('autoLoginToken', data.autoLoginToken);
+    }
+    
+    if (data?.authorizationToken) {
+      Api.headers.Authorization = 'Bearer ' + data.authorizationToken;
+      if (onLoginSuccess) {
+        onLoginSuccess(data);
       }
-      
-      if (data.autoLoginToken) {
-        AsyncStorage.setItem('autoLoginToken', data.autoLoginToken);
-      }
-      
-      if (data?.authorizationToken) {
-        Api.headers.Authorization = 'Bearer: ' + data.authorizationToken;
-        if (onLoginSuccess) {
-          onLoginSuccess(data);
-        }
-      }
-    })
-    .catch(err => {
-      if (onLoginError) {
-        onLoginError(err);
-      } else {
-        console.error(err);
-      }
-    });
+    }
+  } catch(err) {
+    if (onLoginError) {
+      onLoginError(err);
+    } else {
+      console.error(err);
+    }
+  }
+}
+
+export async function logout() {
+  Api.postJson('/logout');
+
+  delete Api.headers.Authorization;
+  AsyncStorage.removeItem('autoLoginToken');
+  if (onLogout) {
+    onLogout();
+  }
 }

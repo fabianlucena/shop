@@ -5,7 +5,7 @@ import { Text } from 'react-native';
 export default function Button({children, onPress, style}) {
   return (
     <Pressable style={{...styles.button, ...style}} onPress={onPress}  >
-      <Text style={styles.textButton}>{children}</Text>
+      <Text style={{...styles.text, ...styles.textButton}}>{children}</Text>
     </Pressable>
   );
 }

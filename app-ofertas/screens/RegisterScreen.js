@@ -1,18 +1,15 @@
-import { useState } from 'react';
 import { View } from 'react-native';
-import TextField from '../components/TextField';
 import Button from '../components/Button';
 import Background from '../components/Background';
 import styles from '../libs/styles';
-import login from '../libs/login';
+import TextField from '../components/TextField';
+import { useState } from 'react';
 
-export default function LoginScreen({ navigation }) {
-  const [username, setUsername] = useState('admin');
-  const [password, setPassword] = useState('1234');
-
-  function loginHandler() {
-    login({ username, password });
-  }
+export default function RegisterScreen({ navigation }) {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmation, setConfirmation] = useState('');
+  const [email, setEmail] = useState('');
 
   return (
     <Background>
@@ -30,9 +27,21 @@ export default function LoginScreen({ navigation }) {
         >
           Contraseña
         </TextField>
+        <TextField
+          value={confirmation}
+          onChangeValue={setConfirmation}
+          secureTextEntry={true}
+        >
+          Confirme la contraseña
+        </TextField>
+        <TextField
+          value={email}
+          onChangeValue={setEmail}
+        >
+          Correo electrónico
+        </TextField>
         <View style={styles.sameLine}>
           <Button onPress={() => navigation.navigate('Register')} >Registrarse</Button>
-          <Button onPress={loginHandler} >Ingresar</Button>
         </View>
       </View>
     </Background>
