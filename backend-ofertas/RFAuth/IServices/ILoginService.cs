@@ -3,10 +3,10 @@ using RFService.IService;
 
 namespace RFAuth.IServices
 {
-    public interface ILoginService : IServiceAttributes
+    public interface ILoginService : IServiceDecorated
     {
-        Task<LoginResponse> LoginAsync(LoginRequest request);
+        Task<LoginData> LoginAsync(LoginRequest request);
 
-        Task<LoginResponse> AutoLoginAsync(AutoLoginRequest request);
+        Task<LoginData> AutoLoginAsync(AutoLoginRequest request);
     }
 }

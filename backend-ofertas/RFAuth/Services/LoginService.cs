@@ -1,7 +1,7 @@
 ﻿using RFAuth.DTO;
-using RFAuth.Entities;
 using RFAuth.Exceptions;
 using RFAuth.IServices;
+using RFService.IService;
 using RFService.ServicesLib;
 
 namespace RFAuth.Services
@@ -10,10 +10,11 @@ namespace RFAuth.Services
         IUserService userService,
         IPasswordService passwordService,
         IDeviceService deviceService,
-        ISessionService sessionService
-    ) : ServiceAttributes, ILoginService
+        ISessionService sessionService,
+        IPropertiesDecorators propertiesDecorators
+    ) : ServiceDecorated(propertiesDecorators), ILoginService
     {
-        public async Task<LoginResponse> LoginAsync(LoginRequest request)
+        public async Task<LoginData> LoginAsync(LoginRequest request)
         {
             if (string.IsNullOrWhiteSpace(request.Username))
                 throw new ArgumentNullException(nameof(LoginRequest.Username));
@@ -30,15 +31,16 @@ namespace RFAuth.Services
             var device = await deviceService.GetSingleForTokenOrCreateAsync(request.DeviceToken);
             var session = await sessionService.CreateForUserAndDeviceAsync(user, device);
             
-            return new LoginResponse
+            return new LoginData
             {
                 AuthorizationToken = session.Token,
                 AutoLoginToken = session.AutoLoginToken,
                 DeviceToken = device.Token,
+                UserId = session.UserId,
             };
         }
 
-        public async Task<LoginResponse> AutoLoginAsync(AutoLoginRequest request)
+        public async Task<LoginData> AutoLoginAsync(AutoLoginRequest request)
         {
             if (string.IsNullOrWhiteSpace(request.AutoLoginToken))
                 throw new ArgumentNullException(nameof(AutoLoginRequest.AutoLoginToken));
@@ -51,11 +53,12 @@ namespace RFAuth.Services
 
             var session = await sessionService.CreateForAutoLoginTokenAndDeviceAsync(request.AutoLoginToken, device);
 
-            return new LoginResponse
+            return new LoginData
             {
                 AuthorizationToken = session.Token,
                 AutoLoginToken = session.AutoLoginToken,
                 DeviceToken = device.Token,
+                UserId = session.UserId
             };
         }
     }

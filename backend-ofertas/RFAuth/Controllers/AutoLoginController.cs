@@ -12,7 +12,7 @@ namespace RFAuth.Controllers
         public async Task<IActionResult> PostAsync([FromBody] AutoLoginRequest request)
         {
             var response = await loginService.AutoLoginAsync(request);
-            await loginService.AddAttributesAsync(response);
+            response.Attributes = await loginService.DecorateAsync(response, response.Attributes, "LoginAttributes");
             return Ok(response);
         }
     }

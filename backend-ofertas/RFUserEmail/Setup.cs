@@ -1,13 +1,26 @@
-﻿using System.Data;
+﻿using Microsoft.Extensions.DependencyInjection;
+using RFAuth.DTO;
+using RFService.IService;
+using RFUserEmail.IServices;
 
 namespace RFUserEmail
 {
     public static class Setup
     {
-#pragma warning disable IDE0060 // Remove unused parameter
         public static void ConfigureRFUserEmail(IServiceProvider provider)
-#pragma warning restore IDE0060 // Remove unused parameter
         {
+            var propertiesDecorators = provider.GetRequiredService<IPropertiesDecorators>();
+            var userEmailService = provider.GetRequiredService<IUserEmailService>();
+            propertiesDecorators.AddDecorator("LoginAttributes", async (data, property) => {
+                var userEmail = await userEmailService.GetSingleOrDefaultAsyncForUserId(((LoginData)data).UserId);
+                if (userEmail == null)
+                    property["HasEmail"] = false;
+                else
+                {
+                    property["HasEmail"] = true;
+                    property["IsEmailVerified"] = userEmail.IsVerified;
+                }
+            });
         }
     }
 }
