@@ -20,6 +20,17 @@ const styles = StyleSheet.create({
     fontSize: 22,
   },
 
+  hint: {
+    fontSize: 16,
+    color: '#404040',
+    borderWidth: 2,
+    borderRadius: 10,
+    borderColor: '#a0a0a0',
+    backgroundColor: '#e0e0e0',
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+  },
+
   button: {
     backgroundColor: '#c0c0c0',
     paddingVertical: 3,

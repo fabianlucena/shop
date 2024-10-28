@@ -1,9 +1,9 @@
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import Button from '../components/Button';
 import Background from '../components/Background';
 import styles from '../libs/styles';
 import TextField from '../components/TextField';
-import FancyText from '../components/FancyText';
+import Hint from '../components/Hint';
 import { useState, useEffect } from 'react';
 import { Api } from '../libs/api';
 
@@ -65,7 +65,7 @@ export default function RegisterScreen({ navigation }) {
   return (
     <Background>
       <View style={styles.container}>
-        <FancyText>{hint}</FancyText>
+        <Hint>{hint}</Hint>
         <TextField
           value={fullName}
           onChangeValue={setFullName}

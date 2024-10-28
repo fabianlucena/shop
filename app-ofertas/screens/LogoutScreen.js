@@ -1,10 +1,10 @@
 import { useReducer } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import Button from '../components/Button';
 import Background from '../components/Background';
 import styles from '../libs/styles';
 import { logout } from '../libs/login';
-import FancyText from '../components/FancyText';
+import Hint from '../components/Hint';
 
 export default function LogoutScreen({ navigation }) {
   const [, forceUpdate] = useReducer(o => !o);
@@ -17,7 +17,7 @@ export default function LogoutScreen({ navigation }) {
   return (
     <Background>
       <View style={styles.container}>
-        <FancyText>Su sesión se cerrará. Para volver a utilizar la áplicación deberá iniciar sesión nuevamente.</FancyText>
+        <Hint>Su sesión se cerrará. Para volver a utilizar la áplicación deberá iniciar sesión nuevamente.</Hint>
         <View style={styles.sameLine}>
           <Button onPress={() => navigation.goBack()} >Volver</Button>
           <Button onPress={logoutHandler} >Salir</Button>

@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native';
 import Button from '../components/Button';
 import Background from '../components/Background';
-import FancyText from '../components/FancyText';
+import Hint from '../components/Hint';
 import styles from '../libs/styles';
 import TextField from '../components/TextField';
 import { useEffect, useState } from 'react';
@@ -54,7 +54,7 @@ export default function ChangePasswordScreen({ navigation }) {
   return (
     <Background>
       <View style={styles.container}>
-        <FancyText>{hint}</FancyText>
+        <Hint>{hint}</Hint>
         <TextField
           value={currentPassword}
           onChangeValue={setCurrentPassword}
