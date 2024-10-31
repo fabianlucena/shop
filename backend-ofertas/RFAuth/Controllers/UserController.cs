@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RFService.Data;
 using RFService.Repo;
+using RFService.Authorization;
 
 namespace RFAuth.Controllers
 {
@@ -14,6 +15,7 @@ namespace RFAuth.Controllers
     public class UserController(ILogger<UserController> logger, IUserService userService, IMapper mapper) : ControllerBase
     {
         [HttpGet]
+        [Role("admin", "userManager")]
         public async Task<IActionResult> GetAsync()
         {
             logger.LogInformation("Recuperando ususarios");

@@ -12,10 +12,7 @@ namespace RFService.Services
         {
             data = await base.ValidateForCreationAsync(data);
 
-            if (data.IsTranslatable == null)
-            {
-                data.IsTranslatable = true;
-            };
+            data.IsTranslatable ??= true;
 
             return data;
         }

@@ -1,14 +1,13 @@
 ﻿using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.DependencyInjection;
 using RFAuth;
 using RFAuthDapper;
+using RFRBAC.Authorization;
 using RFRegister;
 using RFUserEmail;
 using RFUserEmailDapper;
-using System;
 using System.Data;
 
-namespace backend_buygi
+namespace backend_ofertas
 {
     public static class MvcServiceCollectionExtensions
     {
@@ -37,6 +36,8 @@ namespace backend_buygi
                 return connection;
             });
 
+            services.AddControllers(options => options.Filters.Add<RBACFilter>());
+
             services.AddRFAuth();
             services.AddRFUserEmail();
             services.AddRFRegister();
@@ -49,7 +50,7 @@ namespace backend_buygi
         {
             if (app.Configuration.GetValue<bool>("CreateDapperTables"))
             {
-                using var scope = (app.Services.CreateScope());
+                using var scope = app.Services.CreateScope();
                 var serviceProvider = scope.ServiceProvider;
 
                 RFAuthDapper.Setup.ConfigureRFAuthDapper(serviceProvider);
@@ -61,7 +62,7 @@ namespace backend_buygi
         {
             if (app.Configuration.GetValue<bool>("UpdateData"))
             {
-                using var scope = (app.Services.CreateScope());
+                using var scope = app.Services.CreateScope();
                 var serviceProvider = scope.ServiceProvider;
 
                 RFAuth.Setup.ConfigureRFAuth(serviceProvider);

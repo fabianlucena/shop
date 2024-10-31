@@ -4,10 +4,12 @@ using RFService.IRepo;
 
 namespace RFService.Services
 {
-    public abstract class Service<Repo, Entity>(Repo repo)
+    public abstract class Service<Repo, Entity>(Repo _repo)
         where Repo : IRepo<Entity>
         where Entity : EntityTimestamps
     {
+        public Repo repo = _repo;
+
         public virtual async Task<Entity> ValidateForCreationAsync(Entity data)
         {
             return await Task.Run(() => data);
@@ -87,8 +89,7 @@ namespace RFService.Services
 
         public virtual Task<int> UpdateForIdAsync(object data, Int64 id, GetOptions? options = null)
         {
-            if (options == null)
-                options = new GetOptions();
+            options ??= new GetOptions();
 
             options.Filters["Id"] = id;
 
