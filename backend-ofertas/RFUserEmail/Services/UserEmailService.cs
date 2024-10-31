@@ -1,6 +1,6 @@
 ﻿using RFService.IRepo;
-using RFService.RepoLib;
-using RFService.ServicesLib;
+using RFService.Repo;
+using RFService.Services;
 using RFUserEmail.Entities;
 using RFUserEmail.IServices;
 

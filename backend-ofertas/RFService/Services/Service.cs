@@ -1,8 +1,8 @@
-﻿using RFService.EntitiesLib;
-using RFService.RepoLib;
+﻿using RFService.Entities;
+using RFService.Repo;
 using RFService.IRepo;
 
-namespace RFService.ServicesLib
+namespace RFService.Services
 {
     public abstract class Service<Repo, Entity>(Repo repo)
         where Repo : IRepo<Entity>

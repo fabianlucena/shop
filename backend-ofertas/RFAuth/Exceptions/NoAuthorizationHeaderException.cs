@@ -1,6 +1,8 @@
-﻿namespace RFAuth.Exceptions
+﻿using RFService.Exceptions;
+
+namespace RFAuth.Exceptions
 {
-    public class NoAuthorizationHeaderException : Exception
+    public class NoAuthorizationHeaderException() : HttpException(401)
     {
     }
 }

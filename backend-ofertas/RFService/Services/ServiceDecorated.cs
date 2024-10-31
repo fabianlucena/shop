@@ -1,6 +1,6 @@
 ﻿using RFService.IService;
 
-namespace RFService.ServicesLib
+namespace RFService.Services
 {
     public abstract class ServiceDecorated(IPropertiesDecorators attributesDecorators)
     {

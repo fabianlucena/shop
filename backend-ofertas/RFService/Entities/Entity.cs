@@ -1,4 +1,4 @@
-﻿namespace RFService.EntitiesLib
+﻿namespace RFService.Entities
 {
     public abstract class Entity
     {

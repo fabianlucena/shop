@@ -1,8 +1,8 @@
 ﻿using RFAuth.Entities;
 using RFAuth.IServices;
 using RFService.IRepo;
-using RFService.RepoLib;
-using RFService.ServicesLib;
+using RFService.Repo;
+using RFService.Services;
 
 namespace RFAuth.Services
 {

@@ -1,5 +1,5 @@
-﻿using RFService.EntitiesLib;
-using RFService.ServicesLib;
+﻿using RFService.Entities;
+using RFService.Services;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

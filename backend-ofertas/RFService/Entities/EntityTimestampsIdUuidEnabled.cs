@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace RFService.EntitiesLib
+namespace RFService.Entities
 {
     public abstract class EntityTimestampsIdUuidEnabled : EntityTimestampsIdUuid
     {

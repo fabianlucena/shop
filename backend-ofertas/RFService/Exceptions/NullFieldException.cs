@@ -1,9 +1,6 @@
 ﻿namespace RFService.Exceptions
 {
-    public class NullFieldException : Exception
+    public class NullFieldException(string name) : HttpException(400, $"Field {name} cannot be null.")
     {
-        public NullFieldException(string name)
-            : base($"Field {name} cannot be null.")
-        { }
     }
 }

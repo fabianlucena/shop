@@ -1,21 +1,20 @@
-﻿using RFService.Exceptions;
-using RFService.EntitiesLib;
+﻿using RFService.Entities;
 using RFService.IRepo;
-using RFService.RepoLib;
+using RFService.Repo;
 
-namespace RFService.ServicesLib
+namespace RFService.Services
 {
-    public abstract class ServiceTimestampsId<Repo, Entity>(Repo repo) : ServiceTimestamps<Repo, Entity>(repo)
+    public abstract class ServiceTimestampsIdUuid<Repo, Entity>(Repo repo) : ServiceTimestampsId<Repo, Entity>(repo)
         where Repo : IRepo<Entity>
-        where Entity : EntityTimestampsId
+        where Entity : EntityTimestampsIdUuid
     {
         public override async Task<Entity> ValidateForCreationAsync(Entity data)
         {
             data = await base.ValidateForCreationAsync(data);
 
-            if (data.Id != 0)
+            if (data.Uuid == null || data.Uuid == Guid.Empty)
             {
-                throw new ForbidenIdForCreationException();
+                data.Uuid = Guid.NewGuid();
             }
 
             return data;
@@ -23,18 +22,19 @@ namespace RFService.ServicesLib
 
         public override GetOptions SanitizeForAutoGet(GetOptions options)
         {
-            if (options.Filters.TryGetValue("Id", out object? value))
+            if (options.Filters.TryGetValue("Uuid", out object? value))
             {
                 options = new GetOptions(options);
                 if (value != null
-                    && (Int64)value > 0
+                    && (Guid)value != Guid.Empty
                 )
                 {
-                    options.Filters = new Dictionary<string, object?> { { "Id", value } };
+                    options.Filters = new Dictionary<string, object?> { { "Uuid", value } };
                     return options;
                 }
-                else {
-                    options.Filters.Remove("Id");
+                else
+                {
+                    options.Filters.Remove("Uuid");
                 }
             }
 

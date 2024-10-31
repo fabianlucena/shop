@@ -1,4 +1,4 @@
-﻿namespace RFService.ServicesLib
+﻿namespace RFService.Services
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple=true)]
     public class IndexAttribute(params string[] propertyNames) : Attribute

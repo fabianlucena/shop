@@ -1,7 +1,7 @@
-﻿using RFService.ServicesLib;
+﻿using RFService.Services;
 using System.ComponentModel.DataAnnotations;
 
-namespace RFService.EntitiesLib
+namespace RFService.Entities
 {
     [Index(nameof(Name), IsUnique = true)]
     public abstract class EntityTimestampsIdUuidEnabledName : EntityTimestampsIdUuidEnabled

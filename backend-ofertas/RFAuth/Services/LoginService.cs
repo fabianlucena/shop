@@ -2,7 +2,7 @@
 using RFAuth.Exceptions;
 using RFAuth.IServices;
 using RFService.IService;
-using RFService.ServicesLib;
+using RFService.Services;
 
 namespace RFAuth.Services
 {
@@ -22,7 +22,10 @@ namespace RFAuth.Services
             if (string.IsNullOrWhiteSpace(request.Password))
                 throw new ArgumentNullException(nameof(LoginRequest.Password));
 
-            var user = await userService.GetSingleForUsernameAsync(request.Username);
+            var user = await userService.GetSingleOrDefaultForUsernameAsync(request.Username);
+            if (user == null)
+                throw new UnknownUserException();
+
             var password = await passwordService.GetSingleForUserAsync(user);
             var check = passwordService.Verify(request.Password, password);
             if (!check)

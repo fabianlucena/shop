@@ -1,6 +1,8 @@
-﻿namespace RFAuth.Exceptions
+﻿using RFService.Exceptions;
+
+namespace RFAuth.Exceptions
 {
-    public class SessionClosedException : Exception
+    public class SessionClosedException() : HttpException(401)
     {
     }
 }

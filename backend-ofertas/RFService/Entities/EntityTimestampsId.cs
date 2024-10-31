@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace RFService.EntitiesLib
+namespace RFService.Entities
 {
     public abstract class EntityTimestampsId : EntityTimestamps
     {

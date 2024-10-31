@@ -1,4 +1,4 @@
-﻿namespace RFService.RepoLib
+﻿namespace RFService.Repo
 {
     public class GetOptions
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace RFService.DataLib
+namespace RFService.Data
 {
     public class DataRowsResult
     {

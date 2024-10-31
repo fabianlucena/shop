@@ -1,12 +1,11 @@
 ﻿using RFAuth.Entities;
 using RFAuth.IServices;
-using RFService.ServicesLib;
+using RFService.Services;
 using RFAuth.Util;
 using RFService.Exceptions;
 using RFService.IRepo;
-using RFService.RepoLib;
+using RFService.Repo;
 using RFAuth.Exceptions;
-using System.Data.SqlTypes;
 
 namespace RFAuth.Services
 {
@@ -69,12 +68,17 @@ namespace RFAuth.Services
             return await CreateForUserIdAndDeviceIdAsync(session.UserId, device.Id);
         }
 
-        public async Task<bool> CloseForTokenAsync(string token)
+        public async Task<bool> CloseForIdAsync(Int64 id)
         {
             return (await UpdateAsync(
                 new { ClosedAt = DateTime.UtcNow },
-                new GetOptions { Filters = { { "Token", token } } }
+                new GetOptions { Filters = { { "Id", id} } }
             )) > 0;
+        }
+
+        public Task<Session?> GetForTokenOrDefaultAsync(string token)
+        {
+            return repo.GetSingleOrDefaultAsync(new GetOptions { Filters = { { "Token", token } } });
         }
     }
 }

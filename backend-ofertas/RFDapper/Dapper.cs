@@ -1,16 +1,13 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Logging;
 using RFService.IRepo;
-using RFService.RepoLib;
-using RFService.ServicesLib;
-using System;
+using RFService.Repo;
+using RFService.Services;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Dynamic;
-using System.Net.NetworkInformation;
 using System.Reflection;
-using System.Xml.Linq;
 
 namespace RFDapper
 {
@@ -338,8 +335,7 @@ namespace RFDapper
             object allValues = GetAllValuesObject();
             var query = GetUpdateQuery(data, options, (IDictionary<string, object?>)allValues);
             Logger.LogDebug(query);
-            var rows = await Connection.QueryAsync<int>(query, allValues);
-            return rows.First();
+            return await Connection.ExecuteAsync(query, allValues);
         }
     }
 }

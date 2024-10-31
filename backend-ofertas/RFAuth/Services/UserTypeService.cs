@@ -1,6 +1,6 @@
 ﻿using RFAuth.Entities;
 using RFAuth.IServices;
-using RFService.ServicesLib;
+using RFService.Services;
 using RFService.IRepo;
 
 namespace RFAuth.Services

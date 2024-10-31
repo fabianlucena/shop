@@ -1,4 +1,4 @@
-﻿using RFService.EntitiesLib;
+﻿using RFService.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RFAuth.Entities

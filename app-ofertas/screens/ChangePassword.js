@@ -6,8 +6,10 @@ import styles from '../libs/styles';
 import TextField from '../components/TextField';
 import { useEffect, useState } from 'react';
 import { Api } from '../libs/api';
+import SuccessMessage from '../components/SuccessMessage';
 
 export default function ChangePasswordScreen({ navigation }) {
+  const [success, setSuccess] = useState(false);
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmation, setConfirmation] = useState('');
@@ -49,6 +51,16 @@ export default function ChangePasswordScreen({ navigation }) {
     } catch(err) {
       setHint('Ocurrió un error, no se pudo cambiar la contraseña');
     }
+  }
+
+  if (success) {
+    return (
+      <SuccessMessage
+        onPress={() => navigation.navigate('Login')}
+      >
+        Contraseña cambiada satisfactoriamente
+      </SuccessMessage>
+    );    
   }
 
   return (

@@ -1,6 +1,8 @@
+using backend_buygi;
 using Microsoft.OpenApi.Models;
+using RFAuth;
 
-namespace backend_buygi
+namespace backend_ofertas
 {
     public class Program
     {
@@ -62,6 +64,9 @@ namespace backend_buygi
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
+
+            app.UseMiddleware<AuthorizationMiddleware>();
+            app.UseMiddleware<ErrorMiddleware>();
 
             app.MapControllers();
 

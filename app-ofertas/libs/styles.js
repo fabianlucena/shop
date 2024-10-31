@@ -29,10 +29,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#e0e0e0',
     paddingVertical: 6,
     paddingHorizontal: 10,
+    width: '100%',
   },
 
   button: {
-    backgroundColor: '#c0c0c0',
+    borderBottomWidth: 2,
+    borderBottomColor: '#b0b0b0',
     paddingVertical: 3,
     paddingHorizontal: 12,
     margin: 5,
@@ -42,6 +44,7 @@ const styles = StyleSheet.create({
   },
 
   textButton: {
+    fontSize: 16,
     textAlign: 'center',
   },
 

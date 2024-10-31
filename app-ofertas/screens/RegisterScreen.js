@@ -6,8 +6,10 @@ import TextField from '../components/TextField';
 import Hint from '../components/Hint';
 import { useState, useEffect } from 'react';
 import { Api } from '../libs/api';
+import SuccessMessage from '../components/SuccessMessage';
 
 export default function RegisterScreen({ navigation }) {
+  const [success, setSuccess] = useState(false);
   const [fullName, setFullName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -55,11 +57,22 @@ export default function RegisterScreen({ navigation }) {
         }
       );
 
-      navigation.navigate('Login');
+      setSuccess(true);
     } catch(err) {
       console.error(err);
       setHint('Ocurrió un error, no se creó la cuenta');
     }
+  }
+
+  if (success) {
+    return (
+      <SuccessMessage
+        onPressMessage='Ir a ingresar'
+        onPress={() => navigation.navigate('Login')}
+      >
+        Usuario registrado satisfactoriamente
+      </SuccessMessage>
+    );    
   }
 
   return (

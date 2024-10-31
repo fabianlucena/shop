@@ -1,8 +1,8 @@
-﻿using RFService.EntitiesLib;
+﻿using RFService.Entities;
 using RFService.IRepo;
-using RFService.RepoLib;
+using RFService.Repo;
 
-namespace RFService.ServicesLib
+namespace RFService.Services
 {
     public abstract class ServiceTimestampsIdUuidEnabledNameTitle<Repo, Entity>(Repo repo) : ServiceTimestampsIdUuidEnabledName<Repo, Entity>(repo)
         where Repo : IRepo<Entity>

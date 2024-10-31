@@ -4,8 +4,8 @@ using RFAuth.DTO;
 using RFAuth.IServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using RFService.DataLib;
-using RFService.RepoLib;
+using RFService.Data;
+using RFService.Repo;
 
 namespace RFAuth.Controllers
 {
