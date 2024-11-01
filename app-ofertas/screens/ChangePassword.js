@@ -1,41 +1,44 @@
 import { View, Text } from 'react-native';
 import Button from '../components/Button';
 import Background from '../components/Background';
-import Hint from '../components/Hint';
+import Message from '../components/Message';
 import styles from '../libs/styles';
 import TextField from '../components/TextField';
 import { useEffect, useState } from 'react';
 import { Api } from '../libs/api';
 import SuccessMessage from '../components/SuccessMessage';
+import Busy from '../components/Busy';
 
 export default function ChangePasswordScreen({ navigation }) {
+  const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmation, setConfirmation] = useState('');
-  const [hint, setHint] = useState('');
+  const [message, setMessage] = useState('');
   const [canChangePassword, setCanChangePassword] = useState('');
 
   useEffect(() => {
     if (!currentPassword) {
-      setHint('Debe proporcionar la contraseña actual.');
+      setMessage('Debe proporcionar la contraseña actual.');
       setCanChangePassword(false);
     } else if (!newPassword) {
-      setHint('Debe proporcionar una nueva contraseña.');
+      setMessage('Debe proporcionar una nueva contraseña.');
       setCanChangePassword(false);
     } else if (newPassword == currentPassword) {
-      setHint('La contraseña actual y la nueva deben ser diferentes.');
+      setMessage('La contraseña actual y la nueva deben ser diferentes.');
       setCanChangePassword(false);
     } else if (newPassword != confirmation) {
-      setHint('La confirmación y la nueva contraseña son distintas.');
+      setMessage('La confirmación y la nueva contraseña son distintas.');
       setCanChangePassword(false);
     } else {
-      setHint('Listo para enviar');
+      setMessage('Listo para enviar');
       setCanChangePassword(true);
     }
   }, [currentPassword, newPassword, confirmation]);
 
   async function changePassword() {
+    setLoading(true);
     try {
       const data = await Api.postJson(
         '/v1/change-password',
@@ -47,16 +50,17 @@ export default function ChangePasswordScreen({ navigation }) {
         }
       );
 
-      navigation.navigate('Home');
+      setSuccess(true);
     } catch(err) {
-      setHint('Ocurrió un error, no se pudo cambiar la contraseña');
+      setMessage('Ocurrió un error, no se pudo cambiar la contraseña');
     }
+    setLoading(false);
   }
 
   if (success) {
     return (
       <SuccessMessage
-        onPress={() => navigation.navigate('Login')}
+        onPress={() => navigation.navigate('Home')}
       >
         Contraseña cambiada satisfactoriamente
       </SuccessMessage>
@@ -65,36 +69,38 @@ export default function ChangePasswordScreen({ navigation }) {
 
   return (
     <Background>
-      <View style={styles.container}>
-        <Hint>{hint}</Hint>
-        <TextField
-          value={currentPassword}
-          onChangeValue={setCurrentPassword}
-          secureTextEntry={true}
-        >
-          Contraseña actual
-        </TextField>
-        <TextField
-          value={newPassword}
-          onChangeValue={setNewPassword}
-          secureTextEntry={true}
-        >
-          Contraseña nueva
-        </TextField>
-        <TextField
-          value={confirmation}
-          onChangeValue={setConfirmation}
-          secureTextEntry={true}
-        >
-          Confirme la contraseña
-        </TextField>
-        <Button
-          disabled={!canChangePassword}
-          onPress={changePassword}
-        >
-          Cambiar
-        </Button>
-      </View>
+      <Busy busy={loading}>
+        <View style={styles.container}>
+          <Message>{message}</Message>
+          <TextField
+            value={currentPassword}
+            onChangeValue={setCurrentPassword}
+            secureTextEntry={true}
+          >
+            Contraseña actual
+          </TextField>
+          <TextField
+            value={newPassword}
+            onChangeValue={setNewPassword}
+            secureTextEntry={true}
+          >
+            Contraseña nueva
+          </TextField>
+          <TextField
+            value={confirmation}
+            onChangeValue={setConfirmation}
+            secureTextEntry={true}
+          >
+            Confirme la contraseña
+          </TextField>
+          <Button
+            disabled={!canChangePassword}
+            onPress={changePassword}
+          >
+            Cambiar
+          </Button>
+        </View>
+      </Busy>
     </Background>
   );
 }

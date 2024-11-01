@@ -32,6 +32,7 @@ export class Api {
 
     var res = await fetch(url, options);
     if (!res.ok) {
+      console.error(res);
       throw new Error('Result is not OK');
     }
 

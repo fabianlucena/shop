@@ -15,7 +15,7 @@ namespace RFAuth.Controllers
     public class UserController(ILogger<UserController> logger, IUserService userService, IMapper mapper) : ControllerBase
     {
         [HttpGet]
-        [Role("admin", "userManager")]
+        [Permission("user.get")]
         public async Task<IActionResult> GetAsync()
         {
             logger.LogInformation("Recuperando ususarios");

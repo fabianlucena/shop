@@ -10,6 +10,7 @@ export default function TextField({
   value,
   onChangeValue,
   nullable = false,
+  disabled = false,
   style,
   inputStyle,
   labelStyle,
@@ -61,6 +62,7 @@ export default function TextField({
       <TextInput
         style={{...styles.input, ...inputStyle}}
         value={localValue ?? ''}
+        disabled={disabled}
         onChangeText={onChangeTextHandler}
         secureTextEntry={secureTextEntry}
       />

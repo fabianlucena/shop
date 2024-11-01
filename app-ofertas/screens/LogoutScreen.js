@@ -4,7 +4,7 @@ import Button from '../components/Button';
 import Background from '../components/Background';
 import styles from '../libs/styles';
 import { logout } from '../libs/login';
-import Hint from '../components/Hint';
+import Message from '../components/Message';
 
 export default function LogoutScreen({ navigation }) {
   const [, forceUpdate] = useReducer(o => !o);
@@ -17,7 +17,7 @@ export default function LogoutScreen({ navigation }) {
   return (
     <Background>
       <View style={styles.container}>
-        <Hint>Su sesión se cerrará. Para volver a utilizar la áplicación deberá iniciar sesión nuevamente.</Hint>
+        <Message>Su sesión se cerrará. Para volver a utilizar la áplicación deberá iniciar sesión nuevamente.</Message>
         <View style={styles.sameLine}>
           <Button onPress={() => navigation.goBack()} >Volver</Button>
           <Button onPress={logoutHandler} >Salir</Button>

@@ -12,12 +12,12 @@ namespace RFRBAC.Authorization
                 return;
 
             // Obtener el atributo aplicado
-            var roleAttribute = (RoleAttribute?)Attribute.GetCustomAttribute(
+            var permissionAttribute = (PermissionAttribute?)Attribute.GetCustomAttribute(
                 controllerActionDescriptor.MethodInfo,
-                typeof(RoleAttribute)
+                typeof(PermissionAttribute)
             );
 
-            if (roleAttribute == null)
+            if (permissionAttribute == null)
                 return;
 
             // context.Result = new ForbidResult(); // Bloquear el acceso si no cumple con la edad mínima

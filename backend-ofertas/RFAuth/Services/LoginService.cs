@@ -17,17 +17,14 @@ namespace RFAuth.Services
         public async Task<LoginData> LoginAsync(LoginRequest request)
         {
             if (string.IsNullOrWhiteSpace(request.Username))
-                throw new ArgumentNullException(nameof(LoginRequest.Username));
+                throw new HttpArgumentNullOrEmptyException(paramName: nameof(request.Username));
 
             if (string.IsNullOrWhiteSpace(request.Password))
-                throw new ArgumentNullException(nameof(LoginRequest.Password));
+                throw new HttpArgumentNullOrEmptyException(nameof(request.Password));
 
-            var user = await userService.GetSingleOrDefaultForUsernameAsync(request.Username);
-            if (user == null)
-                throw new UnknownUserException();
-
+            var user = await userService.GetSingleOrDefaultForUsernameAsync(request.Username.Trim()) ?? throw new UnknownUserException();
             var password = await passwordService.GetSingleForUserAsync(user);
-            var check = passwordService.Verify(request.Password, password);
+            var check = passwordService.Verify(request.Password.Trim(), password);
             if (!check)
                 throw new BadPasswordException();
 
@@ -46,10 +43,10 @@ namespace RFAuth.Services
         public async Task<LoginData> AutoLoginAsync(AutoLoginRequest request)
         {
             if (string.IsNullOrWhiteSpace(request.AutoLoginToken))
-                throw new ArgumentNullException(nameof(AutoLoginRequest.AutoLoginToken));
+                throw new HttpArgumentNullOrEmptyException(nameof(request.AutoLoginToken));
 
             if (string.IsNullOrWhiteSpace(request.DeviceToken))
-                throw new ArgumentNullException(nameof(AutoLoginRequest.DeviceToken));
+                throw new HttpArgumentNullOrEmptyException(nameof(request.DeviceToken));
 
             var device = await deviceService.GetSingleOrDefaultForTokenAsync(request.DeviceToken)
                 ?? throw new UnknownDeviceException();

@@ -1,8 +1,8 @@
 ﻿namespace RFService.Authorization
 {
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
-    public class RoleAttribute(params string[] roles) : Attribute
+    public class PermissionAttribute(params string[] permissions) : Attribute
     {
-        public string[] Roles { get; set; } = roles;
+        public string[] Permissions { get; set; } = permissions;
     }
 }

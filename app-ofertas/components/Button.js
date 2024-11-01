@@ -1,9 +1,9 @@
-import { Pressable } from 'react-native';
+import { Pressable, ActivityIndicator } from 'react-native';
 import styles from '../libs/styles';
 import { Text } from 'react-native';
 import { useEffect, useState } from 'react';
 
-export default function Button({children, onPress, disabled, style, styleText}) {
+export default function Button({ children, onPress, disabled, style, styleText }) {
   const [fullStyle, setFullStyle] = useState();
   const [fullTextStyle, setFullTextStyle] = useState();
 

@@ -8,7 +8,7 @@ import LogoutScreen from './screens/LogoutScreen';
 import ChangePasswordScreen from './screens/ChangePassword';
 import { Api } from './libs/api';
 import { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 import { autoLogin, setOnLoginSuccess, setOnLoginError, setOnLogout } from './libs/login';
 import Background from './components/Background';
 import FancyText from './components/FancyText';
@@ -38,6 +38,7 @@ export default function App() {
           <FancyText>
             Iniciando
           </FancyText>
+          <ActivityIndicator size="large" color="#000000" style={{...styles.loader }} />
         </View>
       </Background>
     );

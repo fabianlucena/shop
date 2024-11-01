@@ -16,11 +16,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#e0e0f0',
   },
 
+  busy: {
+    flexGrow: 1,
+    flexShrink: 1,
+  },
+
   text: {
     fontSize: 22,
   },
 
-  hint: {
+  message: {
     fontSize: 16,
     color: '#404040',
     borderWidth: 2,
@@ -75,6 +80,23 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
+  },
+
+  busyIndicatorContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(232, 224, 240, .5)',
+  },
+
+  busyIndicator: {
+    width: '25%',
+    height: '25%',
   },
 });
 
