@@ -5,7 +5,8 @@ using RFService.Repo;
 
 namespace RFService.Services
 {
-    public abstract class ServiceTimestampsId<Repo, Entity>(Repo repo) : ServiceTimestamps<Repo, Entity>(repo)
+    public abstract class ServiceTimestampsId<Repo, Entity>(Repo repo)
+        : ServiceTimestamps<Repo, Entity>(repo)
         where Repo : IRepo<Entity>
         where Entity : EntityTimestampsId
     {
@@ -39,6 +40,34 @@ namespace RFService.Services
             }
 
             return base.SanitizeForAutoGet(options);
+        }
+
+        public virtual Task<Entity> GetForIdAsync(Int64 id, GetOptions? options = null)
+        {
+            options ??= new GetOptions();
+            options.Filters["Id"] = id;
+            return GetSingleAsync(options);
+        }
+
+        public virtual Task<Entity?> GetSingleOrDefaultForIdAsync(Int64 id, GetOptions? options = null)
+        {
+            options ??= new GetOptions();
+            options.Filters["Id"] = id;
+            return GetSingleOrDefaultAsync(options);
+        }
+
+        public virtual Task<int> UpdateForIdAsync(object data, Int64 id, GetOptions? options = null)
+        {
+            options ??= new GetOptions();
+            options.Filters["Id"] = id;
+            return UpdateAsync(data, options);
+        }
+
+        public virtual Task<int> DeleteForIdAsync(Int64 id, GetOptions? options = null)
+        {
+            options ??= new GetOptions();
+            options.Filters["Id"] = id;
+            return DeleteAsync(options);
         }
     }
 }

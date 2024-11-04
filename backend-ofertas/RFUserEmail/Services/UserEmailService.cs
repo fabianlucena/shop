@@ -6,21 +6,25 @@ using RFUserEmail.IServices;
 
 namespace RFUserEmail.Services
 {
-#pragma warning disable CS9107 // Parameter is captured into the state of the enclosing type and its value is also passed to the base constructor. The value might be captured by the base class as well.
-    public class UserEmailService(IRepo<UserEmail> repo) : ServiceTimestampsIdUuid<IRepo<UserEmail>, UserEmail>(repo), IUserEmailService
-#pragma warning restore CS9107 // Parameter is captured into the state of the enclosing type and its value is also passed to the base constructor. The value might be captured by the base class as well.
+    public class UserEmailService(IRepo<UserEmail> repo)
+        : ServiceTimestampsIdUuid<IRepo<UserEmail>, UserEmail>(repo),
+            IUserEmailService
     {
         public override async Task<UserEmail> ValidateForCreationAsync(UserEmail data)
         {
-            data = await base.ValidateForCreationAsync(data);
-            data.IsVerified ??= false;
-
-            return data;
+            return await base.ValidateForCreationAsync(data);
         }
 
-        public Task<UserEmail?> GetSingleOrDefaultAsyncForUserId(Int64 userId)
+        public async Task SetIsVerifiedForIdAsync(bool isVerified, Int64 id)
         {
-            return repo.GetSingleOrDefaultAsync(new GetOptions { Filters = { { "UserId", userId } } } );
+            await UpdateAsync(new { IsVerified = true }, new GetOptions { Filters = { { "Id", id } } });
+        }
+
+        public virtual Task<UserEmail?> GetSingleOrDefaultForUserIdAsync(Int64 userId, GetOptions? options = null)
+        {
+            options ??= new GetOptions();
+            options.Filters["UserId"] = userId;
+            return GetSingleOrDefaultAsync(options);
         }
     }
 }

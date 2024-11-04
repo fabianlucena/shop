@@ -1,6 +1,7 @@
 ﻿using RFAuth.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using RFAuth.IServices;
+using RFService.IService;
 
 namespace RFAuth
 {
@@ -11,9 +12,9 @@ namespace RFAuth
             ConfigureRFAuthAsync(services).Wait();
         }
 
-        public static async Task ConfigureRFAuthAsync(IServiceProvider services)
+        public static async Task ConfigureRFAuthAsync(IServiceProvider provider)
         {
-            var userTypeService = services.GetService<IUserTypeService>() ??
+            var userTypeService = provider.GetService<IUserTypeService>() ??
                 throw new Exception("Can't get IUserTypeService");
             var userType = await userTypeService.GetOrCreateAsync(new UserType
                 {
@@ -22,7 +23,7 @@ namespace RFAuth
                     IsTranslatable = true,
                 });
 
-            var userService = services.GetService<IUserService>() ??
+            var userService = provider.GetService<IUserService>() ??
                 throw new Exception("Can't get IUserService");
             var user = await userService.GetOrCreateAsync(new User
                 {
@@ -31,7 +32,7 @@ namespace RFAuth
                     FullName = "Administrador",
                 });
 
-            var passwordService = services.GetService<IPasswordService>() ??
+            var passwordService = provider.GetService<IPasswordService>() ??
                 throw new Exception("Can't get IPasswordService");
             await passwordService.CreateIfNotExistsAsync(new Password
             {

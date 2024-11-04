@@ -9,7 +9,9 @@ using RFAuth.Exceptions;
 
 namespace RFAuth.Services
 {
-    public class SessionService(IRepo<Session> repo) : ServiceTimestampsIdUuid<IRepo<Session>, Session>(repo), ISessionService
+    public class SessionService(IRepo<Session> repo)
+        : ServiceTimestampsIdUuid<IRepo<Session>, Session>(repo),
+            ISessionService
     {
         public override async Task<Session> ValidateForCreationAsync(Session data)
         {

@@ -1,10 +1,13 @@
 ﻿using RFService.IService;
+using RFService.Repo;
 using RFUserEmail.Entities;
 
 namespace RFUserEmail.IServices
 {
-    public interface IUserEmailService : IService<UserEmail>
+    public interface IUserEmailService : IServiceId<UserEmail>
     {
-        Task<UserEmail?> GetSingleOrDefaultAsyncForUserId(Int64 userId);
+        Task<UserEmail?> GetSingleOrDefaultForUserIdAsync(Int64 userId, GetOptions? options = null);
+
+        Task SetIsVerifiedForIdAsync(bool isVerified, Int64 id);
     }
 }

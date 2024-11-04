@@ -7,7 +7,9 @@ using RFService.IRepo;
 
 namespace RFAuth.Services
 {
-    public class DeviceService(IRepo<Device> repo) : ServiceTimestampsIdUuid<IRepo<Device>, Device>(repo), IDeviceService
+    public class DeviceService(IRepo<Device> repo)
+        : ServiceTimestampsIdUuid<IRepo<Device>, Device>(repo),
+            IDeviceService
     {
         public override async Task<Device> ValidateForCreationAsync(Device data)
         {
@@ -36,7 +38,10 @@ namespace RFAuth.Services
 
         public async Task<Device> GetSingleForTokenAsync(string token)
         {
-            return await GetSingleForTokenAsync(token);
+            return await repo.GetSingleAsync(new GetOptions
+            {
+                Filters = { { "Token", token } }
+            });
         }
 
         public async Task<Device> GetSingleForTokenOrCreateAsync(string? token)

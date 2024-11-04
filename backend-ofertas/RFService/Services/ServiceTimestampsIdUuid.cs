@@ -4,7 +4,8 @@ using RFService.Repo;
 
 namespace RFService.Services
 {
-    public abstract class ServiceTimestampsIdUuid<Repo, Entity>(Repo repo) : ServiceTimestampsId<Repo, Entity>(repo)
+    public abstract class ServiceTimestampsIdUuid<Repo, Entity>(Repo repo)
+        : ServiceTimestampsId<Repo, Entity>(repo)
         where Repo : IRepo<Entity>
         where Entity : EntityTimestampsIdUuid
     {

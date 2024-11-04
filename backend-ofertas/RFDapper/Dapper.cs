@@ -193,10 +193,16 @@ namespace RFDapper
             foreach (var filter in options.Filters)
             {
                 var filterName = prefix + filter.Key;
-                sqlFilters.Add($"{filter.Key} = @{filterName}");
-
-                if (allValues != null)
-                    allValues[filterName] = filter.Value;
+                if (filter.Value == null)
+                {
+                    sqlFilters.Add($"{filter.Key} IS NULL");
+                }
+                else
+                {
+                    sqlFilters.Add($"{filter.Key} = @{filterName}");
+                    if (allValues != null)
+                        allValues[filterName] = filter.Value;
+                }
             }
 
             return $"WHERE {string.Join(" AND ", sqlFilters)}";

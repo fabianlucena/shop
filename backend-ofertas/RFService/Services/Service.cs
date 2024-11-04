@@ -21,24 +21,29 @@ namespace RFService.Services
             return await repo.InsertAsync(data);
         }
 
+        public virtual GetOptions SanitizeGetOptions(GetOptions options)
+        {
+            return options;
+        }
+
         public virtual Task<IEnumerable<Entity>> GetListAsync(GetOptions options)
         {
-            return repo.GetListAsync(options);
+            return repo.GetListAsync(SanitizeGetOptions(options));
         }
 
         public virtual Task<Entity> GetSingleAsync(GetOptions options)
         {
-            return repo.GetSingleAsync(options);
+            return repo.GetSingleAsync(SanitizeGetOptions(options));
         }
 
         public virtual Task<Entity?> GetSingleOrDefaultAsync(GetOptions options)
         {
-            return repo.GetSingleOrDefaultAsync(options);
+            return repo.GetSingleOrDefaultAsync(SanitizeGetOptions(options));
         }
 
         public virtual Task<Entity?> GetFirstOrDefaultAsync(GetOptions options)
         {
-            return repo.GetFirstOrDefaultAsync(options);
+            return repo.GetFirstOrDefaultAsync(SanitizeGetOptions(options));
         }
 
         public virtual GetOptions SanitizeForAutoGet(GetOptions options)
@@ -87,13 +92,9 @@ namespace RFService.Services
             return repo.UpdateAsync(data, options);
         }
 
-        public virtual Task<int> UpdateForIdAsync(object data, Int64 id, GetOptions? options = null)
+        public virtual Task<int> DeleteAsync(GetOptions options)
         {
-            options ??= new GetOptions();
-
-            options.Filters["Id"] = id;
-
-            return UpdateAsync(data, options);
+            throw new NotImplementedException();
         }
     }
 }

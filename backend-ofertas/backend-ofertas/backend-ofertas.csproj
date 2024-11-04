@@ -34,6 +34,7 @@
     <ProjectReference Include="..\RFAuthDapper\RFAuthDapper.csproj" />
     <ProjectReference Include="..\RFAuth\RFAuth.csproj" />
     <ProjectReference Include="..\RFDapper\RFDapper.csproj" />
+    <ProjectReference Include="..\RFHttpActionDapper\RFHttpActionDapper.csproj" />
     <ProjectReference Include="..\RFRBAC\RFRBAC.csproj" />
     <ProjectReference Include="..\RFRegister\RFRegister.csproj" />
     <ProjectReference Include="..\RFUserEmailDapper\RFUserEmailDapper.csproj" />

@@ -4,7 +4,8 @@ using RFService.Repo;
 
 namespace RFService.Services
 {
-    public abstract class ServiceTimestamps<Repo, Entity>(Repo repo) : Service<Repo, Entity>(repo)
+    public abstract class ServiceTimestamps<Repo, Entity>(Repo repo)
+        : Service<Repo, Entity>(repo)
         where Repo : IRepo<Entity>
         where Entity : EntityTimestamps
     {
@@ -18,9 +19,12 @@ namespace RFService.Services
             return data;
         }
 
-        public override Task<IEnumerable<Entity>> GetListAsync(GetOptions options)
+        public override GetOptions SanitizeGetOptions(GetOptions options)
         {
-            return base.GetListAsync(options);
+            if (!options.Filters.ContainsKey("DeletedAt"))
+                options.Filters["DeletedAt"] = null;
+
+            return base.SanitizeGetOptions(options);
         }
 
         public override GetOptions SanitizeForAutoGet(GetOptions options)
@@ -54,6 +58,11 @@ namespace RFService.Services
             }
 
             return base.SanitizeForAutoGet(options);
+        }
+
+        public override Task<int> DeleteAsync(GetOptions options)
+        {
+            return UpdateAsync(new { DeletedAt = DateTime.UtcNow }, options);
         }
     }
 }

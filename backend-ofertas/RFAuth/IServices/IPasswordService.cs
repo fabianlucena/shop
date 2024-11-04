@@ -3,7 +3,7 @@ using RFService.IService;
 
 namespace RFAuth.IServices
 {
-    public interface IPasswordService : IService<Password>
+    public interface IPasswordService : IServiceId<Password>
     {
         Task<Password> GetSingleForUserIdAsync(Int64 userId);
 

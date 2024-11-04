@@ -6,7 +6,9 @@ using RFService.Services;
 
 namespace RFAuth.Services
 {
-    public class PasswordService(IRepo<Password> repo) : ServiceTimestampsIdUuid<IRepo<Password>, Password>(repo), IPasswordService
+    public class PasswordService(IRepo<Password> repo)
+        : ServiceTimestampsIdUuid<IRepo<Password>, Password>(repo),
+            IPasswordService
     {
         public string Hash(string rawPassword)
         {

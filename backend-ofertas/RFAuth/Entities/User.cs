@@ -11,7 +11,7 @@ namespace RFAuth.Entities
     {
         [Required]
         [ForeignKey("Type")]
-        public Int64 TypeId { get; set; }
+        public required Int64 TypeId { get; set; }
         public UserType? Type { get; set; }
 
         [Required]

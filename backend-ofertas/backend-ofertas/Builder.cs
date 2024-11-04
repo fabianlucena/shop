@@ -5,6 +5,8 @@ using RFRBAC.Authorization;
 using RFRegister;
 using RFUserEmail;
 using RFUserEmailDapper;
+using RFHttpAction;
+using RFHttpActionDapper;
 using System.Data;
 
 namespace backend_ofertas
@@ -41,9 +43,11 @@ namespace backend_ofertas
             services.AddRFAuth();
             services.AddRFUserEmail();
             services.AddRFRegister();
+            services.AddRFHttpAction();
 
             services.AddRFAuthDapper();
             services.AddRFUserEmailDapper();
+            services.AddRFHttpActionDapper();
         }
 
         public static void ConfigureRepo(this WebApplication app)
@@ -55,6 +59,7 @@ namespace backend_ofertas
 
                 RFAuthDapper.Setup.ConfigureRFAuthDapper(serviceProvider);
                 RFUserEmailDapper.Setup.ConfigureRFUserEmailDapper(serviceProvider);
+                RFHttpActionDapper.Setup.ConfigureRFHttpActionDapper(serviceProvider);
             }
         }
 

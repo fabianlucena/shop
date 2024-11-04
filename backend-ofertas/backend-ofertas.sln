@@ -19,7 +19,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RFUserEmail", "RFUserEmail\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RFUserEmailDapper", "RFUserEmailDapper\RFUserEmailDapper.csproj", "{5F01F106-A894-4D42-8D97-766A0392E6B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFRBAC", "RFRBAC\RFRBAC.csproj", "{CA409D5F-7100-46AB-8AC2-2A5820A6479C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RFRBAC", "RFRBAC\RFRBAC.csproj", "{CA409D5F-7100-46AB-8AC2-2A5820A6479C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFHttpAction", "RFAction\RFHttpAction.csproj", "{A3FC4DCF-6A2C-4631-BDB8-2F3E2B115484}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFHttpActionDapper", "RFHttpActionDapper\RFHttpActionDapper.csproj", "{B874C48B-D4A5-40CE-A565-EC0BE64307E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +67,14 @@ Global
 		{CA409D5F-7100-46AB-8AC2-2A5820A6479C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA409D5F-7100-46AB-8AC2-2A5820A6479C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA409D5F-7100-46AB-8AC2-2A5820A6479C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3FC4DCF-6A2C-4631-BDB8-2F3E2B115484}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3FC4DCF-6A2C-4631-BDB8-2F3E2B115484}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3FC4DCF-6A2C-4631-BDB8-2F3E2B115484}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3FC4DCF-6A2C-4631-BDB8-2F3E2B115484}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B874C48B-D4A5-40CE-A565-EC0BE64307E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B874C48B-D4A5-40CE-A565-EC0BE64307E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B874C48B-D4A5-40CE-A565-EC0BE64307E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B874C48B-D4A5-40CE-A565-EC0BE64307E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

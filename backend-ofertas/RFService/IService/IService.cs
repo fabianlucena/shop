@@ -9,6 +9,8 @@ namespace RFService.IService
 
         Task<Entity> CreateAsync(Entity data);
 
+        GetOptions SanitizeGetOptions(GetOptions options);
+
         Task<IEnumerable<Entity>> GetListAsync(GetOptions options);
 
         Task<Entity> GetSingleAsync(GetOptions options);
@@ -29,6 +31,6 @@ namespace RFService.IService
 
         Task<int> UpdateAsync(object data, GetOptions options);
 
-        Task<int> UpdateForIdAsync(object data, Int64 id, GetOptions? options = null);
+        Task<int> DeleteAsync(GetOptions options);
     }
 }

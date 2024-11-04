@@ -5,7 +5,9 @@ using RFService.IRepo;
 
 namespace RFAuth.Services
 {
-    public class UserTypeService(IRepo<UserType> repo) : ServiceTimestampsIdUuidEnabledNameTitleTranslatable<IRepo<UserType>, UserType>(repo), IUserTypeService
+    public class UserTypeService(IRepo<UserType> repo)
+        : ServiceTimestampsIdUuidEnabledNameTitleTranslatable<IRepo<UserType>, UserType>(repo),
+            IUserTypeService
     {
     }
 }
