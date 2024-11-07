@@ -1,5 +1,6 @@
 using Microsoft.OpenApi.Models;
 using RFAuth;
+using RFHttpExceptions.Middlewares;
 
 namespace backend_ofertas
 {
@@ -65,7 +66,7 @@ namespace backend_ofertas
             app.UseAuthorization();
 
             app.UseMiddleware<AuthorizationMiddleware>();
-            app.UseMiddleware<ErrorMiddleware>();
+            app.UseMiddleware<HttpExceptionMiddleware>();
 
             app.MapControllers();
 

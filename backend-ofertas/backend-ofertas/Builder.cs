@@ -8,6 +8,7 @@ using RFUserEmailDapper;
 using RFHttpAction;
 using RFHttpActionDapper;
 using System.Data;
+using RFUserEmailVerified;
 
 namespace backend_ofertas
 {
@@ -71,7 +72,7 @@ namespace backend_ofertas
                 var serviceProvider = scope.ServiceProvider;
 
                 RFAuth.Setup.ConfigureRFAuth(serviceProvider);
-                RFUserEmail.Setup.ConfigureRFUserEmail(serviceProvider);
+                RFUserEmailVerified.Setup.ConfigureRFUserEmailVerified(serviceProvider);
                 RFRegister.Setup.ConfigureRFRegister(serviceProvider);
             }
         }

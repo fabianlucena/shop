@@ -35,10 +35,11 @@
     <ProjectReference Include="..\..\rh-nugets\RFAuth\RFAuth.csproj" />
     <ProjectReference Include="..\..\rh-nugets\RFHttpActionDapper\RFHttpActionDapper.csproj" />
     <ProjectReference Include="..\..\rh-nugets\RFHttpAction\RFHttpAction.csproj" />
+    <ProjectReference Include="..\..\rh-nugets\RFHttpExceptions\RFHttpExceptions.csproj" />
     <ProjectReference Include="..\..\rh-nugets\RFRBAC\RFRBAC.csproj" />
     <ProjectReference Include="..\..\rh-nugets\RFRegister\RFRegister.csproj" />
-    <ProjectReference Include="..\..\rh-nugets\RFUserEmailDapper\RFUserEmailDapper.csproj" />
-    <ProjectReference Include="..\..\rh-nugets\RFUserEmail\RFUserEmail.csproj" />
+    <ProjectReference Include="..\..\rh-nugets\RFUserEmailVerifiedDapper\RFUserEmailDapperVerified.csproj" />
+    <ProjectReference Include="..\..\rh-nugets\RFUserEmailVerified\RFUserEmailVerified.csproj" />
   </ItemGroup>
 
 </Project>
