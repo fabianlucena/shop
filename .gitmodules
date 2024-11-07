@@ -1,0 +1,4 @@
+[submodule "rh-nugets"]
+	path = rh-nugets
+	url = https://github.com/fabianlucena/rh-nugets.git
+	branch = main

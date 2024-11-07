@@ -31,13 +31,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RFAuthDapper\RFAuthDapper.csproj" />
-    <ProjectReference Include="..\RFAuth\RFAuth.csproj" />
-    <ProjectReference Include="..\RFDapper\RFDapper.csproj" />
-    <ProjectReference Include="..\RFHttpActionDapper\RFHttpActionDapper.csproj" />
-    <ProjectReference Include="..\RFRBAC\RFRBAC.csproj" />
-    <ProjectReference Include="..\RFRegister\RFRegister.csproj" />
-    <ProjectReference Include="..\RFUserEmailDapper\RFUserEmailDapper.csproj" />
+    <ProjectReference Include="..\..\rh-nugets\RFAuthDapper\RFAuthDapper.csproj" />
+    <ProjectReference Include="..\..\rh-nugets\RFAuth\RFAuth.csproj" />
+    <ProjectReference Include="..\..\rh-nugets\RFHttpActionDapper\RFHttpActionDapper.csproj" />
+    <ProjectReference Include="..\..\rh-nugets\RFHttpAction\RFHttpAction.csproj" />
+    <ProjectReference Include="..\..\rh-nugets\RFRBAC\RFRBAC.csproj" />
+    <ProjectReference Include="..\..\rh-nugets\RFRegister\RFRegister.csproj" />
+    <ProjectReference Include="..\..\rh-nugets\RFUserEmailDapper\RFUserEmailDapper.csproj" />
+    <ProjectReference Include="..\..\rh-nugets\RFUserEmail\RFUserEmail.csproj" />
   </ItemGroup>
 
 </Project>
