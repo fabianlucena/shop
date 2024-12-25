@@ -2,7 +2,7 @@ using Microsoft.OpenApi.Models;
 using RFAuth;
 using RFHttpExceptions.Middlewares;
 
-namespace backend_ofertas
+namespace backend_shop
 {
     public class Program
     {
@@ -24,8 +24,8 @@ namespace backend_ofertas
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "API Ofertas",
-                    Description = "Aplicación para publicación y búsqueda de ofertas",
+                    Title = "API Shop",
+                    Description = "Aplicación para publicación y búsqueda de artículos",
                     //TermsOfService = new Uri("https://example.com/terms"),
                     Contact = new OpenApiContact
                     {

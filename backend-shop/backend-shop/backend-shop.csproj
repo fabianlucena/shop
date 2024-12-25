@@ -38,7 +38,7 @@
     <ProjectReference Include="..\..\rh-nugets\RFHttpExceptions\RFHttpExceptions.csproj" />
     <ProjectReference Include="..\..\rh-nugets\RFRBAC\RFRBAC.csproj" />
     <ProjectReference Include="..\..\rh-nugets\RFRegister\RFRegister.csproj" />
-    <ProjectReference Include="..\..\rh-nugets\RFUserEmailVerifiedDapper\RFUserEmailDapperVerified.csproj" />
+    <ProjectReference Include="..\..\rh-nugets\RFUserEmailVerifiedDapper\RFUserEmailVerifiedDapper.csproj" />
     <ProjectReference Include="..\..\rh-nugets\RFUserEmailVerified\RFUserEmailVerified.csproj" />
   </ItemGroup>
 

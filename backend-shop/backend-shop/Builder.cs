@@ -10,7 +10,7 @@ using RFHttpActionDapper;
 using System.Data;
 using RFUserEmailVerified;
 
-namespace backend_ofertas
+namespace backend_shop
 {
     public static class MvcServiceCollectionExtensions
     {

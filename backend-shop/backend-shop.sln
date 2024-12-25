@@ -31,7 +31,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RFHttpExceptions", "..\rh-n
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RFUserEmailVerified", "..\rh-nugets\RFUserEmailVerified\RFUserEmailVerified.csproj", "{AD0C95D9-ED2C-4CA6-B166-8D6721EA4799}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RFUserEmailDapperVerified", "..\rh-nugets\RFUserEmailVerifiedDapper\RFUserEmailDapperVerified.csproj", "{B41908D8-006F-4570-92D9-3DF422F650C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RFUserEmailVerifiedDapper", "..\rh-nugets\RFUserEmailVerifiedDapper\RFUserEmailVerifiedDapper.csproj", "{B41908D8-006F-4570-92D9-3DF422F650C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
