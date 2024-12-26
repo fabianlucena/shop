@@ -1,7 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Api } from '../libs/api';
+import { useSession } from '../contexts/Session';
 
 export default function useLogin() {
+  const { setIsLoggedIn, setPermissions } = useSession();
+
   async function autoLogin() {
     const autoLoginToken = await AsyncStorage.getItem('autoLoginToken');
     if (!autoLoginToken) {
@@ -25,6 +28,19 @@ export default function useLogin() {
 
     try {
       const data = await Api.postJson(url, { body });
+
+      if (!data) {
+        setIsLoggedIn(false);
+        return;
+      }
+
+      if (data.authorizationToken) {
+        setIsLoggedIn(true);
+        Api.headers.Authorization = 'Bearer ' + data.authorizationToken;
+      } else {
+        setIsLoggedIn(false);
+      }
+
       if (data.deviceToken) {
         AsyncStorage.setItem('deviceToken', data.deviceToken);
       }
@@ -32,9 +48,9 @@ export default function useLogin() {
       if (data.autoLoginToken) {
         AsyncStorage.setItem('autoLoginToken', data.autoLoginToken);
       }
-      
-      if (data?.authorizationToken) {
-        Api.headers.Authorization = 'Bearer ' + data.authorizationToken;
+
+      if (data.attributes?.permissions) {
+        setPermissions(data.attributes?.permissions);
       }
     } catch(err) {
       console.error(err);
@@ -44,8 +60,13 @@ export default function useLogin() {
 
   async function logout() {
     AsyncStorage.removeItem('autoLoginToken');
+    setIsLoggedIn(false);
     
-    Api.postJson('/v1/logout');
+    try {
+      Api.postJson('/v1/logout');
+    } catch(err) {
+      console.error(err);
+    }
     delete Api.headers.Authorization;
   }
 

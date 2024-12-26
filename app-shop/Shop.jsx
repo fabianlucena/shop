@@ -8,6 +8,7 @@ import RegisterScreen from './screens/RegisterScreen';
 import HomeScreen from './screens/HomeScreen';
 import LogoutScreen from './screens/LogoutScreen';
 import ChangePasswordScreen from './screens/ChangePasswordScreen';
+import SellerScreen from './screens/SellerScreen';
 import Background from './components/Background';
 import FancyText from './components/FancyText';
 import styles from './libs/styles';
@@ -18,19 +19,12 @@ const Stack = createNativeStackNavigator();
 const navigationRef = createNavigationContainerRef();
 
 export default function Shop() {
-  const { isInitiated, setIsInitiated, isLogguedIn, setIsLoggedIn } = useSession();
+  const { isInitiated, setIsInitiated, isLogguedIn } = useSession();
   const { autoLogin } = useLogin();
-
-  console.log(isInitiated, isLogguedIn);
 
   useEffect(() => {
       autoLogin()
-        .then(result => setIsLoggedIn(result))
-        .catch(err => {
-          setIsLoggedIn(false);
-          console.error(err)
-        })
-        setIsInitiated(true);
+        .finally(() => setIsInitiated(true));
     }, []);
 
   if (!isInitiated) {
@@ -62,6 +56,7 @@ export default function Shop() {
       <Stack.Navigator >
         <Stack.Screen name="Home"           component={HomeScreen}           options={{ title: 'Principal' }}/>
         <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} options={{ title: 'Cambiar contraseña' }}/>
+        <Stack.Screen name="Seller"         component={SellerScreen}         options={{ title: 'Vendedor' }}/>
         <Stack.Screen name="Logout"         component={LogoutScreen}         options={{ title: 'Salir' }}/>
       </Stack.Navigator>
     </NavigationContainer>
