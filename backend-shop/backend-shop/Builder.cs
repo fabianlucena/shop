@@ -75,6 +75,7 @@ namespace backend_shop
 
                 RFAuth.Setup.ConfigureRFAuth(serviceProvider);
                 RFUserEmailVerified.Setup.ConfigureRFUserEmailVerified(serviceProvider);
+                RFRBAC.Setup.ConfigureRFRBAC(serviceProvider);
                 RFRegister.Setup.ConfigureRFRegister(serviceProvider);
             }
         }
