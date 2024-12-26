@@ -1,14 +1,15 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using RFLocalizer;
 using RFAuth;
 using RFAuthDapper;
+using RFRBAC;
+using RFRBACDapper;
 using RFRBAC.Authorization;
 using RFRegister;
-using RFUserEmail;
-using RFUserEmailDapper;
+using RFUserEmailVerified;
 using RFHttpAction;
 using RFHttpActionDapper;
-using System.Data;
-using RFUserEmailVerified;
+using RFDapperDriverSQLServer;
+using RFUserEmailVerifiedDapper;
 
 namespace backend_shop
 {
@@ -16,7 +17,9 @@ namespace backend_shop
     {
         public static void ConfigureServices(this WebApplicationBuilder builder)
         {
-            builder.Services.AddCors(options =>
+            var services = builder.Services;
+            
+            services.AddCors(options =>
             {
                 options.AddPolicy("allowAll",
                     builder =>
@@ -30,25 +33,23 @@ namespace backend_shop
             string dbConnectionString = builder.Configuration.GetConnectionString("dbConnection")
                 ?? throw new Exception("No DB connection founded, try adding a dbConnection property to ConnectionStrings on appsettings.json");
 
-            var services = builder.Services;
-
-            services.AddSingleton<IDbConnection>(sp =>
-            {
-                var connection = new SqlConnection(dbConnectionString);
-                connection.Open();
-                return connection;
-            });
+            RFDapper.Setup.ConfigureDefaultDBConnectionString(dbConnectionString);
 
             services.AddControllers(options => options.Filters.Add<RBACFilter>());
 
+            services.AddRFLocalizer();
             services.AddRFAuth();
-            services.AddRFUserEmail();
+            services.AddRFUserEmailVerified();
+            services.AddRFRBAC();
             services.AddRFRegister();
             services.AddRFHttpAction();
 
             services.AddRFAuthDapper();
-            services.AddRFUserEmailDapper();
+            services.AddRFUserEmailVerifiedDapper();
+            services.AddRFRBACDapper();
             services.AddRFHttpActionDapper();
+
+            services.AddRFDapperDriverSQLServer();
         }
 
         public static void ConfigureRepo(this WebApplication app)
@@ -59,7 +60,8 @@ namespace backend_shop
                 var serviceProvider = scope.ServiceProvider;
 
                 RFAuthDapper.Setup.ConfigureRFAuthDapper(serviceProvider);
-                RFUserEmailDapper.Setup.ConfigureRFUserEmailDapper(serviceProvider);
+                RFUserEmailVerifiedDapper.Setup.ConfigureRFUserEmailVerifiedDapper(serviceProvider);
+                RFRBACDapper.Setup.ConfigureRFRBACDapper(serviceProvider);
                 RFHttpActionDapper.Setup.ConfigureRFHttpActionDapper(serviceProvider);
             }
         }

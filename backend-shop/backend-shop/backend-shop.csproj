@@ -18,7 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.8.1" />
   </ItemGroup>
 
@@ -33,9 +32,12 @@
   <ItemGroup>
     <ProjectReference Include="..\..\rh-nugets\RFAuthDapper\RFAuthDapper.csproj" />
     <ProjectReference Include="..\..\rh-nugets\RFAuth\RFAuth.csproj" />
+    <ProjectReference Include="..\..\rh-nugets\RFDapperDriverSQLServer\RFDapperDriverSQLServer.csproj" />
     <ProjectReference Include="..\..\rh-nugets\RFHttpActionDapper\RFHttpActionDapper.csproj" />
     <ProjectReference Include="..\..\rh-nugets\RFHttpAction\RFHttpAction.csproj" />
     <ProjectReference Include="..\..\rh-nugets\RFHttpExceptions\RFHttpExceptions.csproj" />
+    <ProjectReference Include="..\..\rh-nugets\RFLocalizer\RFLocalizer.csproj" />
+    <ProjectReference Include="..\..\rh-nugets\RFRBACDapper\RFRBACDapper.csproj" />
     <ProjectReference Include="..\..\rh-nugets\RFRBAC\RFRBAC.csproj" />
     <ProjectReference Include="..\..\rh-nugets\RFRegister\RFRegister.csproj" />
     <ProjectReference Include="..\..\rh-nugets\RFUserEmailVerifiedDapper\RFUserEmailVerifiedDapper.csproj" />
