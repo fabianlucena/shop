@@ -5,7 +5,7 @@ import Button from '../components/Button';
 import Background from '../components/Background';
 import Busy from '../components/Busy';
 import styles from '../libs/styles';
-import { login } from '../libs/login';
+import { login } from '../services/useLogin';
 
 export default function LoginScreen({ navigation }) {
   const [loading, setLoading] = useState(false);

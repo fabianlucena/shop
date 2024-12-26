@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { View, Switch } from 'react-native';
 import { TextInput } from 'react-native';
 import Field from './Field';
-import Label from '../components/Label';
+import Label from './Label';
 import styles from '../libs/styles';
 
 export default function TextField({

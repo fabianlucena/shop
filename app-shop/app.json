@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Ofertas",
-    "slug": "ofertas",
+    "name": "Shop",
+    "slug": "shop",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
