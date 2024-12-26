@@ -1,22 +1,20 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Api } from './api';
+import { Api } from '../libs/api';
 
 export default function useLogin() {
-  const [onLoginSuccess, setOnLoginSuccess] = useState(null);
-  const [onLoginError, setOnLoginError] = useState(null);
-  const [onLogout, setOnLogout] = useState(null);
-
   async function autoLogin() {
     const autoLoginToken = await AsyncStorage.getItem('autoLoginToken');
     if (!autoLoginToken) {
-      return;
+      return false;
     }
 
-    return _login('/v1/auto-login', {autoLoginToken});
+    await _login('/v1/auto-login', {autoLoginToken});
+    return true;
   }
 
   async function login(body) {
-    return _login('/v1/login', body);
+    await _login('/v1/login', body);
+    return true;
   }
 
   async function _login(url, body) {
@@ -37,33 +35,21 @@ export default function useLogin() {
       
       if (data?.authorizationToken) {
         Api.headers.Authorization = 'Bearer ' + data.authorizationToken;
-        if (onLoginSuccess) {
-          onLoginSuccess(data);
-        }
       }
     } catch(err) {
-      if (onLoginError) {
-        onLoginError(err);
-      } else {
-        console.error(err);
-      }
+      console.error(err);
+      throw err;
     }
   }
 
   async function logout() {
-    Api.postJson('/v1/logout');
-
-    delete Api.headers.Authorization;
     AsyncStorage.removeItem('autoLoginToken');
-    if (onLogout) {
-      onLogout();
-    }
+    
+    Api.postJson('/v1/logout');
+    delete Api.headers.Authorization;
   }
 
   return {
-    onLoginSuccess, setOnLoginSuccess,
-    onLoginError, setOnLoginError,
-    onLogout, setOnLogout,
     autoLogin,
     login,
     logout,

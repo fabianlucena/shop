@@ -1,37 +1,39 @@
-import '@expo/metro-runtime';
-import {NavigationContainer, createNavigationContainerRef } from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { useEffect } from 'react';
+import { NavigationContainer, createNavigationContainerRef } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { View, ActivityIndicator } from 'react-native';
+
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import HomeScreen from './screens/HomeScreen';
 import LogoutScreen from './screens/LogoutScreen';
-import ChangePasswordScreen from './screens/ChangePassword';
-import { Api } from './libs/api';
-import { useState, useEffect } from 'react';
-import { View, ActivityIndicator } from 'react-native';
-import { autoLogin, setOnLoginSuccess, setOnLoginError, setOnLogout } from './libs/login';
+import ChangePasswordScreen from './screens/ChangePasswordScreen';
 import Background from './components/Background';
 import FancyText from './components/FancyText';
 import styles from './libs/styles';
+import { useSession } from './contexts/Session';
+import useLogin from './services/useLogin';
 
 const Stack = createNativeStackNavigator();
 const navigationRef = createNavigationContainerRef();
 
-export default function App() {
-  const [initiated, setInitiated] = useState();
-  const [loggued, setLogged] = useState(!!Api.headers.Authorization);
+export default function Shop() {
+  const { isInitiated, setIsInitiated, isLogguedIn, setIsLoggedIn } = useSession();
+  const { autoLogin } = useLogin();
+
+  console.log(isInitiated, isLogguedIn);
 
   useEffect(() => {
-    (async () => {
-      setOnLoginSuccess(() => setLogged(true));
-      setOnLogout(() => setLogged(false));
-      setOnLoginError(err => console.error(err));
-      await autoLogin();
-      setInitiated(true);
-    })();
-  }, []);
+      autoLogin()
+        .then(result => setIsLoggedIn(result))
+        .catch(err => {
+          setIsLoggedIn(false);
+          console.error(err)
+        })
+        setIsInitiated(true);
+    }, []);
 
-  if (!initiated) {
+  if (!isInitiated) {
     return (
       <Background>
         <View style={styles.container}>
@@ -44,7 +46,7 @@ export default function App() {
     );
   }
 
-  if (!loggued) {
+  if (!isLogguedIn) {
     return (
       <NavigationContainer>
         <Stack.Navigator >

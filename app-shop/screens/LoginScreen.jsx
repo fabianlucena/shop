@@ -5,16 +5,21 @@ import Button from '../components/Button';
 import Background from '../components/Background';
 import Busy from '../components/Busy';
 import styles from '../libs/styles';
-import { login } from '../services/useLogin';
+import useLogin from '../services/useLogin';
+import { useSession } from '../contexts/Session';
 
 export default function LoginScreen({ navigation }) {
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState('admin');
   const [password, setPassword] = useState('1234');
+  const { login } = useLogin();
+  const { setIsLoggedIn } = useSession();
 
   async function loginHandler() {
     setLoading(true);
-    await login({ username, password });
+    if (await login({ username, password }))
+      setIsLoggedIn(true);
+
     setLoading(false);
   }
 

@@ -3,15 +3,22 @@ import { View } from 'react-native';
 import Button from '../components/Button';
 import Background from '../components/Background';
 import styles from '../libs/styles';
-import { logout } from '../libs/login';
+import useLogin from '../services/useLogin';
 import Message from '../components/Message';
+import { useSession } from '../contexts/Session';
 
 export default function LogoutScreen({ navigation }) {
   const [, forceUpdate] = useReducer(o => !o);
+  const { logout } = useLogin();
+  const { setIsLoggedIn } = useSession();
 
   async function logoutHandler() {
-    await logout();
-    forceUpdate();
+    logout()
+      .catch(err => console.error(err))
+      .finally(() => {
+        setIsLoggedIn(false);
+        forceUpdate();
+      });
   }
 
   return (
