@@ -10,6 +10,12 @@ using RFHttpAction;
 using RFHttpActionDapper;
 using RFDapperDriverSQLServer;
 using RFUserEmailVerifiedDapper;
+using backend_shop.IServices;
+using RFDapper;
+using backend_shop.Entities;
+using RFService.IRepo;
+using static RFDapper.Setup;
+using backend_shop.Service;
 
 namespace backend_shop
 {
@@ -44,12 +50,20 @@ namespace backend_shop
             services.AddRFRegister();
             services.AddRFHttpAction();
 
+            services.AddScoped<ICompanyService, CompanyService>();
+
             services.AddRFAuthDapper();
             services.AddRFUserEmailVerifiedDapper();
             services.AddRFRBACDapper();
             services.AddRFHttpActionDapper();
 
+            services.AddScoped<Dapper<Company>, Dapper<Company>>();
+
+            services.AddScoped<IRepo<Company>, Dapper<Company>>();
+
             services.AddRFDapperDriverSQLServer();
+
+            services.AddAutoMapper(typeof(MappingProfile).Assembly);
         }
 
         public static void ConfigureRepo(this WebApplication app)
@@ -63,6 +77,8 @@ namespace backend_shop
                 RFUserEmailVerifiedDapper.Setup.ConfigureRFUserEmailVerifiedDapper(serviceProvider);
                 RFRBACDapper.Setup.ConfigureRFRBACDapper(serviceProvider);
                 RFHttpActionDapper.Setup.ConfigureRFHttpActionDapper(serviceProvider);
+
+                CreateTable<Company>(serviceProvider);
             }
         }
 

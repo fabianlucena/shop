@@ -45,8 +45,16 @@ export class Api {
     return res;
   }
 
+  static get(service, options) {
+    return this.fetch(service, {...options, method: 'GET'});
+  }
+
   static post(service, options) {
     return this.fetch(service, {...options, method: 'POST'});
+  }
+
+  static getJson(service, options) {
+    return this.get(service, {...options, json: true});
   }
 
   static postJson(service, options) {

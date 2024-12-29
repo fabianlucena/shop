@@ -1,4 +1,6 @@
 using AutoMapper;
+using backend_shop.DTO;
+using backend_shop.Entities;
 
 namespace backend_shop
 {
@@ -7,6 +9,8 @@ namespace backend_shop
     {
         public MappingProfile()
         {
+            CreateMap<CompanyAddRequest, Company>();
+            CreateMap<Company, CompanyResponse>();
         }
     }
 }

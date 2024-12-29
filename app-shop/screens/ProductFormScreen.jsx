@@ -2,14 +2,28 @@ import { useState, useEffect } from 'react';
 
 import Screen from '../components/Screen';
 import TextField from '../components/TextField';
+import SelectField from '../components/SelectField';
 import Button from '../components/Button';
 import Message from '../components/Message';
+import CurrencyField from '../components/CurrencyField';
+import SwitchField from '../components/SwitchField';
 
-export default function FormProductScreen() {
+export default function ProductFormScreen({ uuid}) {
   const [message, setMessage] = useState('');
   const [canSubmit, setCanSubmit] = useState(false);
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState('');
+  const [category, setCategory] = useState('');
+  const [price, setPrice] = useState(0);
+  const [isPresent, setIsPresent] = useState(false);
+  const [minAge, setMinAge] = useState(0);
+  const [maxAge, setMaxAge] = useState(0);
+
+  const categories = [
+    { label: 'Opción 1', value: 'opcion1' },
+    { label: 'Opción 2', value: 'opcion2' },
+    { label: 'Opción 3', value: 'opcion3' },
+  ];
 
   useEffect(() => {
     if (loading) {
@@ -40,16 +54,45 @@ export default function FormProductScreen() {
         Nombre
       </TextField>
       <SelectField
-        value={name}
-        onChangeValue={setName}
+        value={category}
+        onChangeValue={setCategory}
+        options={categories}
       >
-        Nombre
+        Rubro
       </SelectField>
+      <CurrencyField
+        value={price}
+        onChangeValue={setPrice}
+      >
+        Precio
+      </CurrencyField>
+      <SwitchField
+        value={isPresent}
+        onChangeValue={setIsPresent}
+      >
+        Apto para regalar
+      </SwitchField>
+      {isPresent && <>
+        <TextField
+          value={minAge}
+          onChangeValue={setMinAge}
+          keyboardType="numeric"
+        >
+          Edad mínima
+        </TextField>
+        <TextField
+          value={maxAge}
+          onChangeValue={setMaxAge}
+          keyboardType="numeric"
+        >
+          Edad máxima
+        </TextField>
+      </>}
       <Button
         disabled={!canSubmit}
         onPress={submit}
       >
-        Registrarse
+        {uuid? 'Modificar': 'Agregar'}
       </Button>
     </Screen>
   );

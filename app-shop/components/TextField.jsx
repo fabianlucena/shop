@@ -14,7 +14,9 @@ export default function TextField({
   style,
   inputStyle,
   labelStyle,
-  secureTextEntry
+  secureTextEntry,
+  keyboardType = null,
+  multiline = false,
 }) {
   const [isNull, setIsNull] = useState(false);
   const [localValue, setLocalValue] = useState('');
@@ -65,6 +67,8 @@ export default function TextField({
         disabled={disabled}
         onChangeText={onChangeTextHandler}
         secureTextEntry={secureTextEntry}
+        keyboardType={keyboardType}
+        multiline={multiline}
       />
     </Field>
   );
