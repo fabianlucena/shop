@@ -82,7 +82,7 @@ export default function RegisterScreen({ navigation }) {
 
   return (
     <Screen
-      header='Registrarse'
+      header="Registrarse"
       busy={loading}
     >
       <Message>{message}</Message>

@@ -16,13 +16,11 @@ export default function LogoutScreen({ navigation }) {
   }
 
   return (
-    <Screen
-      header="Salir"
-    >
+    <Screen>
       <Message>Su sesión se cerrará. Para volver a utilizar la áplicación deberá iniciar sesión nuevamente.</Message>
       <View style={styles.sameLine}>
-        <Button onPress={() => navigation.goBack()} >Volver</Button>
-        <Button onPress={logoutHandler} >Salir</Button>
+      <Button onPress={logoutHandler} >Salir</Button>
+      <Button onPress={() => navigation.goBack()} >Volver</Button>
       </View>
     </Screen>
   );

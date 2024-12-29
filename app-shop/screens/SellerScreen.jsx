@@ -15,9 +15,7 @@ export default function LogoutScreen({ navigation }) {
   }
 
   return (
-    <Screen
-      header="Vendedor"
-    >
+    <Screen>
       <View style={styles.sameLine}>
         <Button onPress={() => navigation.goBack()} >Mercado</Button>
       </View>

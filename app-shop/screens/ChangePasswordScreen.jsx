@@ -69,7 +69,6 @@ export default function ChangePasswordScreen({ navigation }) {
   return (
     <Screen
       busy={loading}
-      header="Cambiar contraseña"
     >
       <Message>{message}</Message>
       <TextField
