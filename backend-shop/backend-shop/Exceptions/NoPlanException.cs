@@ -2,8 +2,8 @@
 
 namespace backend_shop.Exceptions
 {
-    public class NoOwnerException()
-        : HttpException(400, "No owner provided")
+    public class NoPlanException()
+        : HttpException(400, "No plan provided")
     {
     }
 }

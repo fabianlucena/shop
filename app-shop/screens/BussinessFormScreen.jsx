@@ -5,25 +5,25 @@ import TextField from '../components/TextField';
 import Button from '../components/Button';
 import Message from '../components/Message';
 
-import useCompany from '../services/useCompany';
+import useBusiness from '../services/useBusiness';
 
-export default function CompanyFormScreen({ uuid }) {
+export default function BusinessFormScreen({ uuid }) {
   const [message, setMessage] = useState('');
   const [canSubmit, setCanSubmit] = useState(false);
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const companyService = useCompany();
+  const businessService = useBusiness();
 
   useEffect(() => {
     if (loading) {
       setMessage('Cargando.');
       setCanSubmit(false);
     } else if (!name) {
-      setMessage('Debe proporcionar un nombre para la empresa.');
+      setMessage('Debe proporcionar un nombre para el negocio.');
       setCanSubmit(false);
     } else if (!description) {
-      setMessage('Debe proporcionar una descripción para la empresa.');
+      setMessage('Debe proporcionar una descripción para el negocio.');
       setCanSubmit(false);
     } else {
       setMessage('Listo para enviar');
@@ -33,12 +33,12 @@ export default function CompanyFormScreen({ uuid }) {
 
   function submit() {
     setLoading(true);
-    companyService.add({
+    businessService.add({
       name,
       description,
     })
-    .then(() => setMessage('Empresa creada correctamente.'))
-    .catch(() => setMessage('Error al crear la empresa.'))
+    .then(() => setMessage('Negocio creado correctamente.'))
+    .catch(() => setMessage('Error al crear el negocio.'))
     .finally(() => setLoading(false));
   }
 

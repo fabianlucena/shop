@@ -1,6 +1,6 @@
 ﻿namespace backend_shop.DTO
 {
-    public class CompanyResponse
+    public class BusinessResponse
     {
         public Guid Uuid { get; set; }
 

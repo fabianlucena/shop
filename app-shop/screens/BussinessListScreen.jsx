@@ -4,14 +4,14 @@ import { FlatList, View, Text } from 'react-native';
 import Screen from '../components/Screen';
 import Button from '../components/Button';
 
-import useCompany from '../services/useCompany';
+import useBusiness from '../services/useBusiness';
 
-export default function CompanyListScreen({ navigation}) {
+export default function BusinessListScreen({ navigation}) {
   const [data, setData] = useState([]);
-  const companyService = useCompany();
+  const businessService = useBusiness();
 
   useEffect(() => {
-    companyService.get()
+    businessService.get()
       .then(data => setData(data.rows));
   }, []);
 
@@ -23,7 +23,7 @@ export default function CompanyListScreen({ navigation}) {
 
   return (
     <Screen>
-      <Button onPress={() => navigation.navigate('CompanyForm')} >Agregar</Button>
+      <Button onPress={() => navigation.navigate('BusinessForm')} >Agregar</Button>
       <FlatList
         data={data}
         renderItem={renderItem}

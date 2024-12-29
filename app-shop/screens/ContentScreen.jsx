@@ -5,8 +5,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './HomeScreen';
 import LogoutScreen from './LogoutScreen';
 import ChangePasswordScreen from './ChangePasswordScreen';
-import CompanyListScreen from './CompanyListScreen';
-import CompanyFormScreen from './CompanyFormScreen';
+import BusinessListScreen from './BusinessListScreen';
+import BusinessFormScreen from './BusinessFormScreen';
 import ProductListScreen from './ProductListScreen';
 import ProductFormScreen from './ProductFormScreen';
 
@@ -17,7 +17,7 @@ function DrawerNavigator() {
   return <Drawer.Navigator>
       <Drawer.Screen name="Home"           component={HomeScreen}           options={{ title: 'Comprar' }}/>
       <Drawer.Screen name="ChangePassword" component={ChangePasswordScreen} options={{ title: 'Cambiar contraseña' }}/>
-      <Drawer.Screen name="CompanyList"    component={CompanyListScreen}    options={{ title: 'Empresas' }}/>
+      <Drawer.Screen name="BusinessList"   component={BusinessListScreen}   options={{ title: 'Negocios' }}/>
       <Drawer.Screen name="ProductList"    component={ProductListScreen}    options={{ title: 'Artículos' }}/>
       <Drawer.Screen name="Logout"         component={LogoutScreen}         options={{ title: 'Salir' }}/>
     </Drawer.Navigator>;
@@ -29,9 +29,9 @@ export default function ContentScreen() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Drawer"      component={DrawerNavigator}   options={{ headerShown: false }} />
-        <Stack.Screen name="CompanyForm" component={CompanyFormScreen} options={{ title: 'Agregar empresa' }}/>
-        <Stack.Screen name="ProductForm" component={ProductFormScreen} options={{ title: 'Agregar artículo' }}/>
+        <Stack.Screen name="Drawer"       component={DrawerNavigator}    options={{ headerShown: false }} />
+        <Stack.Screen name="BusinessForm" component={BusinessFormScreen} options={{ title: 'Agregar negocio' }}/>
+        <Stack.Screen name="ProductForm"  component={ProductFormScreen}  options={{ title: 'Agregar artículo' }}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

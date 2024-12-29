@@ -7,36 +7,39 @@ using RFService.Repo;
 
 namespace backend_shop.Service
 {
-    public class CompanyService(
-        IRepo<Company> repo
+    public class BusinessService(
+        IRepo<Business> repo
     )
-        : ServiceSoftDeleteTimestampsIdUuidEnabled<IRepo<Company>, Company>(repo),
-            ICompanyService
+        : ServiceSoftDeleteTimestampsIdUuidEnabledName<IRepo<Business>, Business>(repo),
+            IBusinessService
     {
-        public override async Task<Company> ValidateForCreationAsync(Company data)
+        public override async Task<Business> ValidateForCreationAsync(Business data)
         {
             data = await base.ValidateForCreationAsync(data);
 
-            if (data.Name == null)
+            if (string.IsNullOrWhiteSpace(data.Name))
+                throw new NoNameException();
 
             if (data.OwnerId <= 0)
             {
                 data.OwnerId = data.Owner?.Id ?? 0;
                 if (data.OwnerId <= 0)
-                {
                     throw new NoOwnerException();
-                }
             }
 
-            var existent = await GetSingleOrDefaultAsync(new GetOptions { Filters = { 
+            var existent = await GetSingleOrDefaultAsync(new GetOptions
+            {
+                Filters = {
                     { "OwnerId", data.OwnerId},
                     { "Name", data.Name }
-                } });
+                }
+            });
 
             if (existent != null)
-                throw new ACompanyForThatNameAlreadyExistException();
+                throw new ABusinessForThatNameAlreadyExistException();
 
             return data;
         }
     }
 }
+

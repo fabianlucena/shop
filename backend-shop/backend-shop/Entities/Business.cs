@@ -5,9 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace backend_shop.Entities
 {
-    [Table("Companies", Schema = "shop")]
-    public class Company
-        : EntitySoftDeleteTimestampsIdUuidEnabled
+    [Table("Businesses", Schema = "shop")]
+    public class Business
+        : EntitySoftDeleteTimestampsIdUuidEnabledName
     {
         [Required]
         [ForeignKey("Owner")]
@@ -15,10 +15,12 @@ namespace backend_shop.Entities
         public User? Owner { get; set; } = default;
 
         [Required]
-        [MaxLength(255)]
-        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
 
         [Required]
-        public string Description { get; set; } = string.Empty;
+        [ForeignKey("Plan")]
+        public long PlanId { get; set; } = default;
+        public Plan? Plan { get; set; } = default;
+
     }
 }

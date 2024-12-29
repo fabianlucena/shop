@@ -9,8 +9,8 @@ namespace backend_shop
     {
         public MappingProfile()
         {
-            CreateMap<CompanyAddRequest, Company>();
-            CreateMap<Company, CompanyResponse>();
+            CreateMap<BusinessAddRequest, Business>();
+            CreateMap<Business, BusinessResponse>();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace backend_shop.DTO
 {
-    public class CompanyAddRequest
+    public class BusinessAddRequest
     {
         public required string Name { get; set; }
 

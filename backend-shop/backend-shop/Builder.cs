@@ -50,16 +50,22 @@ namespace backend_shop
             services.AddRFRegister();
             services.AddRFHttpAction();
 
-            services.AddScoped<ICompanyService, CompanyService>();
+            services.AddScoped<IPlanService, PlanService>();
+            services.AddScoped<IPlanFeatureService, PlanFeatureService>();
+            services.AddScoped<IBusinessService, BusinessService>();
 
             services.AddRFAuthDapper();
             services.AddRFUserEmailVerifiedDapper();
             services.AddRFRBACDapper();
             services.AddRFHttpActionDapper();
 
-            services.AddScoped<Dapper<Company>, Dapper<Company>>();
+            services.AddScoped<Dapper<Plan>, Dapper<Plan>>();
+            services.AddScoped<Dapper<PlanFeature>, Dapper<PlanFeature>>();
+            services.AddScoped<Dapper<Business>, Dapper<Business>>();
 
-            services.AddScoped<IRepo<Company>, Dapper<Company>>();
+            services.AddScoped<IRepo<Plan>, Dapper<Plan>>();
+            services.AddScoped<IRepo<PlanFeature>, Dapper<PlanFeature>>();
+            services.AddScoped<IRepo<Business>, Dapper<Business>>();
 
             services.AddRFDapperDriverSQLServer();
 
@@ -78,7 +84,9 @@ namespace backend_shop
                 RFRBACDapper.Setup.ConfigureRFRBACDapper(serviceProvider);
                 RFHttpActionDapper.Setup.ConfigureRFHttpActionDapper(serviceProvider);
 
-                CreateTable<Company>(serviceProvider);
+                CreateTable<Plan>(serviceProvider);
+                CreateTable<PlanFeature>(serviceProvider);
+                CreateTable<Business>(serviceProvider);
             }
         }
 
