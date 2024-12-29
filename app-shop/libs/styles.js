@@ -13,7 +13,11 @@ const styles = StyleSheet.create({
   background: {
     flexGrow: 1,
     flexShrink: 1,
-    backgroundColor: '#e0e0f0',
+    backgroundColor: '#b5f6a7',
+  },
+
+  loader: {
+    color: '#29681b',
   },
 
   busy: {
@@ -25,23 +29,28 @@ const styles = StyleSheet.create({
     fontSize: 22,
   },
 
+  messageContainer: {
+    width: '100%',
+  },
+
   message: {
     fontSize: 16,
     color: '#404040',
     borderWidth: 2,
     borderRadius: 10,
-    borderColor: '#a0a0a0',
-    backgroundColor: '#e0e0e0',
+    borderColor: '#29681b',
+    backgroundColor: '#daf9d4',
     paddingVertical: 6,
     paddingHorizontal: 10,
-    width: '100%',
+    margin: '.5em',
   },
 
   button: {
-    borderBottomWidth: 2,
-    borderBottomColor: '#b0b0b0',
-    paddingVertical: 3,
-    paddingHorizontal: 12,
+    backgroundColor: '#29681b',
+    borderRadius: '1em',
+    boxShadow: '.2em .1em .2em #404040',
+    paddingVertical: 5,
+    paddingHorizontal: 18,
     margin: 5,
   },
 
@@ -49,12 +58,13 @@ const styles = StyleSheet.create({
   },
 
   textButton: {
-    fontSize: 16,
+    fontSize: 18,
     textAlign: 'center',
+    color: '#ffffff',
   },
 
   disabledTextButton: {
-    color: '#606060',
+    color: '#d0d0d0',
   },
 
   field: {
@@ -66,13 +76,22 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 26,
     borderBottomWidth: 2,
-    borderBottomColor: '#a0a0a0',
+    borderBottomColor: '#29681b',
+    color: '#194210',
     borderRadius: 2,
+    backgroundColor: '#daf9d4',
   },
 
   label: {
-    color: '#606060',
-    fontSize: 20,
+    color: '#194210',
+    fontSize: 18,
+  },
+
+  header: {
+    color: '#194210',
+    fontSize: 26,
+    fontWeight: 'bold',
+    margin: 10,
   },
 
   sameLine: {

@@ -1,13 +1,12 @@
-import { View, Text } from 'react-native';
-import Button from '../components/Button';
-import Background from '../components/Background';
-import Message from '../components/Message';
-import styles from '../libs/styles';
-import TextField from '../components/TextField';
 import { useEffect, useState } from 'react';
+
 import { Api } from '../libs/api';
+
+import Button from '../components/Button';
+import Screen from '../components/Screen';
+import Message from '../components/Message';
+import TextField from '../components/TextField';
 import SuccessMessage from '../components/SuccessMessage';
-import Busy from '../components/Busy';
 
 export default function ChangePasswordScreen({ navigation }) {
   const [loading, setLoading] = useState(false);
@@ -68,39 +67,38 @@ export default function ChangePasswordScreen({ navigation }) {
   }
 
   return (
-    <Background>
-      <Busy busy={loading}>
-        <View style={styles.container}>
-          <Message>{message}</Message>
-          <TextField
-            value={currentPassword}
-            onChangeValue={setCurrentPassword}
-            secureTextEntry={true}
-          >
-            Contraseña actual
-          </TextField>
-          <TextField
-            value={newPassword}
-            onChangeValue={setNewPassword}
-            secureTextEntry={true}
-          >
-            Contraseña nueva
-          </TextField>
-          <TextField
-            value={confirmation}
-            onChangeValue={setConfirmation}
-            secureTextEntry={true}
-          >
-            Confirme la contraseña
-          </TextField>
-          <Button
-            disabled={!canChangePassword}
-            onPress={changePassword}
-          >
-            Cambiar
-          </Button>
-        </View>
-      </Busy>
-    </Background>
+    <Screen
+      busy={loading}
+      header="Cambiar contraseña"
+    >
+      <Message>{message}</Message>
+      <TextField
+        value={currentPassword}
+        onChangeValue={setCurrentPassword}
+        secureTextEntry={true}
+      >
+        Contraseña actual
+      </TextField>
+      <TextField
+        value={newPassword}
+        onChangeValue={setNewPassword}
+        secureTextEntry={true}
+      >
+        Contraseña nueva
+      </TextField>
+      <TextField
+        value={confirmation}
+        onChangeValue={setConfirmation}
+        secureTextEntry={true}
+      >
+        Confirme la contraseña
+      </TextField>
+      <Button
+        disabled={!canChangePassword}
+        onPress={changePassword}
+      >
+        Cambiar
+      </Button>
+    </Screen>
   );
 }

@@ -1,13 +1,14 @@
-import { View, ActivityIndicator } from 'react-native';
-import Button from '../components/Button';
-import Background from '../components/Background';
+import { useState, useEffect } from 'react';
+import { View } from 'react-native';
+
+import { Api } from '../libs/api';
 import styles from '../libs/styles';
+
+import Button from '../components/Button';
+import Screen from '../components/Screen';
 import TextField from '../components/TextField';
 import Message from '../components/Message';
-import { useState, useEffect } from 'react';
-import { Api } from '../libs/api';
 import SuccessMessage from '../components/SuccessMessage';
-import Busy from '../components/Busy';
 
 export default function RegisterScreen({ navigation }) {
   const [loading, setLoading] = useState(false);
@@ -80,50 +81,56 @@ export default function RegisterScreen({ navigation }) {
   }
 
   return (
-    <Background>
-      <Busy busy={loading}>
-        <View style={styles.container}>
-          <Message>{message}</Message>
-          <TextField
-            value={fullName}
-            onChangeValue={setFullName}
-          >
-            Su nombre completo
-          </TextField>
-          <TextField
-            value={username}
-            onChangeValue={setUsername}
-          >
-            Nombre de Usuario
-          </TextField>
-          <TextField
-            value={password}
-            onChangeValue={setPassword}
-            secureTextEntry={true}
-          >
-            Contraseña
-          </TextField>
-          <TextField
-            value={confirmation}
-            onChangeValue={setConfirmation}
-            secureTextEntry={true}
-          >
-            Confirme la contraseña
-          </TextField>
-          <TextField
-            value={email}
-            onChangeValue={setEmail}
-          >
-            Correo electrónico
-          </TextField>
-          <Button
-            disabled={!canRegister}
-            onPress={register}
-          >
-            Registrarse
-          </Button>
-        </View>
-      </Busy>
-    </Background>
+    <Screen
+      header='Registrarse'
+      busy={loading}
+    >
+      <Message>{message}</Message>
+      <TextField
+        value={fullName}
+        onChangeValue={setFullName}
+      >
+        Su nombre completo
+      </TextField>
+      <TextField
+        value={username}
+        onChangeValue={setUsername}
+      >
+        Nombre de Usuario
+      </TextField>
+      <TextField
+        value={password}
+        onChangeValue={setPassword}
+        secureTextEntry={true}
+      >
+        Contraseña
+      </TextField>
+      <TextField
+        value={confirmation}
+        onChangeValue={setConfirmation}
+        secureTextEntry={true}
+      >
+        Confirme la contraseña
+      </TextField>
+      <TextField
+        value={email}
+        onChangeValue={setEmail}
+      >
+        Correo electrónico
+      </TextField>
+      <View style={styles.sameLine}>
+        <Button
+          disabled={!canRegister}
+          onPress={register}
+        >
+          Registrarse
+        </Button>
+        <Button
+          onPress={() => navigation.navigate('Login')}
+        >
+          Cancelar
+        </Button>
+      </View>
+    </Screen>
   );
 }

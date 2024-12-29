@@ -1,7 +1,7 @@
 import { useReducer } from 'react';
 import { View } from 'react-native';
 import Button from '../components/Button';
-import Background from '../components/Background';
+import Screen from '../components/Screen';
 import styles from '../libs/styles';
 import useLogin from '../services/useLogin';
 
@@ -15,12 +15,12 @@ export default function LogoutScreen({ navigation }) {
   }
 
   return (
-    <Background>
-      <View style={styles.container}>
-        <View style={styles.sameLine}>
-          <Button onPress={() => navigation.goBack()} >Mercado</Button>
-        </View>
+    <Screen
+      header="Vendedor"
+    >
+      <View style={styles.sameLine}>
+        <Button onPress={() => navigation.goBack()} >Mercado</Button>
       </View>
-    </Background>
+    </Screen>
   );
 }
