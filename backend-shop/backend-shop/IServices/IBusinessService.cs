@@ -10,7 +10,7 @@ namespace backend_shop.IServices
             IServiceUuid<Business>,
             IServiceSoftDeleteUuid<Business>,
             IServiceName<Business>,
-            IServiceIdName<Business>
+            IServiceIdUuidName<Business>
     {
     }
 }

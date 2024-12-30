@@ -32,13 +32,24 @@ export class Api {
 
     var res = await fetch(url, options);
     if (!res.ok) {
-      console.error(res);
-      throw new Error('Result is not OK');
+      let errorMessage;
+      if (res.headers.get('content-type')?.startsWith('application/json')) {
+        try {
+          const data = await res.json();
+          console.log(data);
+          errorMessage = data.message || data.error;
+        } catch {}
+      }
+
+      errorMessage ||= 'Result is not OK';
+
+      console.error(errorMessage);
+      throw new Error(errorMessage);
     }
 
     if (options.json) {
       if (res.headers.get('content-type')?.startsWith('application/json')) {
-        res = res.json();
+        return res.json();
       }
     }
 

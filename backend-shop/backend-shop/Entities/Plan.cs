@@ -10,5 +10,7 @@ namespace backend_shop.Entities
     {
         [Required]
         public string Description { get; set; } = string.Empty;
+
+        public int MaxEnabledBusiness { get; set; }
     }
 }

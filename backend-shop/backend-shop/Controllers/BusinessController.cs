@@ -15,7 +15,6 @@ namespace backend_shop.Controllers
     public class BusinessController(
         ILogger<BusinessController> logger,
         IBusinessService businessService,
-        IPlanService planService,
         IMapper mapper
     )
         : ControllerBase
@@ -29,7 +28,6 @@ namespace backend_shop.Controllers
             var business = mapper.Map<BusinessAddRequest, Business>(data);
             business.OwnerId = (HttpContext?.Items["UserId"] as Int64?)
                 ?? throw new NoAuthorizationHeaderException();
-            business.PlanId = await planService.GetSingleIdForNameAsync("Base");
 
             var result = await businessService.CreateAsync(business);
 

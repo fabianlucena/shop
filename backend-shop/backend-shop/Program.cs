@@ -1,6 +1,7 @@
 using Microsoft.OpenApi.Models;
 using RFAuth;
 using RFHttpExceptions.Middlewares;
+using RFHttpExceptionsLocale.Middlewares;
 
 namespace backend_shop
 {
@@ -21,27 +22,6 @@ namespace backend_shop
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            /*options =>
-            {
-                options.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Version = "v1",
-                    Title = "API Shop",
-                    Description = "Aplicación para publicación y búsqueda de artículos",
-                    //TermsOfService = new Uri("https://example.com/terms"),
-                    Contact = new OpenApiContact
-                    {
-                        Name = "Fabian Lucena",
-                        Email = "fabianlucena@gmail.com",
-                        //Url = new Uri("https://socialNet.com/<user>"),
-                    },
-                    /*License = new OpenApiLicense
-                    {
-                        Name = "Use under LICX",
-                        Url = new Uri("https://example.com/license"),
-                    }* /
-                });
-            });*/
 
             var app = builder.Build();
 
@@ -59,23 +39,8 @@ namespace backend_shop
                 app.UseSwaggerUI();
             }
 
-            // Configure the HTTP request pipeline.
-            /*if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI(/*options => // UseSwaggerUI is called only in Development.
-                {
-                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-                    options.RoutePrefix = string.Empty;
-                }* /);
-            } */
-
-            //app.UseHttpsRedirection();
-
-            //app.UseAuthorization();
-
             app.UseMiddleware<AuthorizationMiddleware>();
-            app.UseMiddleware<HttpExceptionMiddleware>();
+            app.UseMiddleware<HttpExceptionLocaleMiddleware>();
 
             app.MapControllers();
 

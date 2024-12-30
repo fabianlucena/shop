@@ -11,15 +11,14 @@ namespace backend_shop.Entities
     {
         [Required]
         [ForeignKey("Owner")]
-        public long OwnerId { get; set; } = default;
+        public Int64 OwnerId { get; set; } = default;
         public User? Owner { get; set; } = default;
 
         [Required]
         public string Description { get; set; } = string.Empty;
 
-        [Required]
         [ForeignKey("Plan")]
-        public long PlanId { get; set; } = default;
+        public Int64? PlanId { get; set; } = default;
         public Plan? Plan { get; set; } = default;
 
     }

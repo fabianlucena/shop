@@ -14,8 +14,8 @@ using backend_shop.IServices;
 using RFDapper;
 using backend_shop.Entities;
 using RFService.IRepo;
-using static RFDapper.Setup;
 using backend_shop.Service;
+using RFLocalizerDapper;
 
 namespace backend_shop
 {
@@ -51,20 +51,21 @@ namespace backend_shop
             services.AddRFHttpAction();
 
             services.AddScoped<IPlanService, PlanService>();
-            services.AddScoped<IPlanFeatureService, PlanFeatureService>();
+            services.AddScoped<IUserPlanService, UserPlanService>();
             services.AddScoped<IBusinessService, BusinessService>();
 
+            services.AddRFLocalizerDapper();
             services.AddRFAuthDapper();
             services.AddRFUserEmailVerifiedDapper();
             services.AddRFRBACDapper();
             services.AddRFHttpActionDapper();
 
             services.AddScoped<Dapper<Plan>, Dapper<Plan>>();
-            services.AddScoped<Dapper<PlanFeature>, Dapper<PlanFeature>>();
+            services.AddScoped<Dapper<UserPlan>, Dapper<UserPlan>>();
             services.AddScoped<Dapper<Business>, Dapper<Business>>();
 
             services.AddScoped<IRepo<Plan>, Dapper<Plan>>();
-            services.AddScoped<IRepo<PlanFeature>, Dapper<PlanFeature>>();
+            services.AddScoped<IRepo<UserPlan>, Dapper<UserPlan>>();
             services.AddScoped<IRepo<Business>, Dapper<Business>>();
 
             services.AddRFDapperDriverSQLServer();
@@ -79,14 +80,12 @@ namespace backend_shop
                 using var scope = app.Services.CreateScope();
                 var serviceProvider = scope.ServiceProvider;
 
+                RFLocalizerDapper.Setup.ConfigureRFLocalizerDapper(serviceProvider);
                 RFAuthDapper.Setup.ConfigureRFAuthDapper(serviceProvider);
                 RFUserEmailVerifiedDapper.Setup.ConfigureRFUserEmailVerifiedDapper(serviceProvider);
                 RFRBACDapper.Setup.ConfigureRFRBACDapper(serviceProvider);
                 RFHttpActionDapper.Setup.ConfigureRFHttpActionDapper(serviceProvider);
-
-                CreateTable<Plan>(serviceProvider);
-                CreateTable<PlanFeature>(serviceProvider);
-                CreateTable<Business>(serviceProvider);
+                Setup.ConfigureShopDapper(serviceProvider);
             }
         }
 
@@ -101,6 +100,7 @@ namespace backend_shop
                 RFUserEmailVerified.Setup.ConfigureRFUserEmailVerified(serviceProvider);
                 RFRBAC.Setup.ConfigureRFRBAC(serviceProvider);
                 RFRegister.Setup.ConfigureRFRegister(serviceProvider);
+                Setup.ConfigureShop(serviceProvider);
             }
         }
     }

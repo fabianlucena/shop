@@ -8,7 +8,8 @@ using RFService.Repo;
 namespace backend_shop.Service
 {
     public class BusinessService(
-        IRepo<Business> repo
+        IRepo<Business> repo,
+        IUserPlanService userPlanService
     )
         : ServiceSoftDeleteTimestampsIdUuidEnabledName<IRepo<Business>, Business>(repo),
             IBusinessService
@@ -37,6 +38,11 @@ namespace backend_shop.Service
 
             if (existent != null)
                 throw new ABusinessForThatNameAlreadyExistException();
+
+            var enabledBusinessCount = await GetCountAsync(new GetOptions { Filters = { { "OwnerId", data.OwnerId } } });
+
+            if (enabledBusinessCount >= (await userPlanService.GetMaxEnabledBusinessForCurrentUser()))
+                throw new BusinessLimitReachedException();
 
             return data;
         }

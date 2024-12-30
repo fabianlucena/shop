@@ -1,5 +1,6 @@
 ﻿using backend_shop.Entities;
 using RFService.IServices;
+using RFService.Repo;
 
 namespace backend_shop.IServices
 {
@@ -9,7 +10,10 @@ namespace backend_shop.IServices
             IServiceUuid<Plan>,
             IServiceSoftDeleteUuid<Plan>,
             IServiceName<Plan>,
-            IServiceIdName<Plan>
+            IServiceIdUuidName<Plan>
     {
+        Task<Plan> GetBaseAsync();
+
+        Task<Plan> GetSingleOrBaseAsync(GetOptions options);
     }
 }

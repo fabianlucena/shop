@@ -26,5 +26,12 @@ namespace backend_shop.Service
 
             return data;
         }
+
+        public async Task<Plan> GetBaseAsync()
+            => await GetSingleForNameAsync("Base");
+
+        public async Task<Plan> GetSingleOrBaseAsync(GetOptions options)
+            => await GetSingleOrDefaultAsync(options)
+                ?? await GetBaseAsync();
     }
 }

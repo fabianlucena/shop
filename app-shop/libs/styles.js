@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
 
   message: {
     fontSize: 16,
-    color: '#404040',
+    color: '#13310d',
     borderWidth: 2,
     borderRadius: 10,
     borderColor: '#29681b',
@@ -43,6 +43,12 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     paddingHorizontal: 10,
     margin: '.5em',
+  },
+
+  error: {
+    color: '#421010',
+    borderColor: '#601717',
+    backgroundColor: '#fac8c8',
   },
 
   button: {

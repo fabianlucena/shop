@@ -1,4 +1,6 @@
-﻿namespace backend_shop.DTO
+﻿using backend_shop.Entities;
+
+namespace backend_shop.DTO
 {
     public class BusinessResponse
     {
@@ -13,5 +15,7 @@
         public DateTime UpdatedAt { get; set; }
 
         public DateTime? DeletedAt { get; set; }
+
+        public required Plan Plan { get; set; }
     }
 }

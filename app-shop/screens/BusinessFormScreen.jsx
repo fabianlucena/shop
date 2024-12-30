@@ -4,11 +4,13 @@ import Screen from '../components/Screen';
 import TextField from '../components/TextField';
 import Button from '../components/Button';
 import Message from '../components/Message';
+import Error from '../components/Error';
 
 import useBusiness from '../services/useBusiness';
 
 export default function BusinessFormScreen({ uuid }) {
   const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
   const [canSubmit, setCanSubmit] = useState(false);
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState('');
@@ -17,7 +19,6 @@ export default function BusinessFormScreen({ uuid }) {
 
   useEffect(() => {
     if (loading) {
-      setMessage('Cargando.');
       setCanSubmit(false);
     } else if (!name) {
       setMessage('Debe proporcionar un nombre para el negocio.');
@@ -33,12 +34,14 @@ export default function BusinessFormScreen({ uuid }) {
 
   function submit() {
     setLoading(true);
+    setError('');
+    setMessage(uuid? 'Actualizando...': 'Agregando...');
     businessService.add({
       name,
       description,
     })
     .then(() => setMessage('Negocio creado correctamente.'))
-    .catch(() => setMessage('Error al crear el negocio.'))
+    .catch(e => setError(`No se pudo ${uuid? 'actualizar': 'agregar'} el negocio.\n${e.message}.`))
     .finally(() => setLoading(false));
   }
 
@@ -46,6 +49,7 @@ export default function BusinessFormScreen({ uuid }) {
     <Screen
       busy={loading}
     >
+      <Error>{error}</Error>
       <Message>{message}</Message>
       <TextField
         value={name}
