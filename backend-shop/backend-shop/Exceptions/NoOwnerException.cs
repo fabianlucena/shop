@@ -3,7 +3,7 @@
 namespace backend_shop.Exceptions
 {
     public class NoOwnerException()
-        : HttpException(400, "No owner provided")
+        : HttpException(400, "No owner provided.")
     {
     }
 }

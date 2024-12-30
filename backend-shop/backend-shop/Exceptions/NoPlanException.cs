@@ -3,7 +3,7 @@
 namespace backend_shop.Exceptions
 {
     public class NoPlanException()
-        : HttpException(400, "No plan provided")
+        : HttpException(400, "No plan provided.")
     {
     }
 }

@@ -40,8 +40,11 @@ export default function BusinessFormScreen({ uuid }) {
       name,
       description,
     })
-    .then(() => setMessage('Negocio creado correctamente.'))
-    .catch(e => setError(`No se pudo ${uuid? 'actualizar': 'agregar'} el negocio.\n${e.message}.`))
+    .then(() => {
+      setMessage('Negocio creado correctamente.');
+      navigator.navigate('BusinessList');
+    })
+    .catch(e => setError(`No se pudo ${uuid? 'actualizar': 'agregar'} el negocio.\n${e.message}`))
     .finally(() => setLoading(false));
   }
 

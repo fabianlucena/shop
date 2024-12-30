@@ -123,6 +123,15 @@ const styles = StyleSheet.create({
     width: '25%',
     height: '25%',
   },
+
+  item: {
+    borderWidth: 2,
+    borderColor: '#29681b',
+    backgroundColor: '#daf9d4',
+    borderRadius: '1em',
+    padding: '.5em',
+    alignItems: 'center',
+  },
 });
 
 export default styles;
