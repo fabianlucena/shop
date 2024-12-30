@@ -71,6 +71,10 @@ export class Api {
     return this.fetch(service, {...options, method: 'PATCH'});
   }
 
+  static delete(service, options) {
+    return this.fetch(service, {...options, method: 'DELETE'});
+  }
+
   static getJson(service, options) {
     return this.get(service, {...options, json: true});
   }
@@ -81,5 +85,9 @@ export class Api {
 
   static patchJson(service, options) {
     return this.patch(service, {...options, json: true});
+  }
+
+  static deleteJson(service, options) {
+    return this.delete(service, {...options, json: true});
   }
 };

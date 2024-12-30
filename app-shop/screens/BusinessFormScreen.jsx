@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 
 import Screen from '../components/Screen';
 import TextField from '../components/TextField';
+import SwitchField from '../components/SwitchField';
 import Button from '../components/Button';
 import Message from '../components/Message';
 import Error from '../components/Error';
@@ -13,6 +14,7 @@ export default function BusinessFormScreen({ navigation, route }) {
   const [error, setError] = useState('');
   const [canSubmit, setCanSubmit] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isEnabled, setIsEnabled] = useState(true);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const businessService = useBusiness();
@@ -31,6 +33,7 @@ export default function BusinessFormScreen({ navigation, route }) {
     setMessage('Cargando negocio...');
     businessService.getSingleForUuid(uuid)
       .then(data => {
+        setIsEnabled(data.isEnabled);
         setName(data.name);
         setDescription(data.description);
         setMessage('Negocio cargado.');
@@ -58,6 +61,7 @@ export default function BusinessFormScreen({ navigation, route }) {
     setLoading(true);
     setError('');
     const data = {
+      isEnabled,
       name,
       description,
     };
@@ -89,6 +93,12 @@ export default function BusinessFormScreen({ navigation, route }) {
     >
       <Error>{error}</Error>
       <Message>{message}</Message>
+      <SwitchField
+        value={isEnabled}
+        onChangeValue={setIsEnabled}
+      >
+        Habilitado
+      </SwitchField>
       <TextField
         value={name}
         onChangeValue={setName}

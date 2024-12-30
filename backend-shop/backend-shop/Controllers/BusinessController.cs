@@ -79,7 +79,7 @@ namespace backend_shop.Controllers
             options.AddFilter("OwnerId", ownerId);
             options.AddFilter("Uuid", uuid);
 
-            var business = await businessService.GetSingleOrDefaultAsync(options)
+            _ = await businessService.GetSingleOrDefaultAsync(options)
                 ?? throw new BusinessDoesNotExistException();
 
             var result = await businessService.UpdateForUuidAsync(data, uuid);
@@ -88,6 +88,59 @@ namespace backend_shop.Controllers
                 return BadRequest();
 
             logger.LogInformation("Bussines updated");
+
+            return Ok();
+        }
+
+        [HttpDelete("{uuid}")]
+        [Permission("business.delete")]
+        public async Task<IActionResult> DeleteAsync([FromRoute] Guid uuid)
+        {
+            logger.LogInformation("Deleting business");
+
+            var ownerId = (HttpContext.Items["UserId"] as Int64?)
+                ?? throw new NoAuthorizationHeaderException();
+
+            var options = GetOptions.CreateFromQuery(HttpContext);
+            options.AddFilter("OwnerId", ownerId);
+            options.AddFilter("Uuid", uuid);
+
+            _ = await businessService.GetSingleOrDefaultAsync(options)
+                ?? throw new BusinessDoesNotExistException();
+
+            var result = await businessService.DeleteForUuidAsync(uuid);
+
+            if (result <= 0)
+                return BadRequest();
+
+            logger.LogInformation("Business deleted");
+
+            return Ok();
+        }
+
+        [HttpPost("restore/{uuid}")]
+        [Permission("business.restore")]
+        public async Task<IActionResult> RestoreAsync([FromRoute] Guid uuid)
+        {
+            logger.LogInformation("Restoring business");
+
+            var ownerId = (HttpContext.Items["UserId"] as Int64?)
+                ?? throw new NoAuthorizationHeaderException();
+
+            var options = GetOptions.CreateFromQuery(HttpContext);
+            options.Options["IncludeDeleted"] = true;
+            options.AddFilter("OwnerId", ownerId);
+            options.AddFilter("Uuid", uuid);
+
+            _ = await businessService.GetSingleOrDefaultAsync(options)
+                ?? throw new BusinessDoesNotExistException();
+
+            var result = await businessService.RestoreForUuidAsync(uuid);
+
+            if (result <= 0)
+                return BadRequest();
+
+            logger.LogInformation("Business restored");
 
             return Ok();
         }
