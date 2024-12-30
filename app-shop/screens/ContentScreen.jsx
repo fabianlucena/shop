@@ -24,14 +24,12 @@ function DrawerNavigator() {
 }
 
 export default function ContentScreen() {
-  
-
   return (
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Drawer"       component={DrawerNavigator}    options={{ headerShown: false }} />
-        <Stack.Screen name="BusinessForm" component={BusinessFormScreen} options={{ title: 'Agregar negocio' }}/>
-        <Stack.Screen name="ProductForm"  component={ProductFormScreen}  options={{ title: 'Agregar artículo' }}/>
+        <Stack.Screen name="BusinessForm" component={BusinessFormScreen} options={{ title: 'Negocio' }}/>
+        <Stack.Screen name="ProductForm"  component={ProductFormScreen}  options={{ title: 'Artículo' }}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

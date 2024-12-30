@@ -27,8 +27,8 @@ export default function Screeen({ children, busy, header }) {
             paddingRight: insets.right,
           }
         ]}>
-          {business && <FancyText>Negocio: {business}</FancyText>}
-          {header && <Header>{header}</Header>}
+          {business && <FancyText>Negocio: {business}</FancyText> || null}
+          {header && <Header>{header}</Header> || null}
           {children}
         </View>
       </Busy>

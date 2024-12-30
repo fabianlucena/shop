@@ -21,6 +21,7 @@ namespace backend_shop_es
                 await addTranslationService.AddAsync("es", "exception", "No plan provided.", "No se ha provisto plan.");
                 await addTranslationService.AddAsync("es", "exception", "Plan already exists.", "El plan ya existe.");
                 await addTranslationService.AddAsync("es", "exception", "Plan feature already exists.", "La característica de plan ya existe.");
+                await addTranslationService.AddAsync("es", "exception", "Business does not exist.", "No existe el negocio.");
             }
         }
     }

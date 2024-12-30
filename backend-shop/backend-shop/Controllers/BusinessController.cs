@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using backend_shop.DTO;
 using backend_shop.Entities;
+using backend_shop.Exceptions;
 using backend_shop.IServices;
 using Microsoft.AspNetCore.Mvc;
 using RFAuth.Exceptions;
 using RFService.Authorization;
 using RFService.Data;
+using RFService.Libs;
 using RFService.Repo;
 
 namespace backend_shop.Controllers
@@ -45,7 +47,11 @@ namespace backend_shop.Controllers
         {
             logger.LogInformation("Getting business");
 
+            var ownerId = (HttpContext.Items["UserId"] as Int64?)
+                ?? throw new NoAuthorizationHeaderException();
+
             var options = GetOptions.CreateFromQuery(HttpContext);
+            options.AddFilter("OwnerId", ownerId);
             if (uuid != null)
                 options.Filters["Uuid"] = uuid;
 
@@ -56,6 +62,34 @@ namespace backend_shop.Controllers
             logger.LogInformation("Business getted");
 
             return Ok(new DataRowsResult(response));
+        }
+
+        [HttpPatch("{uuid}")]
+        [Permission("business.edit")]
+        public async Task<IActionResult> PatchAsync([FromRoute] Guid uuid, [FromBody] DataDictionary data)
+        {
+            logger.LogInformation("Updating bussines");
+
+            data = data.GetPascalized();
+
+            var ownerId = (HttpContext.Items["UserId"] as Int64?)
+                ?? throw new NoAuthorizationHeaderException();
+
+            var options = GetOptions.CreateFromQuery(HttpContext);
+            options.AddFilter("OwnerId", ownerId);
+            options.AddFilter("Uuid", uuid);
+
+            var business = await businessService.GetSingleOrDefaultAsync(options)
+                ?? throw new BusinessDoesNotExistException();
+
+            var result = await businessService.UpdateForUuidAsync(data, uuid);
+
+            if (result <= 0)
+                return BadRequest();
+
+            logger.LogInformation("Bussines updated");
+
+            return Ok();
         }
     }
 }

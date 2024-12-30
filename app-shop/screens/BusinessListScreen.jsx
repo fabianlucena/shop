@@ -23,7 +23,7 @@ export default function BusinessListScreen({ navigation }) {
       >
         <Text>{item.name}</Text>
         <Text>{item.description}</Text>
-        <Button>Modificar</Button>
+        <Button onPress={() => navigation.navigate('BusinessForm', { uuid: item.uuid })}>Modificar</Button>
       </View>;
   }
 

@@ -8,7 +8,7 @@ import Error from '../components/Error';
 
 import useBusiness from '../services/useBusiness';
 
-export default function BusinessFormScreen({ uuid }) {
+export default function BusinessFormScreen({ navigation, route }) {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [canSubmit, setCanSubmit] = useState(false);
@@ -16,6 +16,28 @@ export default function BusinessFormScreen({ uuid }) {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const businessService = useBusiness();
+
+  const uuid = route?.params?.uuid;
+
+  useEffect(() => {
+    navigation.setOptions({ title: uuid? 'Modificar negocio': 'Agregar negocio' });
+  }, [navigation]);
+
+  useEffect(() => {
+    if (!uuid)
+      return;
+    
+    setLoading(true);
+    setMessage('Cargando negocio...');
+    businessService.getSingleForUuid(uuid)
+      .then(data => {
+        setName(data.name);
+        setDescription(data.description);
+        setMessage('Negocio cargado.');
+      })
+      .catch(e => setError(`No se pudo cargar el negocio.\n${e.message}`))
+      .finally(() => setLoading(false));
+  }, []);
 
   useEffect(() => {
     if (loading) {
@@ -35,17 +57,30 @@ export default function BusinessFormScreen({ uuid }) {
   function submit() {
     setLoading(true);
     setError('');
-    setMessage(uuid? 'Actualizando...': 'Agregando...');
-    businessService.add({
+    const data = {
       name,
       description,
-    })
-    .then(() => {
-      setMessage('Negocio creado correctamente.');
-      navigator.navigate('BusinessList');
-    })
-    .catch(e => setError(`No se pudo ${uuid? 'actualizar': 'agregar'} el negocio.\n${e.message}`))
-    .finally(() => setLoading(false));
+    };
+
+    if (uuid) {
+      setMessage('Actualizando...');
+      businessService.updateForUuid(uuid, data)
+        .then(() => {
+          setMessage('Negocio actualizado correctamente.');
+          navigation.navigate('Drawer', { screen: 'BusinessList'});
+        })
+        .catch(e => setError(`No se pudo actualizar el negocio.\n${e.message}`))
+        .finally(() => setLoading(false));
+    } else {
+      setMessage('Creando...');
+      businessService.add(data)
+        .then(() => {
+          setMessage('Negocio creado correctamente.');
+          navigation.navigate('Drawer', { screen: 'BusinessList'});
+        })
+        .catch(e => setError(`No se pudo agregar el negocio.\n${e.message}`))
+        .finally(() => setLoading(false));
+    }
   }
 
   return (

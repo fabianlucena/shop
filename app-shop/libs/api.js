@@ -4,7 +4,10 @@ export class Api {
 
   static async fetch(service, options) {
     options = {...options};
-    const url = this.urlBase + service;
+    let url = this.urlBase + service;
+
+    if (options.path)
+      url += '/' + options.path;
 
     if (options.body && typeof options.body !== 'string') {
       options.body = JSON.stringify(options.body);
@@ -41,7 +44,7 @@ export class Api {
         } catch {}
       }
 
-      errorMessage ||= 'Result is not OK';
+      errorMessage ||= `Result is not OK. HTTP Status: ${res.status}: ${res.statusText}.`;
 
       console.error(errorMessage);
       throw new Error(errorMessage);
@@ -64,11 +67,19 @@ export class Api {
     return this.fetch(service, {...options, method: 'POST'});
   }
 
+  static patch(service, options) {
+    return this.fetch(service, {...options, method: 'PATCH'});
+  }
+
   static getJson(service, options) {
     return this.get(service, {...options, json: true});
   }
 
   static postJson(service, options) {
     return this.post(service, {...options, json: true});
+  }
+
+  static patchJson(service, options) {
+    return this.patch(service, {...options, json: true});
   }
 };
