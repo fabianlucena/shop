@@ -1,25 +1,32 @@
-import { Pressable, ActivityIndicator } from 'react-native';
-import styles from '../libs/styles';
 import { Text } from 'react-native';
-import { useEffect, useState } from 'react';
 
-export default function Button({ children, onPress, disabled, style, styleText }) {
-  const [fullStyle, setFullStyle] = useState();
-  const [fullTextStyle, setFullTextStyle] = useState();
+import styles from '../libs/styles';
 
-  useEffect(() => {
-    if (disabled) {
-      setFullStyle({...styles.button, ...styles.disabledButton, ...style});
-      setFullTextStyle({...styles.text, ...styles.textButton, ...styles.disabledTextButton, ...styleText});
-    } else {
-      setFullStyle({...styles.button, ...style});
-      setFullTextStyle({...styles.text, ...styles.textButton, ...styleText});
-    }
-  }, [disabled, style]);
+import ButtonBase from './ButtonBase';
 
-  return (
-    <Pressable style={fullStyle} onPress={onPress} disabled={disabled} >
-      <Text style={fullTextStyle}>{children}</Text>
-    </Pressable>
-  );
+export default function Button({
+  children,
+  onPress,
+  navigate,
+  disabled,
+  style,
+  styleText,
+}) {
+  return <ButtonBase
+      onPress={onPress}
+      navigate={navigate}
+      disabled={disabled}
+      style={style}
+    >
+      <Text
+        style={{
+          ...styles.text,
+          ...styles.textButton,
+          ...styleText,
+          ...(disabled && styles.disabledTextButton || null),
+        }}
+      >
+        {children}
+      </Text>
+    </ButtonBase>
 }

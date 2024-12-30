@@ -132,6 +132,35 @@ const styles = StyleSheet.create({
     padding: '.5em',
     alignItems: 'center',
   },
+
+  itemHeader: {
+    fontSize: 18,
+    margin: '.2em',
+  },
+
+  buttonIcon: {
+    backgroundColor: 'rgba(128, 128, 128, 0)',
+    boxShadow: 'none',
+    margin: 0,
+    padding: 0,
+    paddingVertical: 0,
+    paddingHorizontal: 0,
+  },
+
+  mediumIcon: {
+    width: 22,
+    resizeMode: 'contain',
+  },
+
+  smallIcon: {
+    width: 12,
+    resizeMode: 'contain',
+  },
+
+  bigIcon: {
+    width: 34,
+    resizeMode: 'contain',
+  },
 });
 
 export default styles;

@@ -7,9 +7,9 @@ import Button from '../components/Button';
 import Message from '../components/Message';
 import Error from '../components/Error';
 
-import useBusiness from '../services/useBusiness';
+import useStore from '../services/useStore';
 
-export default function BusinessFormScreen({ navigation, route }) {
+export default function StoreFormScreen({ navigation, route }) {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [canSubmit, setCanSubmit] = useState(false);
@@ -17,12 +17,12 @@ export default function BusinessFormScreen({ navigation, route }) {
   const [isEnabled, setIsEnabled] = useState(true);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const businessService = useBusiness();
+  const storeService = useStore();
 
   const uuid = route?.params?.uuid;
 
   useEffect(() => {
-    navigation.setOptions({ title: uuid? 'Modificar negocio': 'Agregar negocio' });
+    navigation.setOptions({ title: uuid? 'Modificar local': 'Agregar local' });
   }, [navigation]);
 
   useEffect(() => {
@@ -30,15 +30,15 @@ export default function BusinessFormScreen({ navigation, route }) {
       return;
     
     setLoading(true);
-    setMessage('Cargando negocio...');
-    businessService.getSingleForUuid(uuid)
+    setMessage('Cargando local...');
+    storeService.getSingleForUuid(uuid)
       .then(data => {
         setIsEnabled(data.isEnabled);
         setName(data.name);
         setDescription(data.description);
-        setMessage('Negocio cargado.');
+        setMessage('Local cargado.');
       })
-      .catch(e => setError(`No se pudo cargar el negocio.\n${e.message}`))
+      .catch(e => setError(`No se pudo cargar el local.\n${e.message}`))
       .finally(() => setLoading(false));
   }, []);
 
@@ -46,10 +46,10 @@ export default function BusinessFormScreen({ navigation, route }) {
     if (loading) {
       setCanSubmit(false);
     } else if (!name) {
-      setMessage('Debe proporcionar un nombre para el negocio.');
+      setMessage('Debe proporcionar un nombre para el local.');
       setCanSubmit(false);
     } else if (!description) {
-      setMessage('Debe proporcionar una descripción para el negocio.');
+      setMessage('Debe proporcionar una descripción para el local.');
       setCanSubmit(false);
     } else {
       setMessage('Listo para enviar');
@@ -68,21 +68,21 @@ export default function BusinessFormScreen({ navigation, route }) {
 
     if (uuid) {
       setMessage('Actualizando...');
-      businessService.updateForUuid(uuid, data)
+      storeService.updateForUuid(uuid, data)
         .then(() => {
-          setMessage('Negocio actualizado correctamente.');
-          navigation.navigate('Drawer', { screen: 'BusinessesList'});
+          setMessage('Local actualizado correctamente.');
+          navigation.navigate('Drawer', { screen: 'StoreesList'});
         })
-        .catch(e => setError(`No se pudo actualizar el negocio.\n${e.message}`))
+        .catch(e => setError(`No se pudo actualizar el local.\n${e.message}`))
         .finally(() => setLoading(false));
     } else {
       setMessage('Creando...');
-      businessService.add(data)
+      storeService.add(data)
         .then(() => {
-          setMessage('Negocio creado correctamente.');
-          navigation.navigate('Drawer', { screen: 'BusinessesList'});
+          setMessage('Local creado correctamente.');
+          navigation.navigate('Drawer', { screen: 'StoreesList'});
         })
-        .catch(e => setError(`No se pudo agregar el negocio.\n${e.message}`))
+        .catch(e => setError(`No se pudo agregar el local.\n${e.message}`))
         .finally(() => setLoading(false));
     }
   }

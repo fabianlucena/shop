@@ -8,7 +8,7 @@ import Message from '../components/Message';
 import CurrencyField from '../components/CurrencyField';
 import SwitchField from '../components/SwitchField';
 
-export default function ProductFormScreen({ uuid}) {
+export default function ItemFormScreen({ uuid}) {
   const [message, setMessage] = useState('');
   const [canSubmit, setCanSubmit] = useState(false);
   const [loading, setLoading] = useState(false);
