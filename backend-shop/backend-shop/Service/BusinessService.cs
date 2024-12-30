@@ -4,12 +4,15 @@ using backend_shop.Entities;
 using backend_shop.IServices;
 using backend_shop.Exceptions;
 using RFService.Repo;
+using RFAuth.Exceptions;
+using System;
 
 namespace backend_shop.Service
 {
     public class BusinessService(
         IRepo<Business> repo,
-        IUserPlanService userPlanService
+        IUserPlanService userPlanService,
+        IHttpContextAccessor httpContextAccessor
     )
         : ServiceSoftDeleteTimestampsIdUuidEnabledName<IRepo<Business>, Business>(repo),
             IBusinessService
@@ -45,6 +48,38 @@ namespace backend_shop.Service
                 throw new BusinessLimitReachedException();
 
             return data;
+        }
+
+        public async Task<bool> CheckForUuidAndCurrentUserAsync(Guid uuid, GetOptions? options = null)
+        {
+            var httpContext = httpContextAccessor.HttpContext
+                ?? throw new NoAuthorizationHeaderException();
+
+            var ownerId = (httpContext.Items["UserId"] as Int64?)
+                ?? throw new NoAuthorizationHeaderException();
+
+            options ??= GetOptions.CreateFromQuery(httpContext);
+            options.AddFilter("OwnerId", ownerId);
+            options.AddFilter("Uuid", uuid);
+
+            if (await GetSingleOrDefaultAsync(options) != null)
+                return true;
+
+            throw new BusinessDoesNotExistException();
+        }
+
+        public async Task<IEnumerable<Int64>> GetListIdForCurrentUserAsync(GetOptions? options = null)
+        {
+            var httpContext = httpContextAccessor.HttpContext
+                ?? throw new NoAuthorizationHeaderException();
+
+            var ownerId = (httpContext.Items["UserId"] as Int64?)
+                ?? throw new NoAuthorizationHeaderException();
+
+            options ??= GetOptions.CreateFromQuery(httpContext);
+            options.AddFilter("OwnerId", ownerId);
+
+            return await GetListIdAsync(options);
         }
     }
 }

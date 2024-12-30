@@ -53,6 +53,7 @@ namespace backend_shop
             services.AddScoped<IPlanService, PlanService>();
             services.AddScoped<IUserPlanService, UserPlanService>();
             services.AddScoped<IBusinessService, BusinessService>();
+            services.AddScoped<IStoreService, StoreService>();
 
             services.AddRFLocalizerDapper();
             services.AddRFAuthDapper();
@@ -63,10 +64,12 @@ namespace backend_shop
             services.AddScoped<Dapper<Plan>, Dapper<Plan>>();
             services.AddScoped<Dapper<UserPlan>, Dapper<UserPlan>>();
             services.AddScoped<Dapper<Business>, Dapper<Business>>();
+            services.AddScoped<Dapper<Store>, Dapper<Store>>();
 
             services.AddScoped<IRepo<Plan>, Dapper<Plan>>();
             services.AddScoped<IRepo<UserPlan>, Dapper<UserPlan>>();
             services.AddScoped<IRepo<Business>, Dapper<Business>>();
+            services.AddScoped<IRepo<Store>, Dapper<Store>>();
 
             services.AddRFDapperDriverSQLServer();
 

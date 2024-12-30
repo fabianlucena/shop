@@ -1,6 +1,6 @@
 ﻿using backend_shop.Entities;
-using RFRBAC.Entities;
 using RFService.IServices;
+using RFService.Repo;
 
 namespace backend_shop.IServices
 {
@@ -12,5 +12,8 @@ namespace backend_shop.IServices
             IServiceName<Business>,
             IServiceIdUuidName<Business>
     {
+        Task<bool> CheckForUuidAndCurrentUserAsync(Guid uuid, GetOptions? options = null);
+
+        Task<IEnumerable<Int64>> GetListIdForCurrentUserAsync(GetOptions? options = null);
     }
 }

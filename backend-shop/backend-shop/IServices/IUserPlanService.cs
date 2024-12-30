@@ -10,5 +10,7 @@ namespace backend_shop.IServices
         Task<int> GetMaxEnabledBusinessForUserId(Int64 userId);
 
         Task<int> GetMaxEnabledBusinessForCurrentUser();
+
+        Task<int> GetMaxEnabledStoresForCurrentUser();
     }
 }

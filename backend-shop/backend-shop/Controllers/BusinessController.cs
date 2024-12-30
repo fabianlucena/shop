@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using backend_shop.DTO;
 using backend_shop.Entities;
-using backend_shop.Exceptions;
 using backend_shop.IServices;
 using Microsoft.AspNetCore.Mvc;
 using RFAuth.Exceptions;
@@ -47,6 +46,9 @@ namespace backend_shop.Controllers
         {
             logger.LogInformation("Getting business");
 
+            if (uuid != null)
+                await businessService.CheckForUuidAndCurrentUserAsync(uuid.Value);
+
             var ownerId = (HttpContext.Items["UserId"] as Int64?)
                 ?? throw new NoAuthorizationHeaderException();
 
@@ -70,17 +72,9 @@ namespace backend_shop.Controllers
         {
             logger.LogInformation("Updating bussines");
 
+            await businessService.CheckForUuidAndCurrentUserAsync(uuid);
+
             data = data.GetPascalized();
-
-            var ownerId = (HttpContext.Items["UserId"] as Int64?)
-                ?? throw new NoAuthorizationHeaderException();
-
-            var options = GetOptions.CreateFromQuery(HttpContext);
-            options.AddFilter("OwnerId", ownerId);
-            options.AddFilter("Uuid", uuid);
-
-            _ = await businessService.GetSingleOrDefaultAsync(options)
-                ?? throw new BusinessDoesNotExistException();
 
             var result = await businessService.UpdateForUuidAsync(data, uuid);
 
@@ -98,15 +92,7 @@ namespace backend_shop.Controllers
         {
             logger.LogInformation("Deleting business");
 
-            var ownerId = (HttpContext.Items["UserId"] as Int64?)
-                ?? throw new NoAuthorizationHeaderException();
-
-            var options = GetOptions.CreateFromQuery(HttpContext);
-            options.AddFilter("OwnerId", ownerId);
-            options.AddFilter("Uuid", uuid);
-
-            _ = await businessService.GetSingleOrDefaultAsync(options)
-                ?? throw new BusinessDoesNotExistException();
+            await businessService.CheckForUuidAndCurrentUserAsync(uuid);
 
             var result = await businessService.DeleteForUuidAsync(uuid);
 
@@ -124,16 +110,7 @@ namespace backend_shop.Controllers
         {
             logger.LogInformation("Restoring business");
 
-            var ownerId = (HttpContext.Items["UserId"] as Int64?)
-                ?? throw new NoAuthorizationHeaderException();
-
-            var options = GetOptions.CreateFromQuery(HttpContext);
-            options.Options["IncludeDeleted"] = true;
-            options.AddFilter("OwnerId", ownerId);
-            options.AddFilter("Uuid", uuid);
-
-            _ = await businessService.GetSingleOrDefaultAsync(options)
-                ?? throw new BusinessDoesNotExistException();
+            await businessService.CheckForUuidAndCurrentUserAsync(uuid, new GetOptions { Options = { { "IncludeDeleted", true } } });
 
             var result = await businessService.RestoreForUuidAsync(uuid);
 
