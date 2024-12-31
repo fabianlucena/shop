@@ -69,6 +69,7 @@ export default function FormScreen({
   loadingError = 'Error de carga',
   createErrorMessage = 'No se pudo agregar.',
   updateErrorMessage = 'No se pudo actualizar.',
+  onSuccess,
   onSuccessNavigate,
   validate,
 }) {
@@ -85,22 +86,15 @@ export default function FormScreen({
   useEffect(() => {
     navigation.setOptions({ title: _uuid? updateTitle: createTitle });
 
-    if (!_uuid)
-      return;
-    
-    setLoading(true);
-    setMessage('Cargando...');
-    service.getSingleForUuid(_uuid)
-      .then(d => {
-        const f = {};
-        for (var k of getArrangedFields(fields))
-          f[k.name] = d[k.name];
+    const newData = {};
+    for (var field of getArrangedFields(fields)) {
+      if (field.name === 'isEnabled')
+        newData.isEnabled = true;
+    }
+    setData(newData);
 
-        setData(f);
-        setDefaultData(JSON.stringify(f));
-      })
-      .catch(e => setError(`${loadingError}\n${e.message}`))
-      .finally(() => setLoading(false));
+    if (_uuid)
+      loadData();
   }, [_uuid]);
 
   useEffect(() => {
@@ -144,7 +138,25 @@ export default function FormScreen({
     setCanSubmit(true);
   }, [loading, data]);
 
+  function loadData() {
+    setLoading(true);
+    setMessage('Cargando...');
+    service.getSingleForUuid(_uuid)
+      .then(rawData => {
+        const newData = {};
+        for (var field of getArrangedFields(fields))
+          newData[field.name] = rawData[field.name];
+
+        setData(newData);
+        setDefaultData(JSON.stringify(newData));
+      })
+      .catch(e => setError(`${loadingError}\n${e.message}`))
+      .finally(() => setLoading(false));
+  }
+
   function handleOnSuccess() {
+    onSuccess && onSuccess();
+
     if (onSuccessNavigate && navigation) {
       if (Array.isArray(onSuccessNavigate))
         navigation.navigate(...onSuccessNavigate);

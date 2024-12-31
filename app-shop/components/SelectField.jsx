@@ -12,9 +12,9 @@ export default function SelectField({
   onChangeValue,
   style,
   labelStyle,
+  placeholder = 'Seleccione...',
 }) {
-  return (
-    <Field style={style}>
+  return <Field style={style}>
       <View style={styles.sameLine}>
         <Label tyle={labelStyle}>{children}</Label>
       </View>
@@ -23,8 +23,7 @@ export default function SelectField({
         onValueChange={onChangeValue}
         items={options}
         style={{ inputIOS: styles.input, inputAndroid: styles.input, }}
-        placeholder={{ label: 'Selecciona una opción...', value: null, }}
+        placeholder={{ label: placeholder, value: '' }}
       />
-    </Field>
-  );
+    </Field>;
 }

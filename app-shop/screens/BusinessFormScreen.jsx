@@ -1,7 +1,10 @@
 import FormScreen from '../components/FormScreen';
 import useBusiness from '../services/useBusiness';
+import { useSession } from '../contexts/Session';
 
 export default function BusinessFormScreen() {
+  const { loadBussiness } = useSession();
+
   function validate(data) {
     if (!data.name) {
       return 'Debe proporcionar un nombre para el negocio.';
@@ -17,6 +20,7 @@ export default function BusinessFormScreen() {
       createTitle="Agregar negocio"
       updateTitle="Modificar negocio"
       loadingError="No se pudo cargar el negocio."
+      onSuccess={loadBussiness}
       onSuccessNavigate={['Drawer', { screen: 'BusinessesList'}]}
       fields={[
         'isEnabled',

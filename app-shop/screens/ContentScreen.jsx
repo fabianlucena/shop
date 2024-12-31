@@ -1,6 +1,8 @@
 import { NavigationContainer } from '@react-navigation/native';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+import { useSession } from '../contexts/Session';
 
 import ButtonIconAdd from '../components/ButtonIconAdd';
 
@@ -13,17 +15,31 @@ import StoresListScreen from './StoresListScreen';
 import StoreFormScreen from './StoreFormScreen';
 import ItemListScreen from './ItemListScreen';
 import ItemFormScreen from './ItemFormScreen';
+import SelectField from '../components/SelectField';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 
-function DrawerNavigator({ navigation }) {
-  return <Drawer.Navigator>
+function DrawerNavigator() {
+  const { businesses, business, setBusiness } = useSession();
+
+  return <Drawer.Navigator
+      drawerContent={props => <DrawerContentScrollView {...props}>
+          <SelectField
+            key="selector"
+            options={businesses}
+            placeholder="--- Sin negocio ---"
+            value={business || ''}
+            onChangeValue={setBusiness}
+          />
+          <DrawerItemList {...props} />
+        </DrawerContentScrollView>}
+    >
       <Drawer.Screen name="Home"           component={HomeScreen}           options={{ title: 'Comprar' }}/>
-      <Drawer.Screen name="ChangePassword" component={ChangePasswordScreen} options={{ title: 'Cambiar contraseña' }}/>
       <Drawer.Screen name="BusinessesList" component={BusinessesListScreen} options={{ title: 'Mis negocios',  headerRight: () => <ButtonIconAdd style={{margin: 10}} size="big" navigate="BusinessForm" /> }}/>
       <Drawer.Screen name="StoresList"     component={StoresListScreen}     options={{ title: 'Mis locales',   headerRight: () => <ButtonIconAdd style={{margin: 10}} size="big" navigate="StoreForm"    /> }}/>
       <Drawer.Screen name="ItemList"       component={ItemListScreen}       options={{ title: 'Mis artículos', headerRight: () => <ButtonIconAdd style={{margin: 10}} size="big" navigate="ItemForm"     /> }}/>
+      <Drawer.Screen name="ChangePassword" component={ChangePasswordScreen} options={{ title: 'Cambiar contraseña' }}/>
       <Drawer.Screen name="Logout"         component={LogoutScreen}         options={{ title: 'Salir' }}/>
     </Drawer.Navigator>;
 }

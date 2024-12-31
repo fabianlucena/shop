@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { FlatList, View, Text } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -15,23 +15,29 @@ export default function ListScreen({
   service,
   properties,
   buttons,
+  onDelete,
+  onEnable,
 }) {
-  const [reload, setReload] = useState(0);
   const [data, setData] = useState([]);
   const dialog = useDialog();
 
+  function loadData() {
+    service.get()
+      .then(data => setData(data.rows));
+  }
+
   useFocusEffect(
-    useCallback(() => {
-      service.get()
-        .then(data => setData(data.rows));
-    }, [])
+    useCallback(loadData, [])
   );
 
   function deleteRow(item) {
     dialog.confirm({
       message: confirmDeletionMessage(item) ?? '¿Desea eliminar el elemento?',
       onOk: () => service.deleteForUuid(item.uuid)
-        .then(() => setReload(reload + 1))
+        .then(() => {
+          onDelete && onDelete();
+          loadData();
+        })
         .catch(err => dialog.message(err)),
     });
   }
