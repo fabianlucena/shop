@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using backend_shop.DTO;
 using backend_shop.Entities;
+using backend_shop.Exceptions;
 using backend_shop.IServices;
-using backend_shop.Service;
 using Microsoft.AspNetCore.Mvc;
 using RFAuth.Exceptions;
 using RFService.Authorization;
@@ -28,11 +28,14 @@ namespace backend_shop.Controllers
         {
             logger.LogInformation("Creating store");
 
+            if (data.BusinessUuid == default)
+                throw new NoBusinessException();
+
             var store = mapper.Map<StoreAddRequest, Store>(data);
 
             var businessesIdList = await businessService.GetListIdForCurrentUserAsync();
             if (!businessesIdList.Contains(store.BusinessId))
-                throw new NoAuthorizationHeaderException();
+                throw new BusinessDoesNotExistException();
 
             var result = await storeService.CreateAsync(store);
 

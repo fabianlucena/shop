@@ -13,7 +13,7 @@ namespace backend_shop_es
             var addTranslationService = provider.GetService<IAddTranslationService>();
             if (addTranslationService != null)
             {
-                await addTranslationService.AddAsync("es", "exception", "Business does not exist.", "No existe el negocio.");
+                await addTranslationService.AddAsync("es", "exception", "Business does not exist.", "El negocio no existe.");
                 await addTranslationService.AddAsync("es", "exception", "No business provided.", "No se ha provisto negocio.");
                 await addTranslationService.AddAsync("es", "exception", "No name for business provided.", "No se ha provisto un nombre para el negocio.");
                 await addTranslationService.AddAsync("es", "exception", "No name provided.", "No se ha provisto un nombre.");

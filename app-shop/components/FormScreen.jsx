@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { Text } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
+import { useSession } from '../contexts/Session';
+
 import Screen from './Screen';
 import TextField from './TextField';
 import SwitchField from './SwitchField';
@@ -64,6 +66,7 @@ export default function FormScreen({
   service,
   uuid,
   fields,
+  additionalData,
   createTitle = 'Agregar',
   updateTitle = 'Modificar',
   loadingError = 'Error de carga',
@@ -73,6 +76,7 @@ export default function FormScreen({
   onSuccessNavigate,
   validate,
 }) {
+  const { businessName } = useSession();
   const navigation = useNavigation();
   const route = useRoute();
   const [data, setData] = useState({});
@@ -84,9 +88,9 @@ export default function FormScreen({
   const _uuid = uuid ?? route?.params?.uuid;
 
   useEffect(() => {
-    navigation.setOptions({ title: _uuid? updateTitle: createTitle });
+    navigation.setOptions({ title: (businessName? businessName + ' - ': '') + (_uuid? updateTitle: createTitle) });
 
-    const newData = {};
+    const newData = {...additionalData};
     for (var field of getArrangedFields(fields)) {
       if (field.name === 'isEnabled')
         newData.isEnabled = true;
@@ -95,7 +99,7 @@ export default function FormScreen({
 
     if (_uuid)
       loadData();
-  }, [_uuid]);
+  }, [_uuid, additionalData]);
 
   useEffect(() => {
     if (loading) {
@@ -136,14 +140,14 @@ export default function FormScreen({
 
     setMessage('Listo para enviar');
     setCanSubmit(true);
-  }, [loading, data]);
+  }, [loading, data, additionalData]);
 
   function loadData() {
     setLoading(true);
     setMessage('Cargando...');
     service.getSingleForUuid(_uuid)
       .then(rawData => {
-        const newData = {};
+        const newData = {...additionalData};
         for (var field of getArrangedFields(fields))
           newData[field.name] = rawData[field.name];
 

@@ -1,7 +1,10 @@
 import FormScreen from '../components/FormScreen';
 import useStore from '../services/useStore';
+import { useSession } from '../contexts/Session';
 
 export default function StoreFormScreen() {
+  const { businessUuid } = useSession();
+
   function validate(data) {
     if (!data.name) {
       return 'Debe proporcionar un nombre para el local.';
@@ -20,5 +23,8 @@ export default function StoreFormScreen() {
         'description',
       ]}
       validate={validate}
+      additionalData={{
+        businessUuid
+      }}
     />;
 }

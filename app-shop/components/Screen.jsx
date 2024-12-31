@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useSession } from '../contexts/Session';
@@ -6,11 +6,10 @@ import { useSession } from '../contexts/Session';
 import Background from './Background';
 import Busy from './Busy';
 import Header from './Header';
-import FancyText from './FancyText';
 import styles from '../libs/styles';
 
 export default function Screeen({ children, busy, header }) {
-  const { business } = useSession();
+  const { businessName } = useSession();
   const insets = useSafeAreaInsets();
 
   return (
@@ -27,7 +26,7 @@ export default function Screeen({ children, busy, header }) {
             paddingRight: insets.right,
           }
         ]}>
-          {business && <FancyText>Negocio: {business}</FancyText> || null}
+          {businessName && <Text>Administrando: {businessName}</Text> || null}
           {header && <Header>{header}</Header> || null}
           {children}
         </View>

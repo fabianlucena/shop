@@ -14,12 +14,13 @@ export function SessionProvider({ children }) {
   const [isLogguedIn, setIsLoggedIn] = useState(false);
   const [permissions, setPermissions] = useState([]);
   const [businesses, setBusinesses] = useState([]);
-  const [business, setBusiness] = useState('');
+  const [businessUuid, setBusinessUuid] = useState('');
+  const [businessName, setBusinessName] = useState('');
 
   function loadBussiness() {
     serviceBusiness.get()
       .then(data => {
-        const newBusinesses = data.rows.map(i => ({value: i.uuid, label: i.name}))
+        const newBusinesses = data.rows;
         setBusinesses(newBusinesses);
         autoSelectBussiness(newBusinesses);
       });
@@ -27,10 +28,17 @@ export function SessionProvider({ children }) {
 
   function autoSelectBussiness(businesses) {
     if (!businesses.length) {
-      setBusiness('');
+      setBusinessUuid('');
     } else if (businesses.length === 1) {
-      setBusiness(businesses[0].value);
+      setBusinessUuid(businesses[0].uuid);
+      updateCurrentBusinessName(businesses, businesses[0].uuid);
     }
+  }
+
+  function updateCurrentBusinessName(businesses, businessUuid) {
+    var currentBusiness = businesses.find(i => i.uuid === businessUuid);
+    if (currentBusiness)
+      setBusinessName(currentBusiness.name);
   }
 
   useEffect(() => {
@@ -43,6 +51,10 @@ export function SessionProvider({ children }) {
     autoSelectBussiness(businesses);
   }, [businesses]);
 
+  useEffect(() => {
+    updateCurrentBusinessName(businesses, businessUuid);
+  }, [businesses, businessUuid]);
+
   return (
     <SessionContext.Provider value={{
       isInitiated, setIsInitiated,
@@ -50,7 +62,8 @@ export function SessionProvider({ children }) {
       permissions, setPermissions,
       loadBussiness,
       businesses, setBusinesses,
-      business, setBusiness,
+      businessUuid, setBusinessUuid,
+      businessName,
     }}>
       {children}
     </SessionContext.Provider>

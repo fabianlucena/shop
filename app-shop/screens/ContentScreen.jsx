@@ -21,16 +21,16 @@ const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 
 function DrawerNavigator() {
-  const { businesses, business, setBusiness } = useSession();
+  const { businesses, businessUuid, setBusinessUuid } = useSession();
 
   return <Drawer.Navigator
       drawerContent={props => <DrawerContentScrollView {...props}>
           <SelectField
             key="selector"
-            options={businesses}
+            options={businesses.map(i => ({value: i.uuid, label: i.name}))}
             placeholder="--- Sin negocio ---"
-            value={business || ''}
-            onChangeValue={setBusiness}
+            value={businessUuid || ''}
+            onChangeValue={setBusinessUuid}
           />
           <DrawerItemList {...props} />
         </DrawerContentScrollView>}

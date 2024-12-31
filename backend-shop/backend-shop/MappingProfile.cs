@@ -11,6 +11,9 @@ namespace backend_shop
         {
             CreateMap<BusinessAddRequest, Business>();
             CreateMap<Business, BusinessResponse>();
+
+            CreateMap<StoreAddRequest, Store>();
+            CreateMap<Store, StoreResponse>();
         }
     }
 }
