@@ -1,10 +1,18 @@
-import Screen from '../components/Screen';
-import Button from '../components/Button';
+import ListScreen from '../components/ListScreen';
+import useItem from '../services/useItem';
 
-export default function ItemListScreen({ navigation}) {
-  return (
-    <Screen>
-      <Button onPress={() => navigation.navigate('ItemForm')} >Agregar</Button>
-    </Screen>
-  );
+export default function ItemsListScreen() {
+  return <ListScreen
+      service={useItem()}
+      confirmDeletionMessage={item => `¿Desea eliminar el artículo ${item.name}?`}
+      properties={[
+        'name',
+        'isEnabled',
+        'description',
+      ]}
+      buttons={[
+        'edit',
+        'delete',
+      ]}
+    />;
 }

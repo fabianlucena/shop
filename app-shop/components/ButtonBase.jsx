@@ -1,5 +1,5 @@
 import { Pressable } from 'react-native';
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native';
 
 import styles from '../libs/styles';
 

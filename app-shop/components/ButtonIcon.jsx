@@ -32,6 +32,7 @@ export default function ButtonIcon({
           ...styles[size + 'Icon'],
           ...styleIcon,
         }}
+        resizeMode="contain"
         source={source}
       />
     </ButtonBase>

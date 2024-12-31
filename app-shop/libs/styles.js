@@ -149,17 +149,14 @@ const styles = StyleSheet.create({
 
   mediumIcon: {
     width: 22,
-    resizeMode: 'contain',
   },
 
   smallIcon: {
     width: 12,
-    resizeMode: 'contain',
   },
 
   bigIcon: {
     width: 34,
-    resizeMode: 'contain',
   },
 });
 
