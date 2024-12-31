@@ -16,8 +16,6 @@ namespace backend_shop.Service
         : ServiceTimestampsIdUuidEnabled<IRepo<UserPlan>, UserPlan>(repo),
             IUserPlanService
     {
-        private HttpContext? HttpContext => httpContextAccessor?.HttpContext;
-
         public async Task<int> GetMaxEnabledBusinessForUserId(Int64 userId)
         {
             var options = new GetOptions
@@ -66,20 +64,30 @@ namespace backend_shop.Service
 
         public async Task<int> GetMaxEnabledBusinessForCurrentUser()
         {
-            var userId = HttpContext?.Items["UserId"] as Int64?;
-            if (userId == null || userId == 0)
-                throw new NoAuthorizationHeaderException();
+            var httpContext = httpContextAccessor.HttpContext
+                ?? throw new NoAuthorizationHeaderException();
 
-            return await GetMaxEnabledBusinessForUserId(userId.Value);
+            var userId = (httpContext.Items["UserId"] as Int64?)
+                ?? throw new NoSessionUserDataException();
+
+            if (userId <= 0)
+                throw new NoSessionUserDataException();
+
+            return await GetMaxEnabledBusinessForUserId(userId);
         }
 
         public async Task<int> GetMaxEnabledStoresForCurrentUser()
         {
-            var userId = HttpContext?.Items["UserId"] as Int64?;
-            if (userId == null || userId == 0)
-                throw new NoAuthorizationHeaderException();
+            var httpContext = httpContextAccessor.HttpContext
+                ?? throw new NoAuthorizationHeaderException();
 
-            return await GetMaxEnabledStoresForUserId(userId.Value);
+            var userId = (httpContext.Items["UserId"] as Int64?)
+                ?? throw new NoSessionUserDataException();
+
+            if (userId <= 0)
+                throw new NoSessionUserDataException();
+
+            return await GetMaxEnabledStoresForUserId(userId);
         }
     }
 }

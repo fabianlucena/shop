@@ -5,6 +5,7 @@ using backend_shop.IServices;
 using backend_shop.Exceptions;
 using RFService.Repo;
 using RFAuth.Exceptions;
+using RFAuth.Entities;
 
 namespace backend_shop.Service
 {
@@ -55,7 +56,10 @@ namespace backend_shop.Service
                 ?? throw new NoAuthorizationHeaderException();
 
             var ownerId = (httpContext.Items["UserId"] as Int64?)
-                ?? throw new NoAuthorizationHeaderException();
+                ?? throw new NoSessionUserDataException();
+
+            if (ownerId <= 0)
+                throw new NoSessionUserDataException();
 
             options ??= GetOptions.CreateFromQuery(httpContext);
             options.AddFilter("Uuid", uuid);
