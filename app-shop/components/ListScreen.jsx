@@ -2,8 +2,6 @@ import { useState, useCallback, useEffect } from 'react';
 import { FlatList, View, Text } from 'react-native';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
-import { useSession } from '../contexts/Session';
-
 import styles from '../libs/styles';
 
 import Screen from './Screen';
@@ -19,17 +17,10 @@ export default function ListScreen({
   buttons,
   onDelete,
   onEnable,
-  title,
 }) {
-  const { businessName } = useSession();
   const navigation = useNavigation();
   const [data, setData] = useState([]);
   const dialog = useDialog();
-
-  useEffect(() => {
-    if (businessName && title)
-      navigation.setOptions({ headerTitle: businessName + ' - ' + title});
-  }, [title, businessName]);
 
   function loadData() {
     service.get()

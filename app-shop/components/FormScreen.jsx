@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import { Text } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
-import { useSession } from '../contexts/Session';
-
 import Screen from './Screen';
 import TextField from './TextField';
 import SwitchField from './SwitchField';
@@ -76,7 +74,6 @@ export default function FormScreen({
   onSuccessNavigate,
   validate,
 }) {
-  const { businessName } = useSession();
   const navigation = useNavigation();
   const route = useRoute();
   const [data, setData] = useState({});
@@ -88,7 +85,7 @@ export default function FormScreen({
   const _uuid = uuid ?? route?.params?.uuid;
 
   useEffect(() => {
-    navigation.setOptions({ title: (businessName? businessName + ' - ': '') + (_uuid? updateTitle: createTitle) });
+    navigation.setOptions({ title: _uuid? updateTitle: createTitle });
 
     const newData = {...additionalData};
     for (var field of getArrangedFields(fields)) {
