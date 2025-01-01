@@ -5,7 +5,6 @@ using backend_shop.IServices;
 using backend_shop.Exceptions;
 using RFService.Repo;
 using RFAuth.Exceptions;
-using RFAuth.Entities;
 
 namespace backend_shop.Service
 {
@@ -42,10 +41,19 @@ namespace backend_shop.Service
             if (existent != null)
                 throw new AStoreForThatNameAlreadyExistException();
 
-            var enabledStoresCount = await GetCountAsync(new GetOptions { Filters = { { "BusinessId", data.BusinessId } } });
+            var totalStoresCount = await GetCountAsync(new GetOptions
+            {
+                Filters = {
+                    { "BusinessId", data.BusinessId },
+                    { "IsEnabled", null },
+                }
+            });
+            if (totalStoresCount >= (await userPlanService.GetMaxTotalStoresForCurrentUser()))
+                throw new TotalStoresLimitReachedException();
 
+            var enabledStoresCount = await GetCountAsync(new GetOptions { Filters = { { "BusinessId", data.BusinessId } } });
             if (enabledStoresCount >= (await userPlanService.GetMaxEnabledStoresForCurrentUser()))
-                throw new BusinessLimitReachedException();
+                throw new EnabledStoresLimitReachedException();
 
             return data;
         }

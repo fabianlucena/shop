@@ -41,10 +41,18 @@ namespace backend_shop.Service
             if (existent != null)
                 throw new ABusinessForThatNameAlreadyExistException();
 
-            var enabledBusinessCount = await GetCountAsync(new GetOptions { Filters = { { "OwnerId", data.OwnerId } } });
+            var totalBusinessCount = await GetCountAsync(new GetOptions {
+                Filters = {
+                    { "OwnerId", data.OwnerId },
+                    { "IsEnabled", null },
+                }
+            });
+            if (totalBusinessCount >= (await userPlanService.GetMaxTotalBusinessesForCurrentUser()))
+                throw new TotalBusinessesLimitReachedException();
 
-            if (enabledBusinessCount >= (await userPlanService.GetMaxEnabledBusinessForCurrentUser()))
-                throw new BusinessLimitReachedException();
+            var enabledBusinessCount = await GetCountAsync(new GetOptions { Filters = { { "OwnerId", data.OwnerId } } });
+            if (enabledBusinessCount >= (await userPlanService.GetMaxEnabledBusinessesForCurrentUser()))
+                throw new EnabledBusinessesLimitReachedException();
 
             return data;
         }

@@ -25,6 +25,9 @@ namespace backend_shop_es
                 await addTranslationService.AddAsync("es", "exception", "You already own a business with that name.", "Uste ya posee un negocio con ese nombre.");
                 await addTranslationService.AddAsync("es", "exception", "You already own a store with that name.", "Uste ya posee un local con ese nombre.");
                 await addTranslationService.AddAsync("es", "exception", "You can't create more businesses because you've reached the limit.", "Usted no puede crear más negocios porque ha alcanzado el límite.");
+                await addTranslationService.AddAsync("es", "exception", "You can't create more enabled businesses because you've reached the limit.", "Usted no puede crear más negocios habilitados porque ha alcanzado el límite.");
+                await addTranslationService.AddAsync("es", "exception", "You can't create more enabled stores because you've reached the limit.", "Usted no puede crear más locales habilitados porque ha alcanzado el límite.");
+                await addTranslationService.AddAsync("es", "exception", "You can't create more stores because you've reached the limit.", "Usted no puede crear más locales porque ha alcanzado el límite.");
             }
         }
     }

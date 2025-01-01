@@ -44,8 +44,10 @@ namespace backend_shop
             await PlanService.GetOrCreateAsync(new Plan {
                 Name = "Base",
                 Description = "Plan básico para todos los ususarios",
+                MaxTotalBusinesses = 3,
                 MaxEnabledBusinesses = 1,
-                MaxEnabledStores = 5,
+                MaxTotalStores = 5,
+                MaxEnabledStores = 3,
             });
         }
     }
