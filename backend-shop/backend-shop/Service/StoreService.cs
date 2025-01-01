@@ -5,6 +5,7 @@ using backend_shop.IServices;
 using backend_shop.Exceptions;
 using RFService.Repo;
 using RFAuth.Exceptions;
+using RFService.ILibs;
 
 namespace backend_shop.Service
 {
@@ -52,8 +53,34 @@ namespace backend_shop.Service
                 throw new TotalStoresLimitReachedException();
 
             var enabledStoresCount = await GetCountAsync(new GetOptions { Filters = { { "BusinessId", data.BusinessId } } });
-            if (enabledStoresCount >= (await userPlanService.GetMaxEnabledStoresForCurrentUser()))
-                throw new EnabledStoresLimitReachedException();
+            var enabledStoresMax = await userPlanService.GetMaxEnabledStoresForCurrentUser();
+            if (data.IsEnabled && enabledStoresCount >= enabledStoresMax
+                || enabledStoresCount > enabledStoresMax
+            )
+            {
+                throw new MaxEnabledStoresLimitReachedException();
+            }
+
+            return data;
+        }
+
+        public override async Task<IDataDictionary> ValidateForUpdateAsync(IDataDictionary data, GetOptions options)
+        {
+            data = await base.ValidateForUpdateAsync(data, options);
+
+            if (data.TryGetValue("IsEnabled", out var isEnabledValue)
+                && isEnabledValue is bool isEnabled && isEnabled)
+            {
+                var getOptions = new GetOptions(options);
+                getOptions.Filters["IsEnabled"] = null;
+                var bussiness = await GetSingleOrDefaultAsync(getOptions)
+                    ?? throw new BusinessDoesNotExistException();
+
+                var enabledBusinessesCount = await GetCountAsync(new GetOptions { Filters = { { "BusinessId", bussiness.BusinessId } } });
+                var enabledBusinessesMax = await userPlanService.GetMaxEnabledBusinessesForCurrentUser();
+                if (enabledBusinessesCount >= enabledBusinessesMax)
+                    throw new MaxEnabledStoresLimitReachedException();
+            }
 
             return data;
         }

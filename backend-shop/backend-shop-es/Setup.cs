@@ -22,11 +22,11 @@ namespace backend_shop_es
                 await addTranslationService.AddAsync("es", "exception", "Plan already exists.", "El plan ya existe.");
                 await addTranslationService.AddAsync("es", "exception", "Plan feature already exists.", "La característica de plan ya existe.");
                 await addTranslationService.AddAsync("es", "exception", "Store does not exist.", "No existe el local.");
+                await addTranslationService.AddAsync("es", "exception", "The maximum limit of enabled businesses has been reached.", "Se ha alcanzado el límite máximo de empresas habilitadas.");
+                await addTranslationService.AddAsync("es", "exception", "The maximum limit of enabled stores has been reached.", "Se ha alcanzado el límite máximo de locales habilitados.");
                 await addTranslationService.AddAsync("es", "exception", "You already own a business with that name.", "Uste ya posee un negocio con ese nombre.");
                 await addTranslationService.AddAsync("es", "exception", "You already own a store with that name.", "Uste ya posee un local con ese nombre.");
                 await addTranslationService.AddAsync("es", "exception", "You can't create more businesses because you've reached the limit.", "Usted no puede crear más negocios porque ha alcanzado el límite.");
-                await addTranslationService.AddAsync("es", "exception", "You can't create more enabled businesses because you've reached the limit.", "Usted no puede crear más negocios habilitados porque ha alcanzado el límite.");
-                await addTranslationService.AddAsync("es", "exception", "You can't create more enabled stores because you've reached the limit.", "Usted no puede crear más locales habilitados porque ha alcanzado el límite.");
                 await addTranslationService.AddAsync("es", "exception", "You can't create more stores because you've reached the limit.", "Usted no puede crear más locales porque ha alcanzado el límite.");
             }
         }

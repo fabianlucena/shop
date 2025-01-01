@@ -5,6 +5,7 @@ using backend_shop.IServices;
 using backend_shop.Exceptions;
 using RFService.Repo;
 using RFAuth.Exceptions;
+using RFService.ILibs;
 
 namespace backend_shop.Service
 {
@@ -41,18 +42,44 @@ namespace backend_shop.Service
             if (existent != null)
                 throw new ABusinessForThatNameAlreadyExistException();
 
-            var totalBusinessCount = await GetCountAsync(new GetOptions {
+            var totalBusinessesCount = await GetCountAsync(new GetOptions {
                 Filters = {
                     { "OwnerId", data.OwnerId },
                     { "IsEnabled", null },
                 }
             });
-            if (totalBusinessCount >= (await userPlanService.GetMaxTotalBusinessesForCurrentUser()))
+            if (totalBusinessesCount >= (await userPlanService.GetMaxTotalBusinessesForCurrentUser()))
                 throw new TotalBusinessesLimitReachedException();
 
-            var enabledBusinessCount = await GetCountAsync(new GetOptions { Filters = { { "OwnerId", data.OwnerId } } });
-            if (enabledBusinessCount >= (await userPlanService.GetMaxEnabledBusinessesForCurrentUser()))
-                throw new EnabledBusinessesLimitReachedException();
+            var enabledBusinessesCount = await GetCountAsync(new GetOptions { Filters = { { "OwnerId", data.OwnerId } } });
+            var enabledBusinessesMax = await userPlanService.GetMaxEnabledBusinessesForCurrentUser();
+            if (data.IsEnabled && enabledBusinessesCount >= enabledBusinessesMax
+                || enabledBusinessesCount > enabledBusinessesMax
+            )
+            {
+                throw new MaxEnabledBusinessesLimitReachedException();
+            }
+
+            return data;
+        }
+
+        public override async Task<IDataDictionary> ValidateForUpdateAsync(IDataDictionary data, GetOptions options)
+        {
+            data = await base.ValidateForUpdateAsync(data, options);
+
+            if (data.TryGetValue("IsEnabled", out var isEnabledValue)
+                && isEnabledValue is bool isEnabled && isEnabled)
+            {
+                var getOptions = new GetOptions(options);
+                getOptions.Filters["IsEnabled"] = null;
+                var bussiness = await GetSingleOrDefaultAsync(getOptions)
+                    ?? throw new BusinessDoesNotExistException();
+
+                var enabledBusinessesCount = await GetCountAsync(new GetOptions { Filters = { { "OwnerId", bussiness.OwnerId } } });
+                var enabledBusinessesMax = await userPlanService.GetMaxEnabledBusinessesForCurrentUser();
+                if (enabledBusinessesCount >= enabledBusinessesMax)
+                    throw new MaxEnabledBusinessesLimitReachedException();
+            }
 
             return data;
         }
@@ -66,6 +93,7 @@ namespace backend_shop.Service
                 ?? throw new NoAuthorizationHeaderException();
 
             options ??= GetOptions.CreateFromQuery(httpContext);
+            options.AddFilter("IsEnabled", null);
             options.AddFilter("OwnerId", ownerId);
             options.AddFilter("Uuid", uuid);
 

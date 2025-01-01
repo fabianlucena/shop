@@ -82,7 +82,7 @@ namespace backend_shop.Controllers
 
             data = data.GetPascalized();
 
-            var result = await storeService.UpdateForUuidAsync(data, uuid);
+            var result = await storeService.UpdateForUuidAsync(uuid, data);
 
             if (result <= 0)
                 return BadRequest();
