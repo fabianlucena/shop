@@ -29,6 +29,7 @@ export function SessionProvider({ children }) {
   function autoSelectBussiness(businesses) {
     if (!businesses.length) {
       setBusinessUuid('');
+      setBusinessName('');
     } else if (businesses.length === 1) {
       setBusinessUuid(businesses[0].uuid);
       updateCurrentBusinessName(businesses, businesses[0].uuid);

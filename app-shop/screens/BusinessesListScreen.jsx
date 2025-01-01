@@ -8,16 +8,18 @@ export default function BusinessesListScreen() {
   return <ListScreen
       service={useBusiness()}
       confirmDeletionMessage={item => `¿Desea eliminar el negocio ${item.name}?`}
-      properties={[
-        'name',
-        'isEnabled',
-        'description',
+      elements={[
+        {
+          elements: [
+            { control: 'isEnabled' },
+            { fieldHeader: 'name' },
+            { button:  'edit' },
+            { button:  'delete' },
+          ]
+        },
+        {field: 'description'},
       ]}
-      buttons={[
-        'edit',
-        'delete',
-      ]}
-      onDelete={loadBussiness}
-      onEnable={loadBussiness}
+      onDeleted={loadBussiness}
+      onEnabled={loadBussiness}
     />;
 }

@@ -5,14 +5,16 @@ export default function StoresListScreen() {
   return <ListScreen
       service={useStore()}
       confirmDeletionMessage={item => `¿Desea eliminar el local ${item.name}?`}
-      properties={[
-        'name',
-        'isEnabled',
-        'description',
-      ]}
-      buttons={[
-        'edit',
-        'delete',
+      elements={[
+        {
+          elements: [
+            { control: 'isEnabled' },
+            { fieldHeader: 'name' },
+            { button:  'edit' },
+            { button:  'delete' },
+          ]
+        },
+        {field: 'description'},
       ]}
     />;
 }

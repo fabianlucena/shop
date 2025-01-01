@@ -9,6 +9,20 @@ export class Api {
     if (options.path)
       url += '/' + options.path;
 
+    let query = options.query;
+    if (query) {
+      if (typeof query === 'function')
+        query = query(options);
+      
+      if (query) {
+        if (typeof query !== 'string')
+          query = new URLSearchParams(query).toString();
+
+        if (query)
+          url += '?' + query;
+      }
+    }
+
     if (options.body && typeof options.body !== 'string') {
       options.body = JSON.stringify(options.body);
     }

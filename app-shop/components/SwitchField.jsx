@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { View, Switch, Pressable } from 'react-native';
 import Field from './Field';
 import Label from './Label';
