@@ -4,7 +4,6 @@ using backend_shop.Entities;
 using backend_shop.Exceptions;
 using backend_shop.IServices;
 using Microsoft.AspNetCore.Mvc;
-using RFAuth.Exceptions;
 using RFService.Authorization;
 using RFService.Data;
 using RFService.Libs;
@@ -76,7 +75,7 @@ namespace backend_shop.Controllers
         [Permission("store.edit")]
         public async Task<IActionResult> PatchAsync([FromRoute] Guid uuid, [FromBody] DataDictionary data)
         {
-            logger.LogInformation("Updating bussines");
+            logger.LogInformation("Updating business");
 
             await storeService.CheckForUuidAndCurrentUserAsync(uuid);
 
@@ -87,7 +86,7 @@ namespace backend_shop.Controllers
             if (result <= 0)
                 return BadRequest();
 
-            logger.LogInformation("Bussines updated");
+            logger.LogInformation("Busines updated");
 
             return Ok();
         }

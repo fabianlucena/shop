@@ -72,10 +72,10 @@ namespace backend_shop.Service
             {
                 var getOptions = new GetOptions(options);
                 getOptions.Filters["IsEnabled"] = null;
-                var bussiness = await GetSingleOrDefaultAsync(getOptions)
+                var business = await GetSingleOrDefaultAsync(getOptions)
                     ?? throw new BusinessDoesNotExistException();
 
-                var enabledBusinessesCount = await GetCountAsync(new GetOptions { Filters = { { "OwnerId", bussiness.OwnerId } } });
+                var enabledBusinessesCount = await GetCountAsync(new GetOptions { Filters = { { "OwnerId", business.OwnerId } } });
                 var enabledBusinessesMax = await userPlanService.GetMaxEnabledBusinessesForCurrentUser();
                 if (enabledBusinessesCount >= enabledBusinessesMax)
                     throw new MaxEnabledBusinessesLimitReachedException();
@@ -93,9 +93,9 @@ namespace backend_shop.Service
                 ?? throw new NoAuthorizationHeaderException();
 
             options ??= GetOptions.CreateFromQuery(httpContext);
-            options.AddFilter("IsEnabled", null);
-            options.AddFilter("OwnerId", ownerId);
-            options.AddFilter("Uuid", uuid);
+            options.Filters["IsEnabled"] = null;
+            options.Filters["OwnerId"] = ownerId;
+            options.Filters["Uuid"] = uuid;
 
             if (await GetSingleOrDefaultAsync(options) != null)
                 return true;

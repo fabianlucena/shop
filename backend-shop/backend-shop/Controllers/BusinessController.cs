@@ -70,7 +70,7 @@ namespace backend_shop.Controllers
         [Permission("business.edit")]
         public async Task<IActionResult> PatchAsync([FromRoute] Guid uuid, [FromBody] DataDictionary data)
         {
-            logger.LogInformation("Updating bussines");
+            logger.LogInformation("Updating business");
 
             await businessService.CheckForUuidAndCurrentUserAsync(uuid);
 
@@ -81,7 +81,7 @@ namespace backend_shop.Controllers
             if (result <= 0)
                 return BadRequest();
 
-            logger.LogInformation("Bussines updated");
+            logger.LogInformation("Business updated");
 
             return Ok();
         }
