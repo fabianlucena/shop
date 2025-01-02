@@ -8,6 +8,7 @@ export default function BusinessesListScreen() {
   return <ListScreen
       service={useBusiness()}
       confirmDeletionMessage={item => `¿Desea eliminar el negocio ${item.name}?`}
+      formScreen="BusinessForm"
       elements={[
         {
           elements: [

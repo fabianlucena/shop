@@ -14,6 +14,7 @@ export default function ListScreen({
   confirmDeletionMessage,
   service,
   elements,
+  formScreen,
   onDelete,
   onDeleted,
   onEnable,
@@ -52,7 +53,7 @@ export default function ListScreen({
       return;
 
     if (button === 'edit')
-      return <ButtonIconEdit navigate={['BusinessForm', { uuid: item.uuid }]} />;
+      return <ButtonIconEdit navigate={[formScreen, { uuid: item.uuid }]} />;
     
     if (button === 'delete')
       return <ButtonIconDelete onPress={() => deleteRow(item)} />;

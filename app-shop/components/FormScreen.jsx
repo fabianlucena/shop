@@ -142,7 +142,7 @@ export default function FormScreen({
   function loadData() {
     setLoading(true);
     setMessage('Cargando...');
-    service.getSingleForUuid(_uuid)
+    service.getSingleForUuid(_uuid, { query: { includeDisabled: true }})
       .then(rawData => {
         const newData = {...additionalData};
         for (var field of getArrangedFields(fields))
