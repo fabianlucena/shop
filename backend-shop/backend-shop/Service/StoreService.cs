@@ -11,6 +11,7 @@ namespace backend_shop.Service
 {
     public class StoreService(
         IRepo<Store> repo,
+        IBusinessService businessService,
         IUserPlanService userPlanService,
         IHttpContextAccessor httpContextAccessor
     )
@@ -42,17 +43,33 @@ namespace backend_shop.Service
             if (existent != null)
                 throw new AStoreForThatNameAlreadyExistException();
 
+            var bussiness = await businessService.GetSingleForIdAsync(data.BusinessId);
+
             var totalStoresCount = await GetCountAsync(new GetOptions
             {
+                Join = {
+                    { "Bussines", new From("bussines") },
+                },
                 Filters = {
                     { "BusinessId", data.BusinessId },
                     { "IsEnabled", null },
+                    { "Bussiness.IsEnabled", null },
+                    { "Bussiness.OwnerId", bussiness.OwnerId }
                 }
             });
             if (totalStoresCount >= (await userPlanService.GetMaxTotalStoresForCurrentUser()))
                 throw new TotalStoresLimitReachedException();
 
-            var enabledStoresCount = await GetCountAsync(new GetOptions { Filters = { { "BusinessId", data.BusinessId } } });
+            var enabledStoresCount = await GetCountAsync(new GetOptions
+            {
+                Join = {
+                    { "Bussines", new From("bussines") },
+                },
+                Filters = {
+                    { "BusinessId", data.BusinessId },
+                    { "Bussiness.OwnerId", bussiness.OwnerId }
+                }
+            });
             var enabledStoresMax = await userPlanService.GetMaxEnabledStoresForCurrentUser();
             if (data.IsEnabled && enabledStoresCount >= enabledStoresMax
                 || enabledStoresCount > enabledStoresMax
