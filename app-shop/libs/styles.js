@@ -131,6 +131,7 @@ const styles = StyleSheet.create({
     borderRadius: '1em',
     padding: '.5em',
     alignItems: 'center',
+    marginVertical: '0.2em',
   },
 
   itemHeader: {

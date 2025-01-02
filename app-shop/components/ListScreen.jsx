@@ -84,8 +84,21 @@ export default function ListScreen({
   }
 
   function renderElement(element, item) {
-    return <View style={styles.sameLine} >
-        {element.fieldHeader && <ItemHeader key={element.name ?? element.fieldHeader}>{item[element.fieldHeader]}</ItemHeader> || null}
+    return <View style={{
+        ...styles.sameLine,
+        ...element.style,
+        ...(element.elements &&
+        {
+          display: 'flex',
+          flexDirection: 'row',
+          width: '100%',
+        }),
+        ...((element.fieldHeader || element.field || element.elements) &&
+        {
+          flexGrow: 1,
+        }),
+      }} >
+        {element.fieldHeader && <ItemHeader key={element.name ?? element.fieldHeader} style={{flexGrow: 1}}>{item[element.fieldHeader]}</ItemHeader> || null}
         {element.field && <Text key={element.name ?? element.field}>{item[element.field]}</Text> || null}
         {element.elements && renderElements(element.elements, item) || null}
         {element.button && renderButton(element.button, item) || null}
@@ -116,6 +129,8 @@ export default function ListScreen({
         style= {{
           width: '100%',
           padding: '.5em',
+          flexDirection: 'column',
+          gap: '.5em',
         }}
         data={data}
         renderItem={renderItem}
