@@ -159,6 +159,12 @@ const styles = StyleSheet.create({
   bigIcon: {
     width: 34,
   },
+
+  currentBussiness: {
+    fontSize: 18,
+    marginTop: '.3em',
+    marginBottom: 0,
+  },
 });
 
 export default styles;

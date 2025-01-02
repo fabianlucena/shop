@@ -26,7 +26,7 @@ export default function Screeen({ children, busy, header }) {
             paddingRight: insets.right,
           }
         ]}>
-          {businessName && <Text>Administrando: {businessName}</Text> || null}
+          {businessName && <Text style={{...styles.text, ...styles.header, ...styles.currentBussiness}}>Administrando: {businessName}</Text> || null}
           {header && <Header>{header}</Header> || null}
           {children}
         </View>
