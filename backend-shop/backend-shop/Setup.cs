@@ -9,9 +9,11 @@ namespace backend_shop
     {
         static IRolePermissionService? rolePermissionService;
         static IPlanService? planService;
+        static ICategoryService? categoryService;
 
         static IRolePermissionService RolePermissionService => rolePermissionService ?? throw new Exception();
         static IPlanService PlanService => planService ?? throw new Exception();
+        static ICategoryService CategoryService => categoryService ?? throw new Exception();
 
         public static void ConfigureShopDapper(IServiceProvider services)
         {
@@ -19,12 +21,15 @@ namespace backend_shop
             CreateTable<UserPlan>(services);
             CreateTable<Business>(services);
             CreateTable<Store>(services);
+            CreateTable<Category>(services);
+            CreateTable<Item>(services);
         }
 
         public static void ConfigureShop(IServiceProvider provider)
         {
             rolePermissionService = provider.GetRequiredService<IRolePermissionService>();
             planService = provider.GetRequiredService<IPlanService>();
+            categoryService = provider.GetRequiredService<ICategoryService>();
 
             ConfigureShopAsync().Wait();
         }
@@ -48,7 +53,19 @@ namespace backend_shop
                 MaxEnabledBusinesses = 1,
                 MaxTotalStores = 5,
                 MaxEnabledStores = 3,
+                MaxTotalItems = 15,
+                MaxEnabledItems = 10,
             });
+
+            var categories = new Dictionary<string, string>{
+                { "Almacén",      "Artículos de almacén, comestibles, bebidas." },
+                { "Indumentaria", "Ropas y vestimenta en general." },
+            };
+
+            foreach (var category in categories)
+            {
+                await CategoryService.GetOrCreateAsync(new Category { Name = category.Key, Description = category.Value });
+            }
         }
     }
 }

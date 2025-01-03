@@ -15,6 +15,10 @@ namespace backend_shop.IServices
 
         Task<int> GetMaxEnabledStoresForUserId(Int64 userId);
 
+        Task<int> GetMaxTotalItemsForUserId(Int64 userId);
+
+        Task<int> GetMaxEnabledItemsForUserId(Int64 userId);
+
         Task<int> GetMaxTotalBusinessesForCurrentUser();
 
         Task<int> GetMaxEnabledBusinessesForCurrentUser();
@@ -22,5 +26,9 @@ namespace backend_shop.IServices
         Task<int> GetMaxTotalStoresForCurrentUser();
 
         Task<int> GetMaxEnabledStoresForCurrentUser();
+
+        Task<int> GetMaxTotalItemsForCurrentUser();
+
+        Task<int> GetMaxEnabledItemsForCurrentUser();
     }
 }

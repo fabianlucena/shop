@@ -100,6 +100,48 @@ namespace backend_shop.Service
                 ?? default;
         }
 
+        public async Task<int> GetMaxTotalItemsForUserId(Int64 userId)
+        {
+            var options = new GetOptions
+            {
+                Join = {
+                    { "Plan", new From("plan") },
+                },
+                Filters = {
+                    { "UserId", userId },
+                    { "[plan].MaxTotalItems", Op.NotNull() },
+                    { "ExpirationDate", Op.GE(DateTime.UtcNow) },
+                },
+                OrderBy = { "[plan].MaxTotalItems DESC" },
+                Top = 1,
+            };
+
+            return (await GetFirstOrDefaultAsync(options))?.Plan?.MaxTotalItems
+                ?? (await planService.GetBaseAsync()).MaxTotalItems
+                ?? default;
+        }
+
+        public async Task<int> GetMaxEnabledItemsForUserId(Int64 userId)
+        {
+            var options = new GetOptions
+            {
+                Join = {
+                    { "Plan", new From("plan") },
+                },
+                Filters = {
+                    { "UserId", userId },
+                    { "[plan].MaxEnabledItems", Op.NotNull() },
+                    { "ExpirationDate", Op.GE(DateTime.UtcNow) },
+                },
+                OrderBy = { "[plan].MaxEnabledItems DESC" },
+                Top = 1,
+            };
+
+            return (await GetFirstOrDefaultAsync(options))?.Plan?.MaxEnabledItems
+                ?? (await planService.GetBaseAsync()).MaxEnabledItems
+                ?? default;
+        }
+
         public async Task<int> GetMaxTotalBusinessesForCurrentUser()
         {
             var httpContext = httpContextAccessor.HttpContext
@@ -154,6 +196,34 @@ namespace backend_shop.Service
                 throw new NoSessionUserDataException();
 
             return await GetMaxEnabledStoresForUserId(userId);
+        }
+
+        public async Task<int> GetMaxTotalItemsForCurrentUser()
+        {
+            var httpContext = httpContextAccessor.HttpContext
+                ?? throw new NoAuthorizationHeaderException();
+
+            var userId = (httpContext.Items["UserId"] as Int64?)
+                ?? throw new NoSessionUserDataException();
+
+            if (userId <= 0)
+                throw new NoSessionUserDataException();
+
+            return await GetMaxTotalItemsForUserId(userId);
+        }
+
+        public async Task<int> GetMaxEnabledItemsForCurrentUser()
+        {
+            var httpContext = httpContextAccessor.HttpContext
+                ?? throw new NoAuthorizationHeaderException();
+
+            var userId = (httpContext.Items["UserId"] as Int64?)
+                ?? throw new NoSessionUserDataException();
+
+            if (userId <= 0)
+                throw new NoSessionUserDataException();
+
+            return await GetMaxEnabledItemsForUserId(userId);
         }
     }
 }

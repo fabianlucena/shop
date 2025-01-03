@@ -32,6 +32,9 @@ namespace backend_shop.Service
                     throw new NoBusinessException();
             }
 
+            _ = await businessService.GetSingleOrDefaultForIdAsync(data.BusinessId)
+                ?? throw new BusinessDoesNotExistException();
+
             var existent = await GetSingleOrDefaultAsync(new GetOptions
             {
                 Filters = {
@@ -43,33 +46,11 @@ namespace backend_shop.Service
             if (existent != null)
                 throw new AStoreForThatNameAlreadyExistException();
 
-            var business = await businessService.GetSingleForIdAsync(data.BusinessId);
-
-            var totalStoresCount = await GetCountAsync(new GetOptions
-            {
-                Join = {
-                    { "Business", new From("business") },
-                },
-                Filters = {
-                    { "BusinessId", data.BusinessId },
-                    { "IsEnabled", null },
-                    { "Business.IsEnabled", null },
-                    { "Business.OwnerId", business.OwnerId }
-                }
-            });
+            var totalStoresCount = await GetCountForCurrentUserAsync(new GetOptions { Filters = { { "IsEnabled", null } } });
             if (totalStoresCount >= (await userPlanService.GetMaxTotalStoresForCurrentUser()))
                 throw new TotalStoresLimitReachedException();
 
-            var enabledStoresCount = await GetCountAsync(new GetOptions
-            {
-                Join = {
-                    { "Business", new From("business") },
-                },
-                Filters = {
-                    { "BusinessId", data.BusinessId },
-                    { "Business.OwnerId", business.OwnerId }
-                }
-            });
+            var enabledStoresCount = await GetCountForCurrentUserAsync();
             var enabledStoresMax = await userPlanService.GetMaxEnabledStoresForCurrentUser();
             if (data.IsEnabled && enabledStoresCount >= enabledStoresMax
                 || enabledStoresCount > enabledStoresMax
@@ -90,12 +71,12 @@ namespace backend_shop.Service
             {
                 var getOptions = new GetOptions(options);
                 getOptions.Filters["IsEnabled"] = null;
-                var business = await GetSingleOrDefaultAsync(getOptions)
-                    ?? throw new BusinessDoesNotExistException();
+                _ = await GetSingleOrDefaultAsync(getOptions)
+                    ?? throw new StoreDoesNotExistException();
 
-                var enabledBusinessesCount = await GetCountAsync(new GetOptions { Filters = { { "BusinessId", business.BusinessId } } });
-                var enabledBusinessesMax = await userPlanService.GetMaxEnabledBusinessesForCurrentUser();
-                if (enabledBusinessesCount >= enabledBusinessesMax)
+                var enabledStoresCount = await GetCountForCurrentUserAsync();
+                var enabledStoresMax = await userPlanService.GetMaxEnabledStoresForCurrentUser();
+                if (enabledStoresCount >= enabledStoresMax)
                     throw new MaxEnabledStoresLimitReachedException();
             }
 
@@ -114,17 +95,31 @@ namespace backend_shop.Service
                 throw new NoSessionUserDataException();
 
             options ??= GetOptions.CreateFromQuery(httpContext);
+            options.Include("Business", "business");
             options.Filters["IsEnabled"] = null;
             options.Filters["Uuid"] = uuid;
-            options.Include("Business");
-            var store = await GetSingleOrDefaultAsync(options)
+            options.Filters["business.OwnerId"] = ownerId;
+            _ = await GetSingleOrDefaultAsync(options)
                 ?? throw new StoreDoesNotExistException();
-
-            if (store.Business?.OwnerId != ownerId)
-                throw new StoreDoesNotExistException();
 
             return true;
         }
+
+        public async Task<GetOptions> GetFilterForCurrentUserAsync(GetOptions? options = null)
+        {
+            var businessesId = await businessService.GetListIdForCurrentUserAsync(options);
+
+            options ??= new();
+            options.Filters["BusinessId"] = businessesId;
+
+            return options;
+        }
+
+        public async Task<Int64> GetCountForCurrentUserAsync(GetOptions? options = null)
+            => await GetCountAsync(await GetFilterForCurrentUserAsync(options));
+
+        public async Task<IEnumerable<Int64>> GetListIdForCurrentUserAsync(GetOptions? options = null)
+            => await GetListIdAsync(await GetFilterForCurrentUserAsync(options));
     }
 }
 

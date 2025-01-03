@@ -13,5 +13,11 @@ namespace backend_shop.IServices
             IServiceIdUuidName<Store>
     {
         Task<bool> CheckForUuidAndCurrentUserAsync(Guid uuid, GetOptions? options = null);
+
+        Task<GetOptions> GetFilterForCurrentUserAsync(GetOptions? options = null);
+        
+        Task<Int64> GetCountForCurrentUserAsync(GetOptions? options = null);
+
+        Task<IEnumerable<Int64>> GetListIdForCurrentUserAsync(GetOptions? options = null);
     }
 }
