@@ -109,7 +109,9 @@ namespace backend_shop.Service
             if (ownerId <= 0)
                 throw new NoSessionUserDataException();
 
-            options ??= GetOptions.CreateFromQuery(httpContext);
+            options = (options != null) ?
+                new GetOptions(options) :
+                new();
             options.Filters["OwnerId"] = ownerId;
 
             return Task.FromResult(options);

@@ -8,6 +8,7 @@ namespace backend_shop.IServices
         : IService<Store>,
             IServiceId<Store>,
             IServiceUuid<Store>,
+            IServiceIdUuid<Store>,
             IServiceSoftDeleteUuid<Store>,
             IServiceName<Store>,
             IServiceIdUuidName<Store>

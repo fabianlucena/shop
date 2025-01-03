@@ -3,8 +3,11 @@ using backend_shop.DTO;
 using backend_shop.Entities;
 using backend_shop.Exceptions;
 using backend_shop.IServices;
+using backend_shop.Service;
 using Microsoft.AspNetCore.Mvc;
 using RFService.Authorization;
+using RFService.Data;
+using RFService.Repo;
 
 namespace backend_shop.Controllers
 {
@@ -39,6 +42,25 @@ namespace backend_shop.Controllers
             logger.LogInformation("Item created");
 
             return Ok();
+        }
+
+        [HttpGet("{uuid?}")]
+        [Permission("category.get")]
+        public async Task<IActionResult> GetAsync([FromRoute] Guid? uuid)
+        {
+            logger.LogInformation("Getting items");
+
+            var options = GetOptions.CreateFromQuery(HttpContext);
+            if (uuid != null)
+                options.Filters["Uuid"] = uuid;
+
+            var itemsList = await itemService.GetListAsync(options);
+
+            var response = itemsList.Select(mapper.Map<Item, ItemResponse>);
+
+            logger.LogInformation("Items getted");
+
+            return Ok(new DataRowsResult(response));
         }
     }
 }

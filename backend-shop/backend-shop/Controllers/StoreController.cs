@@ -50,7 +50,7 @@ namespace backend_shop.Controllers
         [Permission("store.get")]
         public async Task<IActionResult> GetAsync([FromRoute] Guid? uuid)
         {
-            logger.LogInformation("Getting store");
+            logger.LogInformation("Getting stores");
 
             if (uuid != null)
                 await storeService.CheckForUuidAndCurrentUserAsync(uuid.Value);
@@ -66,7 +66,7 @@ namespace backend_shop.Controllers
 
             var response = storeList.Select(mapper.Map<Store, StoreResponse>);
 
-            logger.LogInformation("Store getted");
+            logger.LogInformation("Stores getted");
 
             return Ok(new DataRowsResult(response));
         }

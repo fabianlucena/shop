@@ -92,7 +92,9 @@ namespace backend_shop.Service
         {
             var storesId = await storeService.GetListIdForCurrentUserAsync(options);
 
-            options ??= new();
+            options = (options != null) ?
+                new GetOptions(options) :
+                new();
             options.Filters["StoreId"] = storesId;
 
             return options;

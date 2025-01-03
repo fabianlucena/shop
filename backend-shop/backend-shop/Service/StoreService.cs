@@ -109,7 +109,9 @@ namespace backend_shop.Service
         {
             var businessesId = await businessService.GetListIdForCurrentUserAsync(options);
 
-            options ??= new();
+            options = (options != null) ?
+                new GetOptions(options) :
+                new();
             options.Filters["BusinessId"] = businessesId;
 
             return options;

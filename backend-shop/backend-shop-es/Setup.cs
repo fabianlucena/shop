@@ -17,6 +17,7 @@ namespace backend_shop_es
                 
 
                 await addTranslationService.AddAsync("es", "exception", "Business does not exist.", "El negocio no existe.");
+                await addTranslationService.AddAsync("es", "exception", "Categorys does not exist.", "El rubro no existe.");
                 await addTranslationService.AddAsync("es", "exception", "Item does not exist.", "No existe el artículo.");
                 await addTranslationService.AddAsync("es", "exception", "No business provided.", "No se ha provisto negocio.");
                 await addTranslationService.AddAsync("es", "exception", "No category provided.", "No se ha provisto una categoría.");
