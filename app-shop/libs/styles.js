@@ -1,10 +1,9 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  container: {
+  screen: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
     flexGrow: 1,
     flexDirection: 'column',
     padding: 10,

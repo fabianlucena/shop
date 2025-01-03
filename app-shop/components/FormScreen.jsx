@@ -5,6 +5,8 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import Screen from './Screen';
 import TextField from './TextField';
 import SwitchField from './SwitchField';
+import SelectField from './SelectField';
+import CurrencyField from './CurrencyField';
 import Button from './Button';
 import Message from './Message';
 import Error from './Error';
@@ -22,8 +24,11 @@ function getArrangedFields(fields) {
         name: f,
         type: 'text',
         label: f === 'name'? 'Nombre': 'Descripción',
+        numberOfLines: (f === 'description')? 3: 1,
       };
     }
+
+    f.label ||= f.name;
 
     return f;
   });
@@ -34,6 +39,9 @@ function renderFields(fields, data, setData) {
     return;
 
   return getArrangedFields(fields).map(f => {
+    if (!f.visible && typeof f.visible !== 'undefined')
+      return;
+
     if (f.type === 'switch') {
       return <SwitchField
           key={f.name}
@@ -50,6 +58,45 @@ function renderFields(fields, data, setData) {
           value={data[f.name]}
           onChangeValue={value => {
             setData({...data, [f.name]: value});
+          }}
+          numberOfLines={f.numberOfLines}
+        >
+          {f.label}
+        </TextField>;
+    }
+
+    if (f.type === 'select') {
+      return <SelectField
+          key={f.name}
+          value={data[f.name]}
+          onChangeValue={value => {
+            setData({...data, [f.name]: value});
+          }}
+          options={f.options}
+        >
+          {f.label}
+        </SelectField>;
+    }
+
+    if (f.type === 'currency') {
+      return <CurrencyField
+          key={f.name}
+          value={data[f.name]}
+          onChangeValue={value => {
+            setData({...data, [f.name]: value});
+          }}
+        >
+          {f.label}
+        </CurrencyField>;
+    }
+
+    if (f.type === 'number') {
+      return <TextField
+          key={f.name}
+          keyboardType="numeric"
+          value={data[f.name]}
+          onChangeValue={value => {
+            setData({...data, [f.name]: value.replace(/[^0-9]/g, '')});
           }}
         >
           {f.label}
@@ -73,6 +120,7 @@ export default function FormScreen({
   onSuccess,
   onSuccessNavigate,
   validate,
+  showBusinessName,
 }) {
   const navigation = useNavigation();
   const route = useRoute();
@@ -83,12 +131,17 @@ export default function FormScreen({
   const [canSubmit, setCanSubmit] = useState(false);
   const [loading, setLoading] = useState(false);
   const _uuid = uuid ?? route?.params?.uuid;
+  const [_fields, setFields] = useState([]);
+  
+  useEffect(() => {
+    setFields(getArrangedFields(fields));
+  }, [fields]);
 
   useEffect(() => {
     navigation.setOptions({ title: _uuid? updateTitle: createTitle });
 
     const newData = {...additionalData};
-    for (var field of getArrangedFields(fields)) {
+    for (var field of _fields) {
       if (field.name === 'isEnabled')
         newData.isEnabled = true;
     }
@@ -105,7 +158,10 @@ export default function FormScreen({
     }
     
     if (validate) {
-      const result = validate(data);
+      const priorFields = JSON.stringify(_fields);
+      const result = validate(data, _fields || []);
+      if (JSON.stringify(_fields) !== priorFields)
+        setFields(getArrangedFields(_fields));
 
       if (result === false) {
         setMessage('Verifique los datos');
@@ -137,7 +193,7 @@ export default function FormScreen({
 
     setMessage('Listo para enviar');
     setCanSubmit(true);
-  }, [loading, data, additionalData]);
+  }, [loading, _fields, data, additionalData]);
 
   function loadData() {
     setLoading(true);
@@ -145,8 +201,14 @@ export default function FormScreen({
     service.getSingleForUuid(_uuid, { query: { includeDisabled: true }})
       .then(rawData => {
         const newData = {...additionalData};
-        for (var field of getArrangedFields(fields))
-          newData[field.name] = rawData[field.name];
+        if (_fields.length)
+        {
+          for (var field of _fields)
+            newData[field.name] = rawData[field.name];
+        } else {
+          for (var field of getArrangedFields(fields))
+            newData[field.name] = rawData[field.name];
+        }
 
         setData(newData);
         setDefaultData(JSON.stringify(newData));
@@ -198,10 +260,11 @@ export default function FormScreen({
 
   return <Screen
       busy={loading}
+      showBusinessName={showBusinessName}
     >
       <Error>{error}</Error>
       <Message>{message}</Message>
-      {renderFields(fields, data, setData)}
+      {renderFields(_fields, data, setData)}
       <Button
         disabled={!canSubmit}
         onPress={handleOnSubmit}

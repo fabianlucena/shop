@@ -6,7 +6,6 @@ import { useSession } from '../contexts/Session';
 
 import ButtonIconAdd from '../components/ButtonIconAdd';
 
-import HomeScreen from './HomeScreen';
 import LogoutScreen from './LogoutScreen';
 import ChangePasswordScreen from './ChangePasswordScreen';
 import BusinessesListScreen from './BusinessesListScreen';
@@ -35,7 +34,7 @@ function DrawerNavigator() {
           <DrawerItemList {...props} />
         </DrawerContentScrollView>}
     >
-      <Drawer.Screen name="Home"           component={HomeScreen}           options={{ title: 'Comprar' }}/>
+      <Drawer.Screen name="ItemsList"      component={ItemListScreen}       options={{ title: 'Artículos',     headerRight: () => <ButtonIconAdd style={{margin: 10}} size="big" navigate="ItemForm"     /> }}/>
       <Drawer.Screen name="BusinessesList" component={BusinessesListScreen} options={{ title: 'Mis negocios',  headerRight: () => <ButtonIconAdd style={{margin: 10}} size="big" navigate="BusinessForm" /> }}/>
       <Drawer.Screen name="StoresList"     component={StoresListScreen}     options={{ title: 'Mis locales',   headerRight: () => <ButtonIconAdd style={{margin: 10}} size="big" navigate="StoreForm"    /> }}/>
       <Drawer.Screen name="ItemList"       component={ItemListScreen}       options={{ title: 'Mis artículos', headerRight: () => <ButtonIconAdd style={{margin: 10}} size="big" navigate="ItemForm"     /> }}/>

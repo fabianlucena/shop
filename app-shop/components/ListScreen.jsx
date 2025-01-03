@@ -9,6 +9,7 @@ import ItemHeader from './ItemHeader';
 import ButtonIconEdit from './ButtonIconEdit';
 import ButtonIconDelete from './ButtonIconDelete';
 import useDialog from './useDialog';
+import Error from './Error';
 
 export default function ListScreen({
   confirmDeletionMessage,
@@ -19,13 +20,17 @@ export default function ListScreen({
   onDeleted,
   onEnable,
   onEnabled,
+  showBusinessName,
+  loadingError = 'Error de carga',
 }) {
   const [data, setData] = useState([]);
   const dialog = useDialog();
+  const [error, setError] = useState('');
 
   function loadData() {
     service.get({ includeDisabled: true })
-      .then(data => setData(data.rows));
+      .then(data => setData(data.rows))
+      .catch(e => setError(`${loadingError}\n${e.message}`));
   }
 
   useFocusEffect(
@@ -125,7 +130,11 @@ export default function ListScreen({
       </View>;
   }
 
-  return <Screen style={{ backgroundColor: 'red' }}>
+  return <Screen
+      style={{ backgroundColor: 'red' }}
+      showBusinessName={showBusinessName}
+    >
+      <Error>{error}</Error>
       <FlatList
         style= {{
           width: '100%',

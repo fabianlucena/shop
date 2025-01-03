@@ -8,17 +8,21 @@ import Busy from './Busy';
 import Header from './Header';
 import styles from '../libs/styles';
 
-export default function Screeen({ children, busy, header }) {
+export default function Screeen({
+  children,
+  busy,
+  header,
+  showBusinessName = false,
+}) {
   const { businessName } = useSession();
   const insets = useSafeAreaInsets();
 
-  return (
-    <Background>
+  return <Background>
       <Busy
         busy={busy}
       >
         <View style={[
-          styles.container,
+          styles.screen,
           {
             paddingTop: insets.top,
             paddingBottom: insets.bottom,
@@ -26,11 +30,10 @@ export default function Screeen({ children, busy, header }) {
             paddingRight: insets.right,
           }
         ]}>
-          {businessName && <Text style={{...styles.text, ...styles.header, ...styles.currentBussiness}}>Administrando: {businessName}</Text> || null}
+          {showBusinessName && businessName && <Text style={{...styles.text, ...styles.header, ...styles.currentBussiness}}>Administrando: {businessName}</Text> || null}
           {header && <Header>{header}</Header> || null}
           {children}
         </View>
       </Busy>
-    </Background>
-  );
+    </Background>;
 }

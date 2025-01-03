@@ -12,6 +12,7 @@ export default function StoreFormScreen() {
   }
 
   return <FormScreen
+      showBusinessName={true}
       service={useStore()}
       createTitle="Agregar local"
       updateTitle="Modificar local"
