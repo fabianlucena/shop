@@ -27,15 +27,18 @@ export default function ListScreen({
   const dialog = useDialog();
   const [error, setError] = useState('');
 
+  useFocusEffect(
+    useCallback(() => {
+      setError('');
+      loadData();
+    }, [])
+  );
+  
   function loadData() {
     service.get({ includeDisabled: true })
       .then(data => setData(data.rows))
       .catch(e => setError(`${loadingError}\n${e.message}`));
   }
-
-  useFocusEffect(
-    useCallback(loadData, [])
-  );
 
   function deleteRow(item) {
     dialog.confirm({

@@ -1,6 +1,8 @@
 import { useContext, createContext, useState, useEffect } from 'react';
 
 import useBusiness from '../services/useBusiness';
+import useCategory from '../services/useCategory';
+import useStore from '../services/useStore';
 
 export const SessionContext = createContext();
 
@@ -10,12 +12,18 @@ export function useSession() {
 
 export function SessionProvider({ children }) {
   const serviceBusiness = useBusiness();
+  const serviceCategory = useCategory();
+  const serviceStore = useStore();
   const [isInitiated, setIsInitiated] = useState(false);
   const [isLogguedIn, setIsLoggedIn] = useState(false);
   const [permissions, setPermissions] = useState([]);
   const [businesses, setBusinesses] = useState([]);
   const [businessUuid, setBusinessUuid] = useState('');
   const [businessName, setBusinessName] = useState('');
+  const [categories, setCategories] = useState([]);
+  const [stores, setStores] = useState([]);
+  const [categoriesOptions, setCategoriesOptions] = useState([]);
+  const [storesOptions, setStoresOptions] = useState([]);
 
   function loadBussiness() {
     serviceBusiness.get()
@@ -26,13 +34,33 @@ export function SessionProvider({ children }) {
       });
   }
 
+  function loadCategories() {
+    serviceCategory.get()
+      .then(data => {
+        const newCategories = data.rows;
+        setCategories(newCategories);
+        setCategoriesOptions(newCategories.map(i => ({ value: i.uuid, label: i.name })));
+      });
+  }
+
+  function loadStores() {
+    serviceStore.get()
+      .then(data => {
+        const newStores  = data.rows;
+        setStores(newStores);
+        setStoresOptions(newStores.map(i => ({ value: i.uuid, label: i.name })));
+      });
+  }
+
   function autoSelectBussiness(businesses) {
     if (!businesses.length) {
       setBusinessUuid('');
       setBusinessName('');
+      setStores([]);
     } else if (businesses.length === 1) {
       setBusinessUuid(businesses[0].uuid);
       updateCurrentBusinessName(businesses, businesses[0].uuid);
+      loadStores();
     }
   }
 
@@ -45,6 +73,7 @@ export function SessionProvider({ children }) {
   useEffect(() => {
     if (isLogguedIn) {
       loadBussiness();
+      loadCategories();
     }
   }, [isLogguedIn]);
 
@@ -54,6 +83,7 @@ export function SessionProvider({ children }) {
 
   useEffect(() => {
     updateCurrentBusinessName(businesses, businessUuid);
+    loadStores();
   }, [businesses, businessUuid]);
 
   return (
@@ -65,6 +95,10 @@ export function SessionProvider({ children }) {
       businesses, setBusinesses,
       businessUuid, setBusinessUuid,
       businessName,
+      categories,
+      stores,
+      categoriesOptions,
+      storesOptions,
     }}>
       {children}
     </SessionContext.Provider>

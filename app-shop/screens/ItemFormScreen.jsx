@@ -1,5 +1,6 @@
 import FormScreen from '../components/FormScreen';
 import useItem from '../services/useItem';
+import { useSession } from '../contexts/Session';
 
 function validate(data, fields) {
   const minAgeField = fields.find(f => f.name === 'minAge');
@@ -9,7 +10,31 @@ function validate(data, fields) {
   const maxAgeField = fields.find(f => f.name === 'maxAge');
   if (maxAgeField)
     maxAgeField.visible = !!data.isPresent;
+  
+  if (!data.name) {
+    return 'Debe proporcionar un nombre para el artículo.';
+  }
+  
+  if (!data.description) {
+    return 'Debe proporcionar una descripción para el artículo.';
+  }
+  
+  if (!data.categoryUuid) {
+    return 'Debe seleccionar un rubro.';
+  }
 
+  if (!data.storeUuid) {
+    return 'Debe seleccionar un local.';
+  }
+
+  if (!data.price) {
+    return 'Debe colocar un precio para el artículo.';
+  }
+
+  if (!data.stock) {
+    return 'Debe colocar la cantidad de artículos disponibles.';
+  }
+  
   if (data.minAge && data.maxAge && parseFloat(data.minAge) > parseFloat(data.maxAge))
     return 'La edad mínima no puede ser mayor a la edad máxima.';
   
@@ -17,33 +42,28 @@ function validate(data, fields) {
 }
 
 export default function ItemFormScreen() {
-  const categories = [
-    { label: 'Opción 1', value: 'opcion1' },
-    { label: 'Opción 2', value: 'opcion2' },
-    { label: 'Opción 3', value: 'opcion3' },
-  ];
+  const { categoriesOptions, storesOptions } = useSession();
 
-  return (
-    <FormScreen
+  return <FormScreen
       showBusinessName={true}
       service={useItem()}
       createTitle="Agregar artículo"
       updateTitle="Modificar artículo"
       loadingError="No se pudo cargar el artículo."
       onSuccessNavigate={['Drawer', { screen: 'ItemsList'}]}
+      defaultData={{ isEnabled: true }}
       fields={[
         'isEnabled',
         'name',
         'description',
-        { name: 'category',  type: 'select',   label: 'Rubro', options: categories },
-        { name: 'store',     type: 'select',   label: 'Local', options: categories },
-        { name: 'price',     type: 'currency', label: 'Precio' },
-        { name: 'stock',     type: 'number',   label: 'Disponibilidad' },
-        { name: 'isPresent', type: 'switch',   label: 'Apto para regalar' },
-        { name: 'minAge',    type: 'number',   label: 'Edad mínima' },
-        { name: 'maxAge',    type: 'number',   label: 'Edad máxima' },
+        { name: 'categoryUuid', type: 'select',   label: 'Rubro', options: categoriesOptions },
+        { name: 'storeUuid',    type: 'select',   label: 'Local', options: storesOptions },
+        { name: 'price',        type: 'currency', label: 'Precio' },
+        { name: 'stock',        type: 'number',   label: 'Disponibilidad' },
+        { name: 'isPresent',    type: 'switch',   label: 'Apto para regalar' },
+        { name: 'minAge',       type: 'number',   label: 'Edad mínima' },
+        { name: 'maxAge',       type: 'number',   label: 'Edad máxima' },
       ]}
       validate={validate}
-    />
-  );
+    />;
 }

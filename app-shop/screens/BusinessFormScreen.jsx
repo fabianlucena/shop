@@ -2,18 +2,18 @@ import FormScreen from '../components/FormScreen';
 import useBusiness from '../services/useBusiness';
 import { useSession } from '../contexts/Session';
 
+function validate(data) {
+  if (!data.name) {
+    return 'Debe proporcionar un nombre para el negocio.';
+  }
+  
+  if (!data.description) {
+    return 'Debe proporcionar una descripción para el negocio.';
+  }
+}
+
 export default function BusinessFormScreen() {
   const { loadBussiness } = useSession();
-
-  function validate(data) {
-    if (!data.name) {
-      return 'Debe proporcionar un nombre para el negocio.';
-    }
-    
-    if (!data.description) {
-      return 'Debe proporcionar una descripción para el negocio.';
-    }
-  }
 
   return <FormScreen
       service={useBusiness()}

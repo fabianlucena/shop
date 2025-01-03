@@ -5,14 +5,17 @@ export default function ItemsListScreen() {
   return <ListScreen
       service={useItem()}
       confirmDeletionMessage={item => `¿Desea eliminar el artículo ${item.name}?`}
-      properties={[
-        'name',
-        'isEnabled',
-        'description',
-      ]}
-      buttons={[
-        'edit',
-        'delete',
+      formScreen="ItemForm"
+      elements={[
+        {
+          elements: [
+            { control: 'isEnabled' },
+            { fieldHeader: 'name' },
+            { button:  'edit' },
+            { button:  'delete' },
+          ]
+        },
+        {field: 'description'},
       ]}
     />;
 }

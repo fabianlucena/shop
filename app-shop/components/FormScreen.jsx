@@ -111,6 +111,7 @@ export default function FormScreen({
   service,
   uuid,
   fields,
+  defaultData,
   additionalData,
   createTitle = 'Agregar',
   updateTitle = 'Modificar',
@@ -124,15 +125,21 @@ export default function FormScreen({
 }) {
   const navigation = useNavigation();
   const route = useRoute();
-  const [data, setData] = useState({});
-  const [defaultData, setDefaultData] = useState('');
+  const [data, setData] = useState({...defaultData, ...additionalData});
+  const [originalData, setOriginalData] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [canSubmit, setCanSubmit] = useState(false);
   const [loading, setLoading] = useState(false);
   const _uuid = uuid ?? route?.params?.uuid;
   const [_fields, setFields] = useState([]);
-  
+
+  useFocusEffect(
+    useCallback(() => {
+      setError('');
+    }, [])
+  );
+
   useEffect(() => {
     setFields(getArrangedFields(fields));
   }, [fields]);
@@ -140,7 +147,10 @@ export default function FormScreen({
   useEffect(() => {
     navigation.setOptions({ title: _uuid? updateTitle: createTitle });
 
-    const newData = {...additionalData};
+    const newData = {
+      ...defaultData,
+      ...additionalData,
+    };
     for (var field of _fields) {
       if (field.name === 'isEnabled')
         newData.isEnabled = true;
@@ -185,7 +195,7 @@ export default function FormScreen({
       }
     }
 
-    if (JSON.stringify(data) === defaultData) {
+    if (JSON.stringify(data) === originalData) {
       setMessage('No hay cambios para enviar');
       setCanSubmit(false);
       return;
@@ -211,7 +221,7 @@ export default function FormScreen({
         }
 
         setData(newData);
-        setDefaultData(JSON.stringify(newData));
+        setOriginalData(JSON.stringify(newData));
       })
       .catch(e => setError(`${loadingError}\n${e.message}`))
       .finally(() => setLoading(false));
