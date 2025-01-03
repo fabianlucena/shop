@@ -15,10 +15,12 @@ namespace backend_shop_es
             {
                 await addTranslationService.AddAsync("es", "exception", "Business does not exist.", "El negocio no existe.");
                 await addTranslationService.AddAsync("es", "exception", "No business provided.", "No se ha provisto negocio.");
+                await addTranslationService.AddAsync("es", "exception", "No category provided.", "No se ha provisto una categoría.");
                 await addTranslationService.AddAsync("es", "exception", "No name for business provided.", "No se ha provisto un nombre para el negocio.");
                 await addTranslationService.AddAsync("es", "exception", "No name provided.", "No se ha provisto un nombre.");
                 await addTranslationService.AddAsync("es", "exception", "No owner provided.", "No se ha provisto propietario.");
                 await addTranslationService.AddAsync("es", "exception", "No plan provided.", "No se ha provisto plan.");
+                await addTranslationService.AddAsync("es", "exception", "No store provided.", "No se ha provisto un local.");
                 await addTranslationService.AddAsync("es", "exception", "Plan already exists.", "El plan ya existe.");
                 await addTranslationService.AddAsync("es", "exception", "Plan feature already exists.", "La característica de plan ya existe.");
                 await addTranslationService.AddAsync("es", "exception", "Store does not exist.", "No existe el local.");

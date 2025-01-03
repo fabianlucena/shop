@@ -18,6 +18,6 @@ namespace backend_shop.DTO
 
         public DateTime? DeletedAt { get; set; }
 
-        public required Plan Plan { get; set; }
+        public required PlanMinimalDTO Plan { get; set; }
     }
 }
