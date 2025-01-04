@@ -16,7 +16,8 @@ namespace backend_shop.Controllers
     public class CommerceController(
         ILogger<CommerceController> logger,
         ICommerceService commerceService,
-        IMapper mapper
+        IMapper mapper,
+        IItemService itemService
     )
         : ControllerBase
     {
@@ -81,6 +82,8 @@ namespace backend_shop.Controllers
             if (result <= 0)
                 return BadRequest();
 
+            _ = itemService.UpdateInheritedForCommerceUuid(uuid);
+
             logger.LogInformation("Commerce updated");
 
             return Ok();
@@ -98,6 +101,8 @@ namespace backend_shop.Controllers
 
             if (result <= 0)
                 return BadRequest();
+            
+            _ = itemService.UpdateInheritedForCommerceUuid(uuid);
 
             logger.LogInformation("Commerce deleted");
 
@@ -116,6 +121,8 @@ namespace backend_shop.Controllers
 
             if (result <= 0)
                 return BadRequest();
+
+            _ = itemService.UpdateInheritedForCommerceUuid(uuid);
 
             logger.LogInformation("Commerce restored");
 

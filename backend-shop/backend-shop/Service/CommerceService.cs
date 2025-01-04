@@ -6,16 +6,13 @@ using backend_shop.Exceptions;
 using RFService.Repo;
 using RFAuth.Exceptions;
 using RFService.ILibs;
-using RFService.Libs;
 
 namespace backend_shop.Service
 {
     public class CommerceService(
         IRepo<Commerce> repo,
         IUserPlanService userPlanService,
-        IHttpContextAccessor httpContextAccessor/*,
-        IStoreService storeService /*,
-        IItemService itemService */
+        IHttpContextAccessor httpContextAccessor
     )
         : ServiceSoftDeleteTimestampsIdUuidEnabledName<IRepo<Commerce>, Commerce>(repo),
             ICommerceService
@@ -82,51 +79,6 @@ namespace backend_shop.Service
             return data;
         }
 
-        public override async Task<int> UpdateAsync(IDataDictionary data, GetOptions options)
-        {
-            IEnumerable<Commerce>? list = null;
-            if (data.TryGetBool("IsEnabled", out var isEnabled))
-            {
-                list = await GetListAsync(options);
-                if (!list.Any())
-                    return 0;
-            }
-
-            var result = await base.UpdateAsync(data, options);
-
-            if (list == null)
-                return result;
-
-            /*foreach (var commerce in list)
-            {
-                if (commerce.IsEnabled != isEnabled)
-                    continue;
-
-                var storeList = await storeService.GetListAsync(new GetOptions
-                {
-                    Filters = {
-                        { "IsEnabled", null },
-                        { "CommerceId", commerce.Id }
-                    },
-                });
-
-                foreach (var store in storeList)
-                {
-                    _ = await itemService.UpdateAsync(
-                        new DataDictionary {
-                            { "InheritedIsEnabled", store.IsEnabled && commerce.IsEnabled},
-                            { "Location", store.Location},
-                        },
-                        new GetOptions
-                        {
-                            Filters = { { "StoreId", store.Id } },
-                        }
-                    );
-                }
-            }*/
-
-            return result;
-        }
         public async Task<bool> CheckForUuidAndCurrentUserAsync(Guid uuid, GetOptions? options = null)
         {
             var httpContext = httpContextAccessor.HttpContext

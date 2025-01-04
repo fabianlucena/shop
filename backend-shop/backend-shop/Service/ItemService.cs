@@ -5,6 +5,8 @@ using backend_shop.IServices;
 using backend_shop.Exceptions;
 using RFService.ILibs;
 using RFService.Repo;
+using RFService.Libs;
+using RFService.Operator;
 
 namespace backend_shop.Service
 {
@@ -117,5 +119,50 @@ namespace backend_shop.Service
 
         public async Task<IEnumerable<Guid>> GetListUuidForCurrentUserAsync(GetOptions? options = null)
             => await GetListUuidAsync(await GetFilterForCurrentUserAsync(options));
+
+        public async Task<int> UpdateInheritedForStoreUuid(Guid storeUuid, GetOptions? options = null)
+        {
+            options ??= new();
+            options.Include("Store", "stores");
+            options.Include("Commerce", "commerce");
+            options.Filters["store.Uuid"] = storeUuid;
+
+            var data = new DataDictionary
+            {
+                { "Location", Op.Column("store.Location") },
+                { "InheritedIsEnabled",
+                    Op.And(
+                        Op.Eq(Op.Column("store.IsEnabled"), false),
+                        Op.IsNull(Op.Column("store.DeletedAt")),
+                        Op.Eq(Op.Column("commerce.IsEnabled"), false),
+                        Op.IsNull(Op.Column("commerce.DeletedAt"))
+                    )
+                },
+            };
+
+            return await UpdateAsync(data, options);
+        }
+
+        public async Task<int> UpdateInheritedForCommerceUuid(Guid commerceUuid, GetOptions? options = null)
+        {
+            options ??= new();
+            options.Include("Store", "stores");
+            options.Include("Commerce", "commerce");
+            options.Filters["commerce.Uuid"] = commerceUuid;
+
+            var data = new DataDictionary
+            {
+                { "InheritedIsEnabled",
+                    Op.And(
+                        Op.Eq(Op.Column("store.IsEnabled"), false),
+                        Op.IsNull(Op.Column("store.DeletedAt")),
+                        Op.Eq(Op.Column("commerce.IsEnabled"), false),
+                        Op.IsNull(Op.Column("commerce.DeletedAt"))
+                    )
+                },
+            };
+
+            return await UpdateAsync(data, options);
+        }
     }
 }

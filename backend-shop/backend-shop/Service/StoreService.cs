@@ -6,7 +6,6 @@ using backend_shop.Exceptions;
 using RFService.Repo;
 using RFAuth.Exceptions;
 using RFService.ILibs;
-using RFService.Libs;
 
 namespace backend_shop.Service
 {
@@ -83,41 +82,6 @@ namespace backend_shop.Service
             }
 
             return data;
-        }
-
-        public override async Task<int> UpdateAsync(IDataDictionary data, GetOptions options)
-        {
-            IEnumerable<Store>? list = null;
-            if (data.TryGetBool("IsEnabled", out var isEnabled))
-            {
-                list = await GetListAsync(options);
-                if (!list.Any())
-                    return 0;
-            }
-
-            var result = await base.UpdateAsync(data, options);
-
-            if (list == null)
-                return result;
-
-            /*foreach (var store in list)
-            {
-                if (store.IsEnabled != isEnabled)
-                    continue;
-
-                _ = await itemService.UpdateAsync(
-                    new DataDictionary {
-                        { "InheritedIsEnabled", store.IsEnabled && (store.Commerce?.IsEnabled ?? false )},
-                        { "Location", store.Location},
-                    },
-                    new GetOptions
-                    {
-                        Filters = { { "StoreId", store.Id } },
-                    }
-                );
-            }*/
-
-            return result;
         }
 
         public async Task<bool> CheckForUuidAndCurrentUserAsync(Guid uuid, GetOptions? options = null)
