@@ -45,7 +45,7 @@ export default function ItemFormScreen() {
   const { categoriesOptions, storesOptions } = useSession();
 
   return <FormScreen
-      showBusinessName={true}
+      showCommerceName={true}
       service={useItem()}
       createTitle="Agregar artículo"
       updateTitle="Modificar artículo"

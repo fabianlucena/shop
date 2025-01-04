@@ -1,6 +1,6 @@
 import { useContext, createContext, useState, useEffect } from 'react';
 
-import useBusiness from '../services/useBusiness';
+import useCommerce from '../services/useCommerce';
 import useCategory from '../services/useCategory';
 import useStore from '../services/useStore';
 
@@ -11,26 +11,26 @@ export function useSession() {
 }
 
 export function SessionProvider({ children }) {
-  const serviceBusiness = useBusiness();
+  const serviceCommerce = useCommerce();
   const serviceCategory = useCategory();
   const serviceStore = useStore();
   const [isInitiated, setIsInitiated] = useState(false);
   const [isLogguedIn, setIsLoggedIn] = useState(false);
   const [permissions, setPermissions] = useState([]);
-  const [businesses, setBusinesses] = useState([]);
-  const [businessUuid, setBusinessUuid] = useState('');
-  const [businessName, setBusinessName] = useState('');
+  const [commerces, setCommerces] = useState([]);
+  const [commerceUuid, setCommerceUuid] = useState('');
+  const [commerceName, setCommerceName] = useState('');
   const [categories, setCategories] = useState([]);
   const [stores, setStores] = useState([]);
   const [categoriesOptions, setCategoriesOptions] = useState([]);
   const [storesOptions, setStoresOptions] = useState([]);
 
-  function loadBussiness() {
-    serviceBusiness.get()
+  function loadCommerces() {
+    serviceCommerce.get()
       .then(data => {
-        const newBusinesses = data.rows;
-        setBusinesses(newBusinesses);
-        autoSelectBussiness(newBusinesses);
+        const newCommerces = data.rows;
+        setCommerces(newCommerces);
+        autoSelectCommerce(newCommerces);
       });
   }
 
@@ -52,49 +52,49 @@ export function SessionProvider({ children }) {
       });
   }
 
-  function autoSelectBussiness(businesses) {
-    if (!businesses.length) {
-      setBusinessUuid('');
-      setBusinessName('');
+  function autoSelectCommerce(commerces) {
+    if (!commerces.length) {
+      setCommerceUuid('');
+      setCommerceName('');
       setStores([]);
-    } else if (businesses.length === 1) {
-      setBusinessUuid(businesses[0].uuid);
-      updateCurrentBusinessName(businesses, businesses[0].uuid);
+    } else if (commerces.length === 1) {
+      setCommerceUuid(commerces[0].uuid);
+      updateCurrentCommerceName(commerces, commerces[0].uuid);
       loadStores();
     }
   }
 
-  function updateCurrentBusinessName(businesses, businessUuid) {
-    var currentBusiness = businesses.find(i => i.uuid === businessUuid);
-    if (currentBusiness)
-      setBusinessName(currentBusiness.name);
+  function updateCurrentCommerceName(commerces, commerceUuid) {
+    var currentCommerce = commerces.find(i => i.uuid === commerceUuid);
+    if (currentCommerce)
+      setCommerceName(currentCommerce.name);
   }
 
   useEffect(() => {
     if (isLogguedIn) {
-      loadBussiness();
+      loadCommerces();
       loadCategories();
     }
   }, [isLogguedIn]);
 
   useEffect(() => {
-    autoSelectBussiness(businesses);
-  }, [businesses]);
+    autoSelectCommerce(commerces);
+  }, [commerces]);
 
   useEffect(() => {
-    updateCurrentBusinessName(businesses, businessUuid);
+    updateCurrentCommerceName(commerces, commerceUuid);
     loadStores();
-  }, [businesses, businessUuid]);
+  }, [commerces, commerceUuid]);
 
   return (
     <SessionContext.Provider value={{
       isInitiated, setIsInitiated,
       isLogguedIn, setIsLoggedIn,
       permissions, setPermissions,
-      loadBussiness,
-      businesses, setBusinesses,
-      businessUuid, setBusinessUuid,
-      businessName,
+      loadCommerces,
+      commerces, setCommerces,
+      commerceUuid, setCommerceUuid,
+      commerceName,
       categories,
       stores,
       categoriesOptions,

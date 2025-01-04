@@ -6,14 +6,14 @@ using RFService.Repo;
 
 namespace backend_shop.IServices
 {
-    public interface IBusinessService
-        : IService<Business>,
-            IServiceId<Business>,
-            IServiceUuid<Business>,
-            IServiceIdUuid<Business>,
-            IServiceSoftDeleteUuid<Business>,
-            IServiceName<Business>,
-            IServiceIdUuidName<Business>
+    public interface ICommerceService
+        : IService<Commerce>,
+            IServiceId<Commerce>,
+            IServiceUuid<Commerce>,
+            IServiceIdUuid<Commerce>,
+            IServiceSoftDeleteUuid<Commerce>,
+            IServiceName<Commerce>,
+            IServiceIdUuidName<Commerce>
     {
         Task<bool> CheckForUuidAndCurrentUserAsync(Guid uuid, GetOptions? options = null);
 

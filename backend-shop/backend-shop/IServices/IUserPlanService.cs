@@ -7,9 +7,9 @@ namespace backend_shop.IServices
         : IService<UserPlan>,
             IServiceTimestamps<UserPlan>
     {
-        Task<int> GetMaxTotalBusinessesForUserId(Int64 userId);
+        Task<int> GetMaxTotalCommercesForUserId(Int64 userId);
 
-        Task<int> GetMaxEnabledBusinessesForUserId(Int64 userId);
+        Task<int> GetMaxEnabledCommercesForUserId(Int64 userId);
 
         Task<int> GetMaxTotalStoresForUserId(Int64 userId);
 
@@ -19,9 +19,9 @@ namespace backend_shop.IServices
 
         Task<int> GetMaxEnabledItemsForUserId(Int64 userId);
 
-        Task<int> GetMaxTotalBusinessesForCurrentUser();
+        Task<int> GetMaxTotalCommercesForCurrentUser();
 
-        Task<int> GetMaxEnabledBusinessesForCurrentUser();
+        Task<int> GetMaxEnabledCommercesForCurrentUser();
 
         Task<int> GetMaxTotalStoresForCurrentUser();
 

@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     width: 34,
   },
 
-  currentBussiness: {
+  currentCommerce: {
     fontSize: 18,
     marginTop: '.3em',
     marginBottom: 0,

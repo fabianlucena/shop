@@ -52,7 +52,7 @@ namespace backend_shop
 
             services.AddScoped<IPlanService, PlanService>();
             services.AddScoped<IUserPlanService, UserPlanService>();
-            services.AddScoped<IBusinessService, BusinessService>();
+            services.AddScoped<ICommerceService, CommerceService>();
             services.AddScoped<IStoreService, StoreService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IItemService, ItemService>();
@@ -65,14 +65,14 @@ namespace backend_shop
 
             services.AddScoped<Dapper<Plan>, Dapper<Plan>>();
             services.AddScoped<Dapper<UserPlan>, Dapper<UserPlan>>();
-            services.AddScoped<Dapper<Business>, Dapper<Business>>();
+            services.AddScoped<Dapper<Commerce>, Dapper<Commerce>>();
             services.AddScoped<Dapper<Store>, Dapper<Store>>();
             services.AddScoped<Dapper<Category>, Dapper<Category>>();
             services.AddScoped<Dapper<Item>, Dapper<Item>>();
 
             services.AddScoped<IRepo<Plan>, Dapper<Plan>>();
             services.AddScoped<IRepo<UserPlan>, Dapper<UserPlan>>();
-            services.AddScoped<IRepo<Business>, Dapper<Business>>();
+            services.AddScoped<IRepo<Commerce>, Dapper<Commerce>>();
             services.AddScoped<IRepo<Store>, Dapper<Store>>();
             services.AddScoped<IRepo<Category>, Dapper<Category>>();
             services.AddScoped<IRepo<Item>, Dapper<Item>>();

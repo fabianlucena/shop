@@ -1,14 +1,14 @@
 import ListScreen from '../components/ListScreen';
-import useBusiness from '../services/useBusiness';
+import useCommerce from '../services/useCommerce';
 import { useSession } from '../contexts/Session';
 
-export default function BusinessesListScreen() {
-  const { loadBussiness } = useSession();
+export default function CommercesListScreen() {
+  const { loadCommerce } = useSession();
 
   return <ListScreen
-      service={useBusiness()}
-      confirmDeletionMessage={item => `¿Desea eliminar el negocio ${item.name}?`}
-      formScreen="BusinessForm"
+      service={useCommerce()}
+      confirmDeletionMessage={item => `¿Desea eliminar el comercio ${item.name}?`}
+      formScreen="CommerceForm"
       elements={[
         {
           elements: [
@@ -20,7 +20,7 @@ export default function BusinessesListScreen() {
         },
         {field: 'description'},
       ]}
-      onDeleted={loadBussiness}
-      onEnabled={loadBussiness}
+      onDeleted={loadCommerce}
+      onEnabled={loadCommerce}
     />;
 }

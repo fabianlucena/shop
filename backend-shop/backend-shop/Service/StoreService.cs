@@ -6,14 +6,16 @@ using backend_shop.Exceptions;
 using RFService.Repo;
 using RFAuth.Exceptions;
 using RFService.ILibs;
+using RFService.Libs;
 
 namespace backend_shop.Service
 {
     public class StoreService(
         IRepo<Store> repo,
-        IBusinessService businessService,
+        ICommerceService commerceService,
         IUserPlanService userPlanService,
-        IHttpContextAccessor httpContextAccessor
+        IHttpContextAccessor httpContextAccessor/*,
+        IItemService itemService*/
     )
         : ServiceSoftDeleteTimestampsIdUuidEnabledName<IRepo<Store>, Store>(repo),
             IStoreService
@@ -25,20 +27,20 @@ namespace backend_shop.Service
             if (string.IsNullOrWhiteSpace(data.Name))
                 throw new NoNameException();
 
-            if (data.BusinessId <= 0)
+            if (data.CommerceId <= 0)
             {
-                data.BusinessId = data.Business?.Id ?? 0;
-                if (data.BusinessId <= 0)
-                    throw new NoBusinessException();
+                data.CommerceId = data.Commerce?.Id ?? 0;
+                if (data.CommerceId <= 0)
+                    throw new NoCommerceException();
             }
 
-            _ = await businessService.GetSingleOrDefaultForIdAsync(data.BusinessId)
-                ?? throw new BusinessDoesNotExistException();
+            _ = await commerceService.GetSingleOrDefaultForIdAsync(data.CommerceId)
+                ?? throw new CommerceDoesNotExistException();
 
             var existent = await GetSingleOrDefaultAsync(new GetOptions
             {
                 Filters = {
-                    { "BusinessId", data.BusinessId},
+                    { "CommerceId", data.CommerceId},
                     { "Name", data.Name }
                 }
             });
@@ -83,6 +85,41 @@ namespace backend_shop.Service
             return data;
         }
 
+        public override async Task<int> UpdateAsync(IDataDictionary data, GetOptions options)
+        {
+            IEnumerable<Store>? list = null;
+            if (data.TryGetBool("IsEnabled", out var isEnabled))
+            {
+                list = await GetListAsync(options);
+                if (!list.Any())
+                    return 0;
+            }
+
+            var result = await base.UpdateAsync(data, options);
+
+            if (list == null)
+                return result;
+
+            /*foreach (var store in list)
+            {
+                if (store.IsEnabled != isEnabled)
+                    continue;
+
+                _ = await itemService.UpdateAsync(
+                    new DataDictionary {
+                        { "InheritedIsEnabled", store.IsEnabled && (store.Commerce?.IsEnabled ?? false )},
+                        { "Location", store.Location},
+                    },
+                    new GetOptions
+                    {
+                        Filters = { { "StoreId", store.Id } },
+                    }
+                );
+            }*/
+
+            return result;
+        }
+
         public async Task<bool> CheckForUuidAndCurrentUserAsync(Guid uuid, GetOptions? options = null)
         {
             var httpContext = httpContextAccessor.HttpContext
@@ -95,10 +132,10 @@ namespace backend_shop.Service
                 throw new NoSessionUserDataException();
 
             options ??= GetOptions.CreateFromQuery(httpContext);
-            options.Include("Business", "business");
+            options.Include("Commerce", "commerce");
             options.Filters["IsEnabled"] = null;
             options.Filters["Uuid"] = uuid;
-            options.Filters["business.OwnerId"] = ownerId;
+            options.Filters["commerce.OwnerId"] = ownerId;
             _ = await GetSingleOrDefaultAsync(options)
                 ?? throw new StoreDoesNotExistException();
 
@@ -107,12 +144,12 @@ namespace backend_shop.Service
 
         public async Task<GetOptions> GetFilterForCurrentUserAsync(GetOptions? options = null)
         {
-            var businessesId = await businessService.GetListIdForCurrentUserAsync(options);
+            var commercesId = await commerceService.GetListIdForCurrentUserAsync(options);
 
             options = (options != null) ?
                 new GetOptions(options) :
                 new();
-            options.Filters["BusinessId"] = businessesId;
+            options.Filters["CommerceId"] = commercesId;
 
             return options;
         }

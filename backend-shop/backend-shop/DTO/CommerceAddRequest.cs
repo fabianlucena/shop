@@ -1,6 +1,6 @@
 ﻿namespace backend_shop.DTO
 {
-    public class BusinessAddRequest
+    public class CommerceAddRequest
     {
         public bool? IsEnabled { get; set; }
 

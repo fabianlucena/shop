@@ -5,8 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace backend_shop.Entities
 {
-    [Table("Businesses", Schema = "shop")]
-    public class Business
+    [Table("Commerces", Schema = "shop")]
+    public class Commerce
         : EntitySoftDeleteTimestampsIdUuidEnabledName
     {
         [Required]

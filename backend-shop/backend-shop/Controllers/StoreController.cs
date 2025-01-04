@@ -16,7 +16,7 @@ namespace backend_shop.Controllers
     public class StoreController(
         ILogger<StoreController> logger,
         IStoreService storeService,
-        IBusinessService businessService,
+        ICommerceService commerceService,
         IMapper mapper
     )
         : ControllerBase
@@ -27,14 +27,14 @@ namespace backend_shop.Controllers
         {
             logger.LogInformation("Creating store");
 
-            if (data.BusinessUuid == default)
-                throw new NoBusinessException();
+            if (data.CommerceUuid == default)
+                throw new NoCommerceException();
 
             var store = mapper.Map<StoreAddRequest, Store>(data);
 
-            var businessesIdList = await businessService.GetListIdForCurrentUserAsync();
-            if (!businessesIdList.Contains(store.BusinessId))
-                throw new BusinessDoesNotExistException();
+            var commercesIdList = await commerceService.GetListIdForCurrentUserAsync();
+            if (!commercesIdList.Contains(store.CommerceId))
+                throw new CommerceDoesNotExistException();
 
             var result = await storeService.CreateAsync(store);
 
@@ -55,10 +55,10 @@ namespace backend_shop.Controllers
             if (uuid != null)
                 await storeService.CheckForUuidAndCurrentUserAsync(uuid.Value);
 
-            var businessesIdList = await businessService.GetListIdForCurrentUserAsync();
+            var commercesIdList = await commerceService.GetListIdForCurrentUserAsync();
 
             var options = GetOptions.CreateFromQuery(HttpContext);
-            options.AddFilter("BusinessId", businessesIdList);
+            options.AddFilter("CommerceId", commercesIdList);
             if (uuid != null)
                 options.Filters["Uuid"] = uuid;
 
@@ -75,7 +75,7 @@ namespace backend_shop.Controllers
         [Permission("store.edit")]
         public async Task<IActionResult> PatchAsync([FromRoute] Guid uuid, [FromBody] DataDictionary data)
         {
-            logger.LogInformation("Updating business");
+            logger.LogInformation("Updating commerce");
 
             await storeService.CheckForUuidAndCurrentUserAsync(uuid);
 

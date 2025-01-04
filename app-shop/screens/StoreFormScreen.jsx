@@ -3,7 +3,7 @@ import useStore from '../services/useStore';
 import { useSession } from '../contexts/Session';
 
 export default function StoreFormScreen() {
-  const { businessUuid } = useSession();
+  const { commerceUuid } = useSession();
 
   function validate(data) {
     if (!data.name) {
@@ -12,7 +12,7 @@ export default function StoreFormScreen() {
   }
 
   return <FormScreen
-      showBusinessName={true}
+      showCommerceName={true}
       service={useStore()}
       createTitle="Agregar local"
       updateTitle="Modificar local"
@@ -25,7 +25,7 @@ export default function StoreFormScreen() {
       ]}
       validate={validate}
       additionalData={{
-        businessUuid
+        commerceUuid
       }}
     />;
 }

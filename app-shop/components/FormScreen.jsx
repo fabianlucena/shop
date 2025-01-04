@@ -121,7 +121,7 @@ export default function FormScreen({
   onSuccess,
   onSuccessNavigate,
   validate,
-  showBusinessName,
+  showCommerceName,
 }) {
   const navigation = useNavigation();
   const route = useRoute();
@@ -270,7 +270,7 @@ export default function FormScreen({
 
   return <Screen
       busy={loading}
-      showBusinessName={showBusinessName}
+      showCommerceName={showCommerceName}
     >
       <Error>{error}</Error>
       <Message>{message}</Message>

@@ -10,9 +10,9 @@ namespace backend_shop.Entities
         : EntitySoftDeleteTimestampsIdUuidEnabledName
     {
         [Required]
-        [ForeignKey("Business")]
-        public Int64 BusinessId { get; set; } = default;
-        public Business? Business { get; set; } = default;
+        [ForeignKey("Commerce")]
+        public Int64 CommerceId { get; set; } = default;
+        public Commerce? Commerce { get; set; } = default;
 
         public string? Description { get; set; }
 

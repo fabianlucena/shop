@@ -11,7 +11,6 @@ namespace backend_shop.Service
     public class ItemService(
         IRepo<Item> repo,
         IStoreService storeService,
-        IBusinessService businessService,
         IUserPlanService userPlanService
     )
         : ServiceSoftDeleteTimestampsIdUuidEnabledName<IRepo<Item>, Item>(repo),
@@ -31,11 +30,18 @@ namespace backend_shop.Service
                     throw new NoStoreException();
             }
 
-            var store = await storeService.GetSingleOrDefaultForIdAsync(data.StoreId)
+            var store = await storeService.GetSingleOrDefaultForIdAsync(
+                    data.StoreId,
+                    new GetOptions
+                    {
+                        Join = { { "Commerce", new From("Commerce") } },
+                        Filters = { { "IsEnabled", null } },
+                    }
+                )
                 ?? throw new StoreDoesNotExistException();
 
-            _ = await businessService.GetSingleOrDefaultForIdAsync(store.BusinessId)
-                ?? throw new BusinessDoesNotExistException();
+            if (store.Commerce == null)
+                throw new CommerceDoesNotExistException();
 
             var totalStoresCount = await GetCountForCurrentUserAsync(new GetOptions { Filters = { { "IsEnabled", null } } });
             if (totalStoresCount >= (await userPlanService.GetMaxTotalItemsForCurrentUser()))
@@ -49,6 +55,9 @@ namespace backend_shop.Service
             {
                 throw new MaxEnabledItemsLimitReachedException();
             }
+
+            data.InheritedIsEnabled = store.IsEnabled && store.Commerce.IsEnabled;
+            data.Location = store.Location;
 
             return data;
         }
@@ -105,6 +114,8 @@ namespace backend_shop.Service
 
         public async Task<IEnumerable<Int64>> GetListIdForCurrentUserAsync(GetOptions? options = null)
             => await GetListIdAsync(await GetFilterForCurrentUserAsync(options));
+
+        public async Task<IEnumerable<Guid>> GetListUuidForCurrentUserAsync(GetOptions? options = null)
+            => await GetListUuidAsync(await GetFilterForCurrentUserAsync(options));
     }
 }
-

@@ -7,7 +7,7 @@ using Microsoft.SqlServer.Types;
 
 namespace backend_shop
 {
-    public class StoreAddRequest_BusinessIdResolverAsync(IBusinessService businessService)
+    public class StoreAddRequest_CommerceIdResolverAsync(ICommerceService commerceService)
         : IValueResolver<StoreAddRequest, Store, Int64>
     {
         public Int64 Resolve(
@@ -16,8 +16,8 @@ namespace backend_shop
             Int64 destMember,
             ResolutionContext context)
         {
-            return businessService.GetSingleOrDefaultIdForUuidAsync(source.BusinessUuid)?.Result
-                ?? throw new BusinessDoesNotExistException();
+            return commerceService.GetSingleOrDefaultIdForUuidAsync(source.CommerceUuid)?.Result
+                ?? throw new CommerceDoesNotExistException();
         }
     }
 
@@ -54,11 +54,11 @@ namespace backend_shop
     {
         public MappingProfile()
         {
-            CreateMap<BusinessAddRequest, Business>();
-            CreateMap<Business, BusinessResponse>();
+            CreateMap<CommerceAddRequest, Commerce>();
+            CreateMap<Commerce, CommerceResponse>();
 
             CreateMap<StoreAddRequest, Store>()
-                .ForMember(dest => dest.BusinessId, opt => opt.MapFrom<StoreAddRequest_BusinessIdResolverAsync>())
+                .ForMember(dest => dest.CommerceId, opt => opt.MapFrom<StoreAddRequest_CommerceIdResolverAsync>())
                 .ForMember(dest => dest.Location, opt => opt.MapFrom(src => src.Location == null? null: SqlGeography.Point(src.Location.Lat, src.Location.Lng, 4326)));
             CreateMap<Store, StoreResponse>();
 

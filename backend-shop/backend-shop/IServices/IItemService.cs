@@ -19,5 +19,7 @@ namespace backend_shop.IServices
         Task<Int64> GetCountForCurrentUserAsync(GetOptions? options = null);
 
         Task<IEnumerable<Int64>> GetListIdForCurrentUserAsync(GetOptions? options = null);
+
+        Task<IEnumerable<Guid>> GetListUuidForCurrentUserAsync(GetOptions? options = null);
     }
 }

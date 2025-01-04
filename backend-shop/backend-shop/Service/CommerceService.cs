@@ -6,18 +6,21 @@ using backend_shop.Exceptions;
 using RFService.Repo;
 using RFAuth.Exceptions;
 using RFService.ILibs;
+using RFService.Libs;
 
 namespace backend_shop.Service
 {
-    public class BusinessService(
-        IRepo<Business> repo,
+    public class CommerceService(
+        IRepo<Commerce> repo,
         IUserPlanService userPlanService,
-        IHttpContextAccessor httpContextAccessor
+        IHttpContextAccessor httpContextAccessor/*,
+        IStoreService storeService /*,
+        IItemService itemService */
     )
-        : ServiceSoftDeleteTimestampsIdUuidEnabledName<IRepo<Business>, Business>(repo),
-            IBusinessService
+        : ServiceSoftDeleteTimestampsIdUuidEnabledName<IRepo<Commerce>, Commerce>(repo),
+            ICommerceService
     {
-        public override async Task<Business> ValidateForCreationAsync(Business data)
+        public override async Task<Commerce> ValidateForCreationAsync(Commerce data)
         {
             data = await base.ValidateForCreationAsync(data);
 
@@ -40,19 +43,19 @@ namespace backend_shop.Service
             });
 
             if (existent != null)
-                throw new ABusinessForThatNameAlreadyExistException();
+                throw new ACommerceForThatNameAlreadyExistException();
 
-            var totalBusinessesCount = await GetCountForCurrentUserAsync(new GetOptions { Filters = { { "IsEnabled", null } } });
-            if (totalBusinessesCount >= (await userPlanService.GetMaxTotalBusinessesForCurrentUser()))
-                throw new TotalBusinessesLimitReachedException();
+            var totalCommercesCount = await GetCountForCurrentUserAsync(new GetOptions { Filters = { { "IsEnabled", null } } });
+            if (totalCommercesCount >= (await userPlanService.GetMaxTotalCommercesForCurrentUser()))
+                throw new TotalCommercesLimitReachedException();
 
-            var enabledBusinessesCount = await GetCountForCurrentUserAsync();
-            var enabledBusinessesMax = await userPlanService.GetMaxEnabledBusinessesForCurrentUser();
-            if (data.IsEnabled && enabledBusinessesCount >= enabledBusinessesMax
-                || enabledBusinessesCount > enabledBusinessesMax
+            var enabledCommercesCount = await GetCountForCurrentUserAsync();
+            var enabledCommercesMax = await userPlanService.GetMaxEnabledCommercesForCurrentUser();
+            if (data.IsEnabled && enabledCommercesCount >= enabledCommercesMax
+                || enabledCommercesCount > enabledCommercesMax
             )
             {
-                throw new MaxEnabledBusinessesLimitReachedException();
+                throw new MaxEnabledCommercesLimitReachedException();
             }
 
             return data;
@@ -68,17 +71,62 @@ namespace backend_shop.Service
                 var getOptions = new GetOptions(options);
                 getOptions.Filters["IsEnabled"] = null;
                 _ = await GetSingleOrDefaultAsync(getOptions)
-                    ?? throw new BusinessDoesNotExistException();
+                    ?? throw new CommerceDoesNotExistException();
 
-                var enabledBusinessesCount = await GetCountForCurrentUserAsync();
-                var enabledBusinessesMax = await userPlanService.GetMaxEnabledBusinessesForCurrentUser();
-                if (enabledBusinessesCount >= enabledBusinessesMax)
-                    throw new MaxEnabledBusinessesLimitReachedException();
+                var enabledCommercesCount = await GetCountForCurrentUserAsync();
+                var enabledCommercesMax = await userPlanService.GetMaxEnabledCommercesForCurrentUser();
+                if (enabledCommercesCount >= enabledCommercesMax)
+                    throw new MaxEnabledCommercesLimitReachedException();
             }
 
             return data;
         }
 
+        public override async Task<int> UpdateAsync(IDataDictionary data, GetOptions options)
+        {
+            IEnumerable<Commerce>? list = null;
+            if (data.TryGetBool("IsEnabled", out var isEnabled))
+            {
+                list = await GetListAsync(options);
+                if (!list.Any())
+                    return 0;
+            }
+
+            var result = await base.UpdateAsync(data, options);
+
+            if (list == null)
+                return result;
+
+            /*foreach (var commerce in list)
+            {
+                if (commerce.IsEnabled != isEnabled)
+                    continue;
+
+                var storeList = await storeService.GetListAsync(new GetOptions
+                {
+                    Filters = {
+                        { "IsEnabled", null },
+                        { "CommerceId", commerce.Id }
+                    },
+                });
+
+                foreach (var store in storeList)
+                {
+                    _ = await itemService.UpdateAsync(
+                        new DataDictionary {
+                            { "InheritedIsEnabled", store.IsEnabled && commerce.IsEnabled},
+                            { "Location", store.Location},
+                        },
+                        new GetOptions
+                        {
+                            Filters = { { "StoreId", store.Id } },
+                        }
+                    );
+                }
+            }*/
+
+            return result;
+        }
         public async Task<bool> CheckForUuidAndCurrentUserAsync(Guid uuid, GetOptions? options = null)
         {
             var httpContext = httpContextAccessor.HttpContext
@@ -95,7 +143,7 @@ namespace backend_shop.Service
             if (await GetSingleOrDefaultAsync(options) != null)
                 return true;
 
-            throw new BusinessDoesNotExistException();
+            throw new CommerceDoesNotExistException();
         }
 
         public Task<GetOptions> GetFilterForCurrentUserAsync(GetOptions? options = null)

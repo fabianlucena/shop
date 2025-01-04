@@ -24,6 +24,8 @@
 
         public int? MaxAge { get; set; }
 
+        public bool IsMine { get; set; }
+
         public DateTime CreatedAt { get; set; }
 
         public DateTime UpdatedAt { get; set; }

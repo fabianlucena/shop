@@ -2,7 +2,7 @@
 
 namespace backend_shop.DTO
 {
-    public class BusinessResponse
+    public class CommerceResponse
     {
         public Guid Uuid { get; set; }
 

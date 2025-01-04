@@ -20,7 +20,7 @@ export default function ListScreen({
   onDeleted,
   onEnable,
   onEnabled,
-  showBusinessName,
+  showCommerceName,
   loadingError = 'Error de carga',
 }) {
   const [data, setData] = useState([]);
@@ -135,7 +135,7 @@ export default function ListScreen({
 
   return <Screen
       style={{ backgroundColor: 'red' }}
-      showBusinessName={showBusinessName}
+      showCommerceName={showCommerceName}
     >
       <Error>{error}</Error>
       <FlatList

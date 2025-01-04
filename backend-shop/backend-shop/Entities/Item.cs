@@ -1,4 +1,5 @@
-﻿using RFService.Entities;
+﻿using Microsoft.SqlServer.Types;
+using RFService.Entities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,6 +9,11 @@ namespace backend_shop.Entities
     public class Item
         : EntitySoftDeleteTimestampsIdUuidEnabledName
     {
+        [Required]
+        public required bool InheritedIsEnabled { get; set; }
+
+        public SqlGeography? Location { get; set; }
+
         [Required]
         public required string Description { get; set; }
 

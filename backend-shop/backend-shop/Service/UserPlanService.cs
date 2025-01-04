@@ -16,7 +16,7 @@ namespace backend_shop.Service
         : ServiceTimestampsIdUuidEnabled<IRepo<UserPlan>, UserPlan>(repo),
             IUserPlanService
     {
-        public async Task<int> GetMaxTotalBusinessesForUserId(Int64 userId)
+        public async Task<int> GetMaxTotalCommercesForUserId(Int64 userId)
         {
             var options = new GetOptions
             {
@@ -25,19 +25,19 @@ namespace backend_shop.Service
                 },
                 Filters = {
                     { "UserId", userId },
-                    { "[plan].MaxTotalBusinesses", Op.NotNull() },
+                    { "[plan].MaxTotalCommerces", Op.NotNull() },
                     { "ExpirationDate", Op.GE(DateTime.UtcNow) },
                 },
-                OrderBy = { "[plan].MaxTotalBusinesses DESC" },
+                OrderBy = { "[plan].MaxTotalCommerces DESC" },
                 Top = 1,
             };
 
-            return (await GetFirstOrDefaultAsync(options))?.Plan?.MaxTotalBusinesses
-                ?? (await planService.GetBaseAsync()).MaxTotalBusinesses
+            return (await GetFirstOrDefaultAsync(options))?.Plan?.MaxTotalCommerces
+                ?? (await planService.GetBaseAsync()).MaxTotalCommerces
                 ?? default;
         }
 
-        public async Task<int> GetMaxEnabledBusinessesForUserId(Int64 userId)
+        public async Task<int> GetMaxEnabledCommercesForUserId(Int64 userId)
         {
             var options = new GetOptions
             {
@@ -46,15 +46,15 @@ namespace backend_shop.Service
                 },
                 Filters = {
                     { "UserId", userId },
-                    { "[plan].MaxEnabledBusinesses", Op.NotNull() },
+                    { "[plan].MaxEnabledCommerces", Op.NotNull() },
                     { "ExpirationDate", Op.GE(DateTime.UtcNow) },
                 },
-                OrderBy = { "[plan].MaxEnabledBusinesses DESC" },
+                OrderBy = { "[plan].MaxEnabledCommerces DESC" },
                 Top = 1,
             };
 
-            return (await GetFirstOrDefaultAsync(options))?.Plan?.MaxEnabledBusinesses
-                ?? (await planService.GetBaseAsync()).MaxEnabledBusinesses
+            return (await GetFirstOrDefaultAsync(options))?.Plan?.MaxEnabledCommerces
+                ?? (await planService.GetBaseAsync()).MaxEnabledCommerces
                 ?? default;
         }
 
@@ -142,7 +142,7 @@ namespace backend_shop.Service
                 ?? default;
         }
 
-        public async Task<int> GetMaxTotalBusinessesForCurrentUser()
+        public async Task<int> GetMaxTotalCommercesForCurrentUser()
         {
             var httpContext = httpContextAccessor.HttpContext
                 ?? throw new NoAuthorizationHeaderException();
@@ -153,10 +153,10 @@ namespace backend_shop.Service
             if (userId <= 0)
                 throw new NoSessionUserDataException();
 
-            return await GetMaxTotalBusinessesForUserId(userId);
+            return await GetMaxTotalCommercesForUserId(userId);
         }
 
-        public async Task<int> GetMaxEnabledBusinessesForCurrentUser()
+        public async Task<int> GetMaxEnabledCommercesForCurrentUser()
         {
             var httpContext = httpContextAccessor.HttpContext
                 ?? throw new NoAuthorizationHeaderException();
@@ -167,7 +167,7 @@ namespace backend_shop.Service
             if (userId <= 0)
                 throw new NoSessionUserDataException();
 
-            return await GetMaxEnabledBusinessesForUserId(userId);
+            return await GetMaxEnabledCommercesForUserId(userId);
         }
 
         public async Task<int> GetMaxTotalStoresForCurrentUser()

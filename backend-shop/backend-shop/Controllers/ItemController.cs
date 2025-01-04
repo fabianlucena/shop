@@ -54,9 +54,21 @@ namespace backend_shop.Controllers
             if (uuid != null)
                 options.Filters["Uuid"] = uuid;
 
+            options.Filters["InheritedIsEnabled"] = true;
+
             var itemsList = await itemService.GetListAsync(options);
 
             var response = itemsList.Select(mapper.Map<Item, ItemResponse>);
+
+            if (response.Any())
+            {
+                var uuidList = (await itemService.GetListUuidForCurrentUserAsync()).ToList();
+                if (uuidList.Count > 0)
+                {
+                    foreach (var item in response)
+                        item.IsMine = uuidList.Contains(item.Uuid);
+                }
+            }
 
             logger.LogInformation("Items getted");
 

@@ -12,9 +12,9 @@ export default function Screeen({
   children,
   busy,
   header,
-  showBusinessName = false,
+  showCommerceName = false,
 }) {
-  const { businessName } = useSession();
+  const { commerceName } = useSession();
   const insets = useSafeAreaInsets();
 
   return <Background>
@@ -30,7 +30,7 @@ export default function Screeen({
             paddingRight: insets.right,
           }
         ]}>
-          {showBusinessName && businessName && <Text style={{...styles.text, ...styles.header, ...styles.currentBussiness}}>Administrando: {businessName}</Text> || null}
+          {showCommerceName && commerceName && <Text style={{...styles.text, ...styles.header, ...styles.currentCommerce}}>Administrando: {commerceName}</Text> || null}
           {header && <Header>{header}</Header> || null}
           {children}
         </View>

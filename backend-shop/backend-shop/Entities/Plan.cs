@@ -11,9 +11,9 @@ namespace backend_shop.Entities
         [Required]
         public string Description { get; set; } = string.Empty;
 
-        public int? MaxTotalBusinesses { get; set; }
+        public int? MaxTotalCommerces { get; set; }
 
-        public int? MaxEnabledBusinesses { get; set; }
+        public int? MaxEnabledCommerces { get; set; }
 
         public int? MaxTotalStores { get; set; }
 

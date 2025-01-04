@@ -19,7 +19,7 @@ namespace backend_shop
         {
             CreateTable<Plan>(services);
             CreateTable<UserPlan>(services);
-            CreateTable<Business>(services);
+            CreateTable<Commerce>(services);
             CreateTable<Store>(services);
             CreateTable<Category>(services);
             CreateTable<Item>(services);
@@ -39,7 +39,7 @@ namespace backend_shop
             var rolesPermissions = new Dictionary<string, IEnumerable<string>>{
                 { "user", [
                     "changePassword",
-                    "business.get", "business.add", "business.edit", "business.delete", "business.restore",
+                    "commerce.get", "commerce.add", "commerce.edit", "commerce.delete", "commerce.restore",
                     "store.get", "store.add", "store.edit", "store.delete", "store.restore",
                 ] },
             };
@@ -49,8 +49,8 @@ namespace backend_shop
             await PlanService.GetOrCreateAsync(new Plan {
                 Name = "Base",
                 Description = "Plan básico para todos los ususarios",
-                MaxTotalBusinesses = 3,
-                MaxEnabledBusinesses = 1,
+                MaxTotalCommerces = 3,
+                MaxEnabledCommerces = 1,
                 MaxTotalStores = 5,
                 MaxEnabledStores = 3,
                 MaxTotalItems = 15,
