@@ -22,6 +22,7 @@ export default function CommerceFormScreen() {
       loadingError="No se pudo cargar el comercio."
       onSuccess={loadCommerce}
       onSuccessNavigate={['Drawer', { screen: 'CommercesList'}]}
+      defaultData={{ isEnabled: true }}
       fields={[
         'isEnabled',
         'name',

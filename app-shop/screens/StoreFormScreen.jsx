@@ -18,6 +18,7 @@ export default function StoreFormScreen() {
       updateTitle="Modificar local"
       loadingError="No se pudo cargar el local."
       onSuccessNavigate={['Drawer', { screen: 'StoresList'}]}
+      defaultData={{ isEnabled: true }}
       fields={[
         'isEnabled',
         'name',
