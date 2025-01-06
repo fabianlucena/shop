@@ -66,7 +66,7 @@ namespace backend_shop.Service
                 && isEnabledValue is bool isEnabled && isEnabled)
             {
                 var getOptions = new GetOptions(options);
-                getOptions.Filters["IsEnabled"] = null;
+                getOptions.Options["IncludeDisabled"] = true;
                 _ = await GetSingleOrDefaultAsync(getOptions)
                     ?? throw new CommerceDoesNotExistException();
 
@@ -88,9 +88,9 @@ namespace backend_shop.Service
                 ?? throw new NoAuthorizationHeaderException();
 
             options ??= GetOptions.CreateFromQuery(httpContext);
-            options.Filters["IsEnabled"] = null;
-            options.Filters["OwnerId"] = ownerId;
-            options.Filters["Uuid"] = uuid;
+            options.Options["IncludeDisabled"] = true;
+            options.AddFilter("OwnerId", ownerId);
+            options.AddFilter("Uuid", uuid);
 
             if (await GetSingleOrDefaultAsync(options) != null)
                 return true;
@@ -112,7 +112,7 @@ namespace backend_shop.Service
             options = (options != null) ?
                 new GetOptions(options) :
                 new();
-            options.Filters["OwnerId"] = ownerId;
+            options.AddFilter("OwnerId", ownerId);
 
             return Task.FromResult(options);
         }

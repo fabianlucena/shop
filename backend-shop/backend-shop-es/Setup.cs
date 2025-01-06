@@ -13,9 +13,6 @@ namespace backend_shop_es
             var addTranslationService = provider.GetService<IAddTranslationService>();
             if (addTranslationService != null)
             {
-                
-                
-
                 await addTranslationService.AddAsync("es", "exception", "Commerce does not exist.", "El comercio no existe.");
                 await addTranslationService.AddAsync("es", "exception", "Categorys does not exist.", "El rubro no existe.");
                 await addTranslationService.AddAsync("es", "exception", "Item does not exist.", "No existe el artículo.");

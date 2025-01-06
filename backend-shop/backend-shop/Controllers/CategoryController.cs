@@ -26,7 +26,7 @@ namespace backend_shop.Controllers
 
             var options = GetOptions.CreateFromQuery(HttpContext);
             if (uuid != null)
-                options.Filters["Uuid"] = uuid;
+                options.AddFilter("Uuid", uuid);
 
             var categoriesList = await categoryService.GetListAsync(options);
 

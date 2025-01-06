@@ -4,7 +4,7 @@ using backend_shop.Entities;
 using backend_shop.IServices;
 using RFService.Repo;
 using RFAuth.Exceptions;
-using RFService.Operator;
+using RFOperators;
 
 namespace backend_shop.Service
 {
@@ -25,10 +25,10 @@ namespace backend_shop.Service
                 },
                 Filters = {
                     { "UserId", userId },
-                    { "[plan].MaxTotalCommerces", Op.NotNull() },
-                    { "ExpirationDate", Op.GE(DateTime.UtcNow) },
+                    { Op.IsNotNull("plan.MaxTotalCommerces") },
+                    { Op.GE("ExpirationDate", DateTime.UtcNow) },
                 },
-                OrderBy = { "[plan].MaxTotalCommerces DESC" },
+                OrderBy = { "plan.MaxTotalCommerces DESC" },
                 Top = 1,
             };
 
@@ -46,10 +46,10 @@ namespace backend_shop.Service
                 },
                 Filters = {
                     { "UserId", userId },
-                    { "[plan].MaxEnabledCommerces", Op.NotNull() },
-                    { "ExpirationDate", Op.GE(DateTime.UtcNow) },
+                    { Op.IsNotNull("plan.MaxEnabledCommerces") },
+                    { Op.GE("ExpirationDate", DateTime.UtcNow) },
                 },
-                OrderBy = { "[plan].MaxEnabledCommerces DESC" },
+                OrderBy = { "plan.MaxEnabledCommerces DESC" },
                 Top = 1,
             };
 
@@ -67,10 +67,10 @@ namespace backend_shop.Service
                 },
                 Filters = {
                     { "UserId", userId },
-                    { "[plan].MaxTotalStores", Op.NotNull() },
-                    { "ExpirationDate", Op.GE(DateTime.UtcNow) },
+                    { Op.IsNotNull("plan.MaxEnabledCommerces") },
+                    { Op.GE("ExpirationDate", DateTime.UtcNow) },
                 },
-                OrderBy = { "[plan].MaxTotalStores DESC" },
+                OrderBy = { "plan.MaxTotalStores DESC" },
                 Top = 1,
             };
 
@@ -88,10 +88,10 @@ namespace backend_shop.Service
                 },
                 Filters = {
                     { "UserId", userId },
-                    { "[plan].MaxEnabledStores", Op.NotNull() },
-                    { "ExpirationDate", Op.GE(DateTime.UtcNow) },
+                    { Op.IsNotNull("plan.MaxEnabledStores") },
+                    { Op.GE("ExpirationDate", DateTime.UtcNow) },
                 },
-                OrderBy = { "[plan].MaxEnabledStores DESC" },
+                OrderBy = { "plan.MaxEnabledStores DESC" },
                 Top = 1,
             };
 
@@ -109,10 +109,10 @@ namespace backend_shop.Service
                 },
                 Filters = {
                     { "UserId", userId },
-                    { "[plan].MaxTotalItems", Op.NotNull() },
-                    { "ExpirationDate", Op.GE(DateTime.UtcNow) },
+                    { Op.IsNotNull("plan.MaxTotalItems") },
+                    { Op.GE("ExpirationDate", DateTime.UtcNow) },
                 },
-                OrderBy = { "[plan].MaxTotalItems DESC" },
+                OrderBy = { "plan.MaxTotalItems DESC" },
                 Top = 1,
             };
 
@@ -130,10 +130,10 @@ namespace backend_shop.Service
                 },
                 Filters = {
                     { "UserId", userId },
-                    { "[plan].MaxEnabledItems", Op.NotNull() },
-                    { "ExpirationDate", Op.GE(DateTime.UtcNow) },
+                    { Op.IsNotNull("plan.MaxEnabledItems") },
+                    { Op.GE("ExpirationDate", DateTime.UtcNow) },
                 },
-                OrderBy = { "[plan].MaxEnabledItems DESC" },
+                OrderBy = { "plan.MaxEnabledItems DESC" },
                 Top = 1,
             };
 

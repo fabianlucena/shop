@@ -61,7 +61,7 @@ namespace backend_shop.Controllers
             var options = GetOptions.CreateFromQuery(HttpContext);
             options.AddFilter("CommerceId", commercesIdList);
             if (uuid != null)
-                options.Filters["Uuid"] = uuid;
+                options.AddFilter("Uuid", uuid);
 
             var storeList = await storeService.GetListAsync(options);
 
@@ -87,7 +87,7 @@ namespace backend_shop.Controllers
             if (result <= 0)
                 return BadRequest();
 
-            _ = itemService.UpdateInheritedForStoreUuid(uuid);
+            _ = await itemService.UpdateInheritedForStoreUuid(uuid);
 
             logger.LogInformation("Busines updated");
 
@@ -107,7 +107,7 @@ namespace backend_shop.Controllers
             if (result <= 0)
                 return BadRequest();
 
-            _ = itemService.UpdateInheritedForStoreUuid(uuid);
+            _ = await itemService.UpdateInheritedForStoreUuid(uuid);
 
             logger.LogInformation("Store deleted");
 
@@ -127,7 +127,7 @@ namespace backend_shop.Controllers
             if (result <= 0)
                 return BadRequest();
 
-            _ = itemService.UpdateInheritedForStoreUuid(uuid);
+            _ = await itemService.UpdateInheritedForStoreUuid(uuid);
 
             logger.LogInformation("Store restored");
 

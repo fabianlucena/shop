@@ -52,9 +52,9 @@ namespace backend_shop.Controllers
 
             var options = GetOptions.CreateFromQuery(HttpContext);
             if (uuid != null)
-                options.Filters["Uuid"] = uuid;
+                options.AddFilter("Uuid", uuid);
 
-            options.Filters["InheritedIsEnabled"] = true;
+            options.AddFilter("InheritedIsEnabled", true);
 
             var itemsList = await itemService.GetListAsync(options);
 

@@ -6,7 +6,7 @@ using backend_shop.Exceptions;
 using RFService.ILibs;
 using RFService.Repo;
 using RFService.Libs;
-using RFService.Operator;
+using RFOperators;
 
 namespace backend_shop.Service
 {
@@ -72,7 +72,7 @@ namespace backend_shop.Service
                 && isEnabledValue is bool isEnabled && isEnabled)
             {
                 var getOptions = new GetOptions(options);
-                getOptions.Filters["IsEnabled"] = null;
+                getOptions.Options["IncludeDisabled"] = true;
                 _ = await GetSingleOrDefaultAsync(getOptions)
                     ?? throw new ItemDoesNotExistException();
 
@@ -90,9 +90,9 @@ namespace backend_shop.Service
             var storesId = await storeService.GetListIdForCurrentUserAsync(options);
 
             options ??= new ();
-            options.Filters["IsEnabled"] = null;
-            options.Filters["Uuid"] = uuid;
-            options.Filters["StoreId"] = storesId;
+            options.Options["IncludeDisabled"] = true;
+            options.AddFilter("Uuid", uuid);
+            options.AddFilter("StoreId", storesId);
             _ = await GetSingleOrDefaultAsync(options)
                 ?? throw new ItemDoesNotExistException();
 
@@ -106,7 +106,7 @@ namespace backend_shop.Service
             options = (options != null) ?
                 new GetOptions(options) :
                 new();
-            options.Filters["StoreId"] = storesId;
+            options.AddFilter("StoreId", storesId);
 
             return options;
         }
@@ -125,17 +125,17 @@ namespace backend_shop.Service
             options ??= new();
             options.Include("Store", "stores");
             options.Include("Commerce", "commerce");
-            options.Filters["store.Uuid"] = storeUuid;
+            options.AddFilter("store.Uuid", storeUuid);
 
             var data = new DataDictionary
             {
                 { "Location", Op.Column("store.Location") },
                 { "InheritedIsEnabled",
                     Op.And(
-                        Op.Eq(Op.Column("store.IsEnabled"), false),
-                        Op.IsNull(Op.Column("store.DeletedAt")),
-                        Op.Eq(Op.Column("commerce.IsEnabled"), false),
-                        Op.IsNull(Op.Column("commerce.DeletedAt"))
+                        Op.Eq("store.IsEnabled", false),
+                        Op.IsNull("store.DeletedAt"),
+                        Op.Eq("commerce.IsEnabled", false),
+                        Op.IsNull("commerce.DeletedAt")
                     )
                 },
             };
@@ -148,16 +148,16 @@ namespace backend_shop.Service
             options ??= new();
             options.Include("Store", "stores");
             options.Include("Commerce", "commerce");
-            options.Filters["commerce.Uuid"] = commerceUuid;
+            options.AddFilter("commerce.Uuid", commerceUuid);
 
             var data = new DataDictionary
             {
                 { "InheritedIsEnabled",
                     Op.And(
-                        Op.Eq(Op.Column("store.IsEnabled"), false),
-                        Op.IsNull(Op.Column("store.DeletedAt")),
-                        Op.Eq(Op.Column("commerce.IsEnabled"), false),
-                        Op.IsNull(Op.Column("commerce.DeletedAt"))
+                        Op.Eq("store.IsEnabled", false),
+                        Op.IsNull("store.DeletedAt"),
+                        Op.Eq("commerce.IsEnabled", false),
+                        Op.IsNull("commerce.DeletedAt")
                     )
                 },
             };

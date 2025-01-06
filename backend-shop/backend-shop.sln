@@ -45,6 +45,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFHttpExceptionsLocale", ".
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFLocalizerDapper", "..\rh-nugets\RFLocalizerDapper\RFLocalizerDapper.csproj", "{F9BEC68D-7ECC-46B4-BB5D-67AE7DA62BE4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFOperators", "..\rh-nugets\RFOperators\RFOperators.csproj", "{0CD71A15-60BA-41A8-971E-4D3AADA8284E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -131,6 +133,10 @@ Global
 		{F9BEC68D-7ECC-46B4-BB5D-67AE7DA62BE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9BEC68D-7ECC-46B4-BB5D-67AE7DA62BE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9BEC68D-7ECC-46B4-BB5D-67AE7DA62BE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CD71A15-60BA-41A8-971E-4D3AADA8284E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CD71A15-60BA-41A8-971E-4D3AADA8284E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CD71A15-60BA-41A8-971E-4D3AADA8284E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CD71A15-60BA-41A8-971E-4D3AADA8284E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -154,6 +160,7 @@ Global
 		{F6FB3B37-D03B-41FE-821A-129753498BFB} = {97C7CD0C-457F-4439-B1CE-0A524B391FBC}
 		{A1F524A9-95D5-4D8C-A239-2311BD4E3AA3} = {97C7CD0C-457F-4439-B1CE-0A524B391FBC}
 		{F9BEC68D-7ECC-46B4-BB5D-67AE7DA62BE4} = {97C7CD0C-457F-4439-B1CE-0A524B391FBC}
+		{0CD71A15-60BA-41A8-971E-4D3AADA8284E} = {97C7CD0C-457F-4439-B1CE-0A524B391FBC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7DED2E2E-A009-4B14-9ACC-73D803EC810B}
