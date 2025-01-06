@@ -6,6 +6,7 @@ import { useSession } from '../contexts/Session';
 
 import ButtonIconAdd from '../components/ButtonIconAdd';
 
+import ExploreScreen from './ExploreScreen';
 import LogoutScreen from './LogoutScreen';
 import ChangePasswordScreen from './ChangePasswordScreen';
 import CommercesListScreen from './CommercesListScreen';
@@ -34,9 +35,10 @@ function DrawerNavigator() {
           <DrawerItemList {...props} />
         </DrawerContentScrollView>}
     >
-      <Drawer.Screen name="ItemsList"      component={ItemListScreen}       options={{ title: 'Artículos',     headerRight: () => <ButtonIconAdd style={{margin: 10}} size="big" navigate="ItemForm"     /> }}/>
+      <Drawer.Screen name="Explore"        component={ExploreScreen}        options={{ title: 'Artículos' }} />
       <Drawer.Screen name="CommercesList"  component={CommercesListScreen}  options={{ title: 'Mis comercios', headerRight: () => <ButtonIconAdd style={{margin: 10}} size="big" navigate="CommerceForm" /> }}/>
       <Drawer.Screen name="StoresList"     component={StoresListScreen}     options={{ title: 'Mis locales',   headerRight: () => <ButtonIconAdd style={{margin: 10}} size="big" navigate="StoreForm"    /> }}/>
+      <Drawer.Screen name="ItemsList"      component={ItemListScreen}       options={{ title: 'Mis artículos', headerRight: () => <ButtonIconAdd style={{margin: 10}} size="big" navigate="ItemForm"     /> }}/>
       <Drawer.Screen name="ChangePassword" component={ChangePasswordScreen} options={{ title: 'Cambiar contraseña' }}/>
       <Drawer.Screen name="Logout"         component={LogoutScreen}         options={{ title: 'Salir' }}/>
     </Drawer.Navigator>;
