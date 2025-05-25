@@ -3,7 +3,6 @@ using backend_shop.DTO;
 using backend_shop.Entities;
 using backend_shop.Exceptions;
 using backend_shop.IServices;
-using backend_shop.Service;
 using Microsoft.AspNetCore.Mvc;
 using RFService.Authorization;
 using RFService.Data;
@@ -21,7 +20,7 @@ namespace backend_shop.Controllers
         : ControllerBase
     {
         [HttpPost]
-        [Permission("store.add")]
+        [Permission("item.add")]
         public async Task<IActionResult> PostAsync([FromBody] ItemAddRequest data)
         {
             logger.LogInformation("Creating item");
@@ -45,7 +44,7 @@ namespace backend_shop.Controllers
         }
 
         [HttpGet("{uuid?}")]
-        [Permission("category.get")]
+        [Permission("item.get")]
         public async Task<IActionResult> GetAsync([FromRoute] Guid? uuid)
         {
             logger.LogInformation("Getting items");

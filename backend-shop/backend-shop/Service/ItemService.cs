@@ -36,8 +36,8 @@ namespace backend_shop.Service
                     data.StoreId,
                     new GetOptions
                     {
-                        Join = { new From(typeof(Commerce)) },
-                        Filters = { { "IsEnabled", null } },
+                        Join = { { "Commerce" } },
+                        IncludeDisabled = true,
                     }
                 )
                 ?? throw new StoreDoesNotExistException();

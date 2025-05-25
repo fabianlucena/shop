@@ -41,6 +41,8 @@ namespace backend_shop
                     "changePassword",
                     "commerce.get", "commerce.add", "commerce.edit", "commerce.delete", "commerce.restore",
                     "store.get", "store.add", "store.edit", "store.delete", "store.restore",
+                    "category.get",
+                    "item.get", "item.add",
                 ] },
             };
 

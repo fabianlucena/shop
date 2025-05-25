@@ -20,9 +20,7 @@ namespace backend_shop.Service
         {
             var options = new GetOptions
             {
-                Join = {
-                    { new From(typeof(Plan), "plan") },
-                },
+                Join = { { "Plan", "plan" } },
                 Filters = {
                     { "UserId", userId },
                     { Op.IsNotNull("plan.MaxTotalCommerces") },
@@ -41,9 +39,7 @@ namespace backend_shop.Service
         {
             var options = new GetOptions
             {
-                Join = {
-                    { new From(typeof(Plan), "plan") },
-                },
+                Join = { { "Plan", "plan" } },
                 Filters = {
                     { "UserId", userId },
                     { Op.IsNotNull("plan.MaxEnabledCommerces") },
@@ -62,9 +58,7 @@ namespace backend_shop.Service
         {
             var options = new GetOptions
             {
-                Join = {
-                    { new From(typeof(Plan), "plan") },
-                },
+                Join = { { "Plan", "plan" } },
                 Filters = {
                     { "UserId", userId },
                     { Op.IsNotNull("plan.MaxEnabledCommerces") },
@@ -83,9 +77,7 @@ namespace backend_shop.Service
         {
             var options = new GetOptions
             {
-                Join = {
-                    { new From(typeof(Plan), "plan") },
-                },
+                Join = { { "Plan", "plan" } },
                 Filters = {
                     { "UserId", userId },
                     { Op.IsNotNull("plan.MaxEnabledStores") },
@@ -104,9 +96,7 @@ namespace backend_shop.Service
         {
             var options = new GetOptions
             {
-                Join = {
-                    { new From(typeof(Plan), "plan") },
-                },
+                Join = { { "Plan", "plan" } },
                 Filters = {
                     { "UserId", userId },
                     { Op.IsNotNull("plan.MaxTotalItems") },
@@ -125,9 +115,7 @@ namespace backend_shop.Service
         {
             var options = new GetOptions
             {
-                Join = {
-                    { new From(typeof(Plan), "plan") },
-                },
+                Join = { { "Plan", "plan" } },
                 Filters = {
                     { "UserId", userId },
                     { Op.IsNotNull("plan.MaxEnabledItems") },
