@@ -38,6 +38,9 @@
     <ProjectReference Include="..\..\rh-nugets\RFHttpAction\RFHttpAction.csproj" />
     <ProjectReference Include="..\..\rh-nugets\RFHttpExceptionsL10n\RFHttpExceptionsL10n.csproj" />
     <ProjectReference Include="..\..\rh-nugets\RFHttpExceptions\RFHttpExceptions.csproj" />
+    <ProjectReference Include="..\..\rh-nugets\RFLoggerProviderDapper\RFLoggerProviderDapper.csproj" />
+    <ProjectReference Include="..\..\rh-nugets\RFLoggerProvider\RFLoggerProvider.csproj" />
+    <ProjectReference Include="..\..\rh-nugets\RFLogger\RFLogger.csproj" />
     <ProjectReference Include="..\..\rh-nugets\RFRBACDapper\RFRBACDapper.csproj" />
     <ProjectReference Include="..\..\rh-nugets\RFRBAC\RFRBAC.csproj" />
     <ProjectReference Include="..\..\rh-nugets\RFRegister\RFRegister.csproj" />

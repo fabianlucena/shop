@@ -9,10 +9,14 @@ using RFDapperDriverSQLServer;
 using RFHttpAction;
 using RFHttpActionDapper;
 using RFL10n;
+using RFLogger;
+using RFLoggerProvider;
+using RFLoggerProviderDapper;
 using RFRBAC;
 using RFRBAC.Authorization;
 using RFRBACDapper;
 using RFRegister;
+using RFService;
 using RFService.IRepo;
 using RFUserEmailVerified;
 using RFUserEmailVerifiedDapper;
@@ -43,6 +47,9 @@ namespace backend_shop
 
             services.AddControllers(options => options.Filters.Add<RBACFilter>());
 
+            services.AddRFService();
+            services.AddRFLogger();
+            services.AddRFLoggerProvider();
             services.AddRFL10n();
             services.AddRFAuth();
             services.AddRFUserEmailVerified();
@@ -57,6 +64,7 @@ namespace backend_shop
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IItemService, ItemService>();
 
+            services.AddRFLoggerProviderDapper();
             services.AddRFAuthDapper();
             services.AddRFUserEmailVerifiedDapper();
             services.AddRFRBACDapper();
@@ -114,6 +122,7 @@ namespace backend_shop
                 using var scope = app.Services.CreateScope();
                 var serviceProvider = scope.ServiceProvider;
 
+                RFLoggerProviderDapper.Setup.ConfigureRFLoggerProviderDapper(serviceProvider);
                 RFAuthDapper.Setup.ConfigureRFAuthDapper(serviceProvider);
                 RFUserEmailVerifiedDapper.Setup.ConfigureRFUserEmailVerifiedDapper(serviceProvider);
                 RFRBACDapper.Setup.ConfigureRFRBACDapper(serviceProvider);
