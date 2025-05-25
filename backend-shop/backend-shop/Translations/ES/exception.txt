@@ -1,0 +1,62 @@
+﻿Commerce does not exist.
+El comercio no existe.
+
+Categorys does not exist.
+El rubro no existe.
+
+Item does not exist.
+No existe el artículo.
+
+No commerce provided.
+No se ha provisto comercio.
+
+No category provided.
+No se ha provisto una categoría.
+
+No name for commerce provided.
+No se ha provisto un nombre para el comercio.
+
+No name provided.
+No se ha provisto un nombre.
+
+No owner provided.
+No se ha provisto propietario.
+
+No plan provided.
+No se ha provisto plan.
+
+No store provided.
+No se ha provisto un local.
+
+Plan already exists.
+El plan ya existe.
+
+Plan feature already exists.
+La característica de plan ya existe.
+
+Store does not exist.
+No existe el local.
+
+The maximum limit of enabled commerces has been reached.
+Se ha alcanzado el límite máximo de comercios habilitados.
+
+The maximum limit of enabled items has been reached.
+Se ha alcanzado el límite máximo de artículos habilitadas.
+
+The maximum limit of enabled stores has been reached.
+Se ha alcanzado el límite máximo de locales habilitados.
+
+You already own a commerce with that name.
+Uste ya posee un comercio con ese nombre.
+
+You already own a store with that name.
+Uste ya posee un local con ese nombre.
+
+You can't create more commerces because you've reached the limit.
+Usted no puede crear más comercios porque ha alcanzado el límite.
+
+You can't create more items because you've reached the limit.
+Usted no puede crear más artículos porque ha alcanzado el límite.
+
+You can't create more stores because you've reached the limit.
+Usted no puede crear más locales porque ha alcanzado el límite.
