@@ -37,8 +37,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFDapperDriverSQLServer", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFRBACDapper", "..\rh-nugets\RFRBACDapper\RFRBACDapper.csproj", "{F6FB3B37-D03B-41FE-821A-129753498BFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "backend-shop-es", "backend-shop-es\backend-shop-es.csproj", "{7D18AD8D-28A5-41FD-84E6-732D9036BBEF}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFOperators", "..\rh-nugets\RFOperators\RFOperators.csproj", "{0CD71A15-60BA-41A8-971E-4D3AADA8284E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFHttpExceptionsL10n", "..\rh-nugets\RFHttpExceptionsL10n\RFHttpExceptionsL10n.csproj", "{CD88AF85-F4B8-5BFD-E6B9-A239C6D2A4B5}"
@@ -117,10 +115,6 @@ Global
 		{F6FB3B37-D03B-41FE-821A-129753498BFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6FB3B37-D03B-41FE-821A-129753498BFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F6FB3B37-D03B-41FE-821A-129753498BFB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7D18AD8D-28A5-41FD-84E6-732D9036BBEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7D18AD8D-28A5-41FD-84E6-732D9036BBEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7D18AD8D-28A5-41FD-84E6-732D9036BBEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7D18AD8D-28A5-41FD-84E6-732D9036BBEF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0CD71A15-60BA-41A8-971E-4D3AADA8284E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0CD71A15-60BA-41A8-971E-4D3AADA8284E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CD71A15-60BA-41A8-971E-4D3AADA8284E}.Release|Any CPU.ActiveCfg = Release|Any CPU

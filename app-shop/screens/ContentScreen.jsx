@@ -35,7 +35,7 @@ function DrawerNavigator() {
           <DrawerItemList {...props} />
         </DrawerContentScrollView>}
     >
-      <Drawer.Screen name="Explore"        component={ExploreScreen}        options={{ title: 'Artículos' }} />
+      <Drawer.Screen name="Explore"        component={ExploreScreen}        options={{ title: 'Explorar' }} />
       <Drawer.Screen name="CommercesList"  component={CommercesListScreen}  options={{ title: 'Mis comercios', headerRight: () => <ButtonIconAdd style={{margin: 10}} size="big" navigate="CommerceForm" /> }}/>
       <Drawer.Screen name="StoresList"     component={StoresListScreen}     options={{ title: 'Mis locales',   headerRight: () => <ButtonIconAdd style={{margin: 10}} size="big" navigate="StoreForm"    /> }}/>
       <Drawer.Screen name="ItemsList"      component={ItemListScreen}       options={{ title: 'Mis artículos', headerRight: () => <ButtonIconAdd style={{margin: 10}} size="big" navigate="ItemForm"     /> }}/>
@@ -45,14 +45,12 @@ function DrawerNavigator() {
 }
 
 export default function ContentScreen() {
-  return (
-    <NavigationContainer>
+  return <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Drawer"       component={DrawerNavigator}    options={{ headerShown: false }} />
         <Stack.Screen name="CommerceForm" component={CommerceFormScreen} options={{ title: 'Comercio' }}/>
         <Stack.Screen name="StoreForm"    component={StoreFormScreen}    options={{ title: 'Local' }}/>
         <Stack.Screen name="ItemForm"     component={ItemFormScreen}     options={{ title: 'Artículo' }}/>
       </Stack.Navigator>
-    </NavigationContainer>
-  );
+    </NavigationContainer>;
 }

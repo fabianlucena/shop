@@ -22,6 +22,7 @@ export default function ListScreen({
   onEnabled,
   showCommerceName,
   loadingError = 'Error de carga',
+  loadOptions = {},
 }) {
   const [data, setData] = useState([]);
   const dialog = useDialog();
@@ -35,7 +36,7 @@ export default function ListScreen({
   );
   
   function loadData() {
-    service.get({ includeDisabled: true })
+    service.get(loadOptions?.query)
       .then(data => setData(data.rows))
       .catch(e => setError(`${loadingError}\n${e.message}`));
   }
@@ -134,7 +135,6 @@ export default function ListScreen({
   }
 
   return <Screen
-      style={{ backgroundColor: 'red' }}
       showCommerceName={showCommerceName}
     >
       <Error>{error}</Error>
