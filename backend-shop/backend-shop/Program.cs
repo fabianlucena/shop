@@ -1,7 +1,6 @@
-using Microsoft.OpenApi.Models;
+using backend_shop.Middlewares;
 using RFAuth;
-using RFHttpExceptions.Middlewares;
-using RFHttpExceptionsLocale.Middlewares;
+using RFHttpExceptionsL10n.Middlewares;
 
 namespace backend_shop
 {
@@ -39,9 +38,10 @@ namespace backend_shop
                 app.UseSwaggerUI();
             }
 
+            app.UseMiddleware<EnableBodyBufferingMiddleware>();
             app.UseMiddleware<AuthorizationMiddleware>();
-            app.UseMiddleware<HttpExceptionLocaleMiddleware>();
-
+            app.UseMiddleware<HttpExceptionL10nMiddleware>();
+            
             app.MapControllers();
 
             app.Run();

@@ -36,7 +36,7 @@ namespace backend_shop.Service
                     data.StoreId,
                     new GetOptions
                     {
-                        Join = { { "Commerce", new From("Commerce") } },
+                        Join = { new From(typeof(Commerce)) },
                         Filters = { { "IsEnabled", null } },
                     }
                 )
@@ -71,8 +71,10 @@ namespace backend_shop.Service
             if (data.TryGetValue("IsEnabled", out var isEnabledValue)
                 && isEnabledValue is bool isEnabled && isEnabled)
             {
-                var getOptions = new GetOptions(options);
-                getOptions.Options["IncludeDisabled"] = true;
+                var getOptions = new GetOptions(options)
+                {
+                    IncludeDisabled = true
+                };
                 _ = await GetSingleOrDefaultAsync(getOptions)
                     ?? throw new ItemDoesNotExistException();
 
@@ -90,7 +92,7 @@ namespace backend_shop.Service
             var storesId = await storeService.GetListIdForCurrentUserAsync(options);
 
             options ??= new ();
-            options.Options["IncludeDisabled"] = true;
+            options.IncludeDisabled = true;
             options.AddFilter("Uuid", uuid);
             options.AddFilter("StoreId", storesId);
             _ = await GetSingleOrDefaultAsync(options)

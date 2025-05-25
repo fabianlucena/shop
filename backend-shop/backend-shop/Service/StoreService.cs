@@ -70,8 +70,10 @@ namespace backend_shop.Service
             if (data.TryGetValue("IsEnabled", out var isEnabledValue)
                 && isEnabledValue is bool isEnabled && isEnabled)
             {
-                var getOptions = new GetOptions(options);
-                getOptions.Options["IncludeDisabled"] = true;
+                var getOptions = new GetOptions(options)
+                {
+                    IncludeDisabled = true
+                };
                 _ = await GetSingleOrDefaultAsync(getOptions)
                     ?? throw new StoreDoesNotExistException();
 
@@ -97,7 +99,7 @@ namespace backend_shop.Service
 
             options ??= GetOptions.CreateFromQuery(httpContext);
             options.Include("Commerce", "commerce");
-            options.Options["IncludeDisabled"] = true;
+            options.IncludeDisabled = true;
             options.AddFilter("Uuid", uuid);
             options.AddFilter("commerce.OwnerId", ownerId);
             _ = await GetSingleOrDefaultAsync(options)

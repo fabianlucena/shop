@@ -21,7 +21,7 @@ namespace backend_shop.Service
             var options = new GetOptions
             {
                 Join = {
-                    { "Plan", new From("plan") },
+                    { new From(typeof(Plan), "plan") },
                 },
                 Filters = {
                     { "UserId", userId },
@@ -42,7 +42,7 @@ namespace backend_shop.Service
             var options = new GetOptions
             {
                 Join = {
-                    { "Plan", new From("plan") },
+                    { new From(typeof(Plan), "plan") },
                 },
                 Filters = {
                     { "UserId", userId },
@@ -63,7 +63,7 @@ namespace backend_shop.Service
             var options = new GetOptions
             {
                 Join = {
-                    { "Plan", new From("plan") },
+                    { new From(typeof(Plan), "plan") },
                 },
                 Filters = {
                     { "UserId", userId },
@@ -84,7 +84,7 @@ namespace backend_shop.Service
             var options = new GetOptions
             {
                 Join = {
-                    { "Plan", new From("plan") },
+                    { new From(typeof(Plan), "plan") },
                 },
                 Filters = {
                     { "UserId", userId },
@@ -105,7 +105,7 @@ namespace backend_shop.Service
             var options = new GetOptions
             {
                 Join = {
-                    { "Plan", new From("plan") },
+                    { new From(typeof(Plan), "plan") },
                 },
                 Filters = {
                     { "UserId", userId },
@@ -126,7 +126,7 @@ namespace backend_shop.Service
             var options = new GetOptions
             {
                 Join = {
-                    { "Plan", new From("plan") },
+                    { new From(typeof(Plan), "plan") },
                 },
                 Filters = {
                     { "UserId", userId },

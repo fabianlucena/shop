@@ -3,7 +3,6 @@ using backend_shop.DTO;
 using backend_shop.Entities;
 using backend_shop.Exceptions;
 using backend_shop.IServices;
-using Microsoft.SqlServer.Types;
 
 namespace backend_shop
 {
@@ -59,7 +58,7 @@ namespace backend_shop
 
             CreateMap<StoreAddRequest, Store>()
                 .ForMember(dest => dest.CommerceId, opt => opt.MapFrom<StoreAddRequest_CommerceIdResolverAsync>())
-                .ForMember(dest => dest.Location, opt => opt.MapFrom(src => src.Location == null? null: SqlGeography.Point(src.Location.Lat, src.Location.Lng, 4326)));
+                .ForMember(dest => dest.Location, opt => opt.MapFrom(src => src.Location == null? null: src.Location.ToGeometryPoint()));
             CreateMap<Store, StoreResponse>();
 
             CreateMap<Category, CategoryResponse>();

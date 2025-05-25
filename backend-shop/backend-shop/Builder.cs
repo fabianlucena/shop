@@ -1,21 +1,21 @@
-﻿using RFLocalizer;
+﻿using backend_shop.Entities;
+using backend_shop.IServices;
+using backend_shop.Service;
+using NetTopologySuite.Geometries;
 using RFAuth;
 using RFAuthDapper;
-using RFRBAC;
-using RFRBACDapper;
-using RFRBAC.Authorization;
-using RFRegister;
-using RFUserEmailVerified;
+using RFDapper;
+using RFDapperDriverSQLServer;
 using RFHttpAction;
 using RFHttpActionDapper;
-using RFDapperDriverSQLServer;
-using RFUserEmailVerifiedDapper;
-using backend_shop.IServices;
-using RFDapper;
-using backend_shop.Entities;
+using RFL10n;
+using RFRBAC;
+using RFRBAC.Authorization;
+using RFRBACDapper;
+using RFRegister;
 using RFService.IRepo;
-using backend_shop.Service;
-using RFLocalizerDapper;
+using RFUserEmailVerified;
+using RFUserEmailVerifiedDapper;
 
 namespace backend_shop
 {
@@ -43,7 +43,7 @@ namespace backend_shop
 
             services.AddControllers(options => options.Filters.Add<RBACFilter>());
 
-            services.AddRFLocalizer();
+            services.AddRFL10n();
             services.AddRFAuth();
             services.AddRFUserEmailVerified();
             services.AddRFRBAC();
@@ -57,7 +57,6 @@ namespace backend_shop
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IItemService, ItemService>();
 
-            services.AddRFLocalizerDapper();
             services.AddRFAuthDapper();
             services.AddRFUserEmailVerifiedDapper();
             services.AddRFRBACDapper();
@@ -77,7 +76,21 @@ namespace backend_shop
             services.AddScoped<IRepo<Category>, Dapper<Category>>();
             services.AddScoped<IRepo<Item>, Dapper<Item>>();
 
-            services.AddRFDapperDriverSQLServer();
+            services.AddRFDapperDriverSQLServer(new DQLServerDDOptions
+            {
+                ColumnTypes =
+                {
+                    { "Point", "GEOGRAPHY" },
+                },
+                GetSqlSelectedProperty = (driver, property, options, defaultAlias) =>
+                {
+                    if (property.PropertyType == typeof(Point)
+                    )
+                        return $"{driver.GetColumnName(property.Name, options, defaultAlias)}.STAsText() AS {driver.GetColumnAlias(property.Name)}";
+
+                    return null;
+                }
+            });
 
             services.AddAutoMapper(typeof(MappingProfile).Assembly);
         }
@@ -89,7 +102,6 @@ namespace backend_shop
                 using var scope = app.Services.CreateScope();
                 var serviceProvider = scope.ServiceProvider;
 
-                RFLocalizerDapper.Setup.ConfigureRFLocalizerDapper(serviceProvider);
                 RFAuthDapper.Setup.ConfigureRFAuthDapper(serviceProvider);
                 RFUserEmailVerifiedDapper.Setup.ConfigureRFUserEmailVerifiedDapper(serviceProvider);
                 RFRBACDapper.Setup.ConfigureRFRBACDapper(serviceProvider);
@@ -106,7 +118,7 @@ namespace backend_shop
                 var serviceProvider = scope.ServiceProvider;
 
                 backend_shop_es.Setup.ConfigureShopEs(serviceProvider);
-                RFAuth.Setup.ConfigureRFAuth(serviceProvider);
+                RFAuth.Setup.ConfigureDataRFAuth(serviceProvider);
                 RFUserEmailVerified.Setup.ConfigureRFUserEmailVerified(serviceProvider);
                 RFRBAC.Setup.ConfigureRFRBAC(serviceProvider);
                 RFRegister.Setup.ConfigureRFRegister(serviceProvider);

@@ -77,7 +77,7 @@ namespace backend_shop.Controllers
 
             data = data.GetPascalized();
 
-            var result = await commerceService.UpdateForUuidAsync(uuid, data);
+            var result = await commerceService.UpdateForUuidAsync(data, uuid);
 
             if (result <= 0)
                 return BadRequest();
@@ -115,7 +115,10 @@ namespace backend_shop.Controllers
         {
             logger.LogInformation("Restoring commerce");
 
-            await commerceService.CheckForUuidAndCurrentUserAsync(uuid, new GetOptions { Options = { { "IncludeDeleted", true } } });
+            await commerceService.CheckForUuidAndCurrentUserAsync(
+                uuid,
+                new GetOptions { IncludeDeleted = true }
+            );
 
             var result = await commerceService.RestoreForUuidAsync(uuid);
 

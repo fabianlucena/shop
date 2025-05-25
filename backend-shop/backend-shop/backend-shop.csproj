@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="NetTopologySuite" Version="2.6.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.8.1" />
   </ItemGroup>
 
@@ -35,10 +36,8 @@
     <ProjectReference Include="..\..\rh-nugets\RFDapperDriverSQLServer\RFDapperDriverSQLServer.csproj" />
     <ProjectReference Include="..\..\rh-nugets\RFHttpActionDapper\RFHttpActionDapper.csproj" />
     <ProjectReference Include="..\..\rh-nugets\RFHttpAction\RFHttpAction.csproj" />
-    <ProjectReference Include="..\..\rh-nugets\RFHttpExceptionsLocale\RFHttpExceptionsLocale.csproj" />
+    <ProjectReference Include="..\..\rh-nugets\RFHttpExceptionsL10n\RFHttpExceptionsL10n.csproj" />
     <ProjectReference Include="..\..\rh-nugets\RFHttpExceptions\RFHttpExceptions.csproj" />
-    <ProjectReference Include="..\..\rh-nugets\RFLocalizerDapper\RFLocalizerDapper.csproj" />
-    <ProjectReference Include="..\..\rh-nugets\RFLocalizer\RFLocalizer.csproj" />
     <ProjectReference Include="..\..\rh-nugets\RFRBACDapper\RFRBACDapper.csproj" />
     <ProjectReference Include="..\..\rh-nugets\RFRBAC\RFRBAC.csproj" />
     <ProjectReference Include="..\..\rh-nugets\RFRegister\RFRegister.csproj" />
