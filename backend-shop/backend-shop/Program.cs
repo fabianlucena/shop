@@ -24,6 +24,7 @@ namespace backend_shop
 
             var app = builder.Build();
 
+            app.ConfigureTranslations();
             app.ConfigureRepo();
             app.ConfigureData();
 

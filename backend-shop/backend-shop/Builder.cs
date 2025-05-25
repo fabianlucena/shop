@@ -95,6 +95,18 @@ namespace backend_shop
             services.AddAutoMapper(typeof(MappingProfile).Assembly);
         }
 
+        public static void ConfigureTranslations(this WebApplication app)
+        {
+            if (app.Configuration.GetValue<bool?>("Translate") == false)
+                return;
+
+            using var scope = app.Services.CreateScope();
+            var serviceProvider = scope.ServiceProvider;
+
+            var l10n = serviceProvider.GetService<IL10n>();
+            l10n?.AddTranslationsFromPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Translations"));
+        }
+
         public static void ConfigureRepo(this WebApplication app)
         {
             if (app.Configuration.GetValue<bool>("CreateDapperTables"))
