@@ -1,12 +1,12 @@
-﻿using RFService.Services;
-using RFService.IRepo;
-using backend_shop.Entities;
-using backend_shop.IServices;
+﻿using backend_shop.Entities;
 using backend_shop.Exceptions;
-using RFService.ILibs;
-using RFService.Repo;
-using RFService.Libs;
+using backend_shop.IServices;
 using RFOperators;
+using RFService.ILibs;
+using RFService.IRepo;
+using RFService.Libs;
+using RFService.Repo;
+using RFService.Services;
 
 namespace backend_shop.Service
 {
@@ -122,47 +122,53 @@ namespace backend_shop.Service
         public async Task<IEnumerable<Guid>> GetListUuidForCurrentUserAsync(GetOptions? options = null)
             => await GetListUuidAsync(await GetFilterForCurrentUserAsync(options));
 
-        public async Task<int> UpdateInheritedForStoreUuid(Guid storeUuid, GetOptions? options = null)
+        public (GetOptions, DataDictionary) GetOptionsForUpdateInherited(GetOptions? options = null)
         {
             options ??= new();
-            options.Include("Store", "stores");
-            options.Include("Commerce", "commerce");
-            options.AddFilter("store.Uuid", storeUuid);
+            options.Include("Store", "store");
+            options.Include(
+                "Commerce",
+                "commerce",
+                entity: typeof(Commerce),
+                on: Op.Eq("commerce.Id", Op.Column("store.CommerceId"))
+            );
 
             var data = new DataDictionary
             {
-                { "Location", Op.Column("store.Location") },
                 { "InheritedIsEnabled",
                     Op.And(
-                        Op.Eq("store.IsEnabled", false),
+                        Op.Eq("store.IsEnabled", true),
                         Op.IsNull("store.DeletedAt"),
-                        Op.Eq("commerce.IsEnabled", false),
+                        Op.Eq("commerce.IsEnabled", true),
                         Op.IsNull("commerce.DeletedAt")
                     )
                 },
             };
+
+            return (options, data);
+        }
+
+        public async Task<int> UpdateInheritedForUuid(Guid uuid, GetOptions? options = null)
+        {
+            (options, DataDictionary data) = GetOptionsForUpdateInherited(options);
+            options.AddFilter("uuid", uuid);
+
+            return await UpdateAsync(data, options);
+        }
+
+        public async Task<int> UpdateInheritedForStoreUuid(Guid storeUuid, GetOptions? options = null)
+        {
+            (options, DataDictionary data) = GetOptionsForUpdateInherited(options);
+            options.AddFilter("store.Uuid", storeUuid);
+            data["Location"] = Op.Column("store.Location");
 
             return await UpdateAsync(data, options);
         }
 
         public async Task<int> UpdateInheritedForCommerceUuid(Guid commerceUuid, GetOptions? options = null)
         {
-            options ??= new();
-            options.Include("Store", "stores");
-            options.Include("Commerce", "commerce");
+            (options, DataDictionary data) = GetOptionsForUpdateInherited(options);
             options.AddFilter("commerce.Uuid", commerceUuid);
-
-            var data = new DataDictionary
-            {
-                { "InheritedIsEnabled",
-                    Op.And(
-                        Op.Eq("store.IsEnabled", false),
-                        Op.IsNull("store.DeletedAt"),
-                        Op.Eq("commerce.IsEnabled", false),
-                        Op.IsNull("commerce.DeletedAt")
-                    )
-                },
-            };
 
             return await UpdateAsync(data, options);
         }

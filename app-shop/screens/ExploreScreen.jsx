@@ -19,7 +19,7 @@ export default function ExploreScreen() {
             paddingRight: insets.right,
           }
         ]}>
-      <Text>Explorando artículos artículos</Text>
+      <Text>Explorando artículos</Text>
       <ListScreen
         service={useItem()}
         elements={[

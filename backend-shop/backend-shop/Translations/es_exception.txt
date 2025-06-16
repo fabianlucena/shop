@@ -13,6 +13,9 @@ No se ha provisto comercio.
 No category provided.
 No se ha provisto una categoría.
 
+No item UUID provided.
+No se ha provisto un UUID de artículo.
+
 No name for commerce provided.
 No se ha provisto un nombre para el comercio.
 

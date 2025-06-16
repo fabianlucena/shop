@@ -6,6 +6,7 @@ using backend_shop.IServices;
 using Microsoft.AspNetCore.Mvc;
 using RFService.Authorization;
 using RFService.Data;
+using RFService.Libs;
 using RFService.Repo;
 
 namespace backend_shop.Controllers
@@ -72,6 +73,27 @@ namespace backend_shop.Controllers
             logger.LogInformation("Items getted");
 
             return Ok(new DataRowsResult(response));
+        }
+
+        [HttpPatch("{uuid}")]
+        [Permission("item.get")]
+        public async Task<IActionResult> PatchAsync([FromRoute] Guid uuid, [FromBody] DataDictionary data)
+        {
+            logger.LogInformation("Updating item");
+
+            data = data.GetPascalized();
+
+            var result = await itemService.UpdateForUuidAsync(data, uuid);
+
+            if (result <= 0)
+                return BadRequest();
+
+            if (data.ContainsKey("IsEnabled"))
+                _ = await itemService.UpdateInheritedForUuid(uuid);
+
+            logger.LogInformation("Commerce updated");
+
+            return Ok();
         }
     }
 }

@@ -22,6 +22,8 @@ namespace backend_shop.IServices
 
         Task<IEnumerable<Guid>> GetListUuidForCurrentUserAsync(GetOptions? options = null);
 
+        Task<int> UpdateInheritedForUuid(Guid uuid, GetOptions? options = null);
+
         Task<int> UpdateInheritedForStoreUuid(Guid storeUuid, GetOptions? options = null);
 
         Task<int> UpdateInheritedForCommerceUuid(Guid commerceUuid, GetOptions? options = null);

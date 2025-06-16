@@ -43,8 +43,6 @@ namespace backend_shop
             string dbConnectionString = builder.Configuration.GetConnectionString("dbConnection")
                 ?? throw new Exception("No DB connection founded, try adding a dbConnection property to ConnectionStrings on appsettings.json");
 
-            RFDapper.Setup.ConfigureDefaultDBConnectionString(dbConnectionString);
-
             services.AddControllers(options => options.Filters.Add<RBACFilter>());
 
             services.AddRFService();
@@ -84,8 +82,9 @@ namespace backend_shop
             services.AddScoped<IRepo<Category>, Dapper<Category>>();
             services.AddScoped<IRepo<Item>, Dapper<Item>>();
 
-            services.AddRFDapperDriverSQLServer(new DQLServerDDOptions
+            services.AddRFDapperDriverSQLServer(new SQLServerDDOptions
             {
+                ConnectionString = dbConnectionString,
                 ColumnTypes =
                 {
                     { "Point", "GEOGRAPHY" },
