@@ -15,13 +15,10 @@ export default function LoginScreen({ navigation }) {
   const [username, setUsername] = useState('admin');
   const [password, setPassword] = useState('1234');
   const { login } = useLogin();
-  const { setIsLoggedIn } = useSession();
 
   async function loginHandler() {
     setLoading(true);
-    if (await login({ username, password }))
-      setIsLoggedIn(true);
-
+    await login({ username, password });
     setLoading(false);
   }
 

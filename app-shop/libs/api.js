@@ -1,53 +1,60 @@
 export class Api {
-  static urlBase = 'http://localhost:5085/api';
+  static urlBase = process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:5085/api';
   static headers = {};
+  static debug = {
+    request: process.env.EXPO_PUBLIC_DEBUG_API_REQUEST,
+    response: process.env.EXPO_PUBLIC_DEBUG_API_RESPONSE,
+  };
 
   static async fetch(service, options) {
-    options = {...options};
+    let fetchOptions = {...options};
     let url = this.urlBase + service;
 
-    if (options.path)
-      url += '/' + options.path;
+    if (fetchOptions.path) {
+      url += '/' + fetchOptions.path;
+      delete fetchOptions.path;
+    }
 
-    let query = options.query;
-    if (query) {
-      if (typeof query === 'function')
-        query = query(options);
+    if (fetchOptions.query) {
+      if (typeof fetchOptions.query === 'function')
+        fetchOptions.query = query(fetchOptions);
       
-      if (query) {
-        if (typeof query !== 'string')
-          query = new URLSearchParams(query).toString();
+      if (fetchOptions.query) {
+        if (typeof fetchOptions.query !== 'string')
+          fetchOptions.query = new URLSearchParams(fetchOptions.query).toString();
 
-        if (query)
-          url += '?' + query;
+        if (fetchOptions.query)
+          url += '?' + fetchOptions.query;
+        
+        delete fetchOptions.query;
       }
     }
 
-    if (options.body && typeof options.body !== 'string') {
-      options.body = JSON.stringify(options.body);
+    if (fetchOptions.body && typeof fetchOptions.body !== 'string') {
+      fetchOptions.body = JSON.stringify(fetchOptions.body);
     }
 
-    if (options.headers === false) {
-      delete options.headers;
+    if (fetchOptions.headers === false) {
+      delete fetchOptions.headers;
     } else {
-      options.headers = {...this.headers, ...options.headers};
-      if (options.json) {
-        if (!options.headers['Content-Type']) {
-          options.headers['Content-Type'] = 'application/json';
+      fetchOptions.headers = {...this.headers, ...fetchOptions.headers};
+      if (fetchOptions.json) {
+        if (!fetchOptions.headers['Content-Type']) {
+          fetchOptions.headers['Content-Type'] = 'application/json';
         }
 
-        if (!options.headers.Accept) {
-          options.headers.Accept = 'application/json';
+        if (!fetchOptions.headers.Accept) {
+          fetchOptions.headers.Accept = 'application/json';
         }
       }
     }
+    delete fetchOptions.json;
 
-    if (this.debug) {
-      console.log(url);
-      console.log(options);
+    if (this.debug?.request || options.debug === true || options.debug?.request) {
+      console.log(`<<< ${fetchOptions.method} ${url}\n${JSON.stringify({...fetchOptions, method: undefined}, null, '  ')}`)
     }
 
-    var res = await fetch(url, options);
+    let res = await fetch(url, fetchOptions);
     if (!res.ok) {
       let errorMessage;
       if (res.headers.get('content-type')?.startsWith('application/json')) {
@@ -64,13 +71,18 @@ export class Api {
       throw new Error(errorMessage);
     }
 
-    if (options.json) {
-      if (res.headers.get('content-type')?.startsWith('application/json')) {
-        return res.json();
-      }
+    let result;
+    if (options.json && res.headers.get('content-type')?.startsWith('application/json')) {
+      result = await res.json();
+    } else {
+      result = res;
     }
 
-    return res;
+    if (this.debug?.response || options.debug === true || options.debug?.response) {
+      console.log(`>>> ${fetchOptions.method} ${url}\n${JSON.stringify(result, null, '  ')}`)
+    }
+
+    return result;
   }
 
   static get(service, options) {

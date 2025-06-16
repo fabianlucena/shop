@@ -16,8 +16,7 @@ export default function useLogin() {
   }
 
   async function login(body) {
-    await _login('/v1/login', body);
-    return true;
+    return await _login('/v1/login', body);
   }
 
   async function _login(url, body) {
@@ -28,18 +27,13 @@ export default function useLogin() {
 
     try {
       const data = await Api.postJson(url, { body });
-
-      if (!data) {
+      if (!data?.authorizationToken) {
         setIsLoggedIn(false);
         return;
       }
 
-      if (data.authorizationToken) {
-        setIsLoggedIn(true);
-        Api.headers.Authorization = 'Bearer ' + data.authorizationToken;
-      } else {
-        setIsLoggedIn(false);
-      }
+      setIsLoggedIn(true);
+      Api.headers.Authorization = 'Bearer ' + data.authorizationToken;
 
       if (data.deviceToken) {
         AsyncStorage.setItem('deviceToken', data.deviceToken);
@@ -52,6 +46,8 @@ export default function useLogin() {
       if (data.attributes?.permissions) {
         setPermissions(data.attributes?.permissions);
       }
+
+      return true;
     } catch(err) {
       console.error(err);
       throw err;

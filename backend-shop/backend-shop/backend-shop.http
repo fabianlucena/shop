@@ -1,4 +1,4 @@
-@backend_shop_HostAddress = http://localhost:5085
+@backend_shop_HostAddress = http://127.0.0.1:5085
 
 POST {{backend_shop_HostAddress}}/v1/login/
 Accept: application/json
