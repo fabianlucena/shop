@@ -13,6 +13,7 @@ import Error from './Error';
 import Currency from './Currency';
 
 export default function ListScreen({
+  header,
   confirmDeletionMessage,
   service,
   elements,
@@ -141,6 +142,7 @@ export default function ListScreen({
   }
 
   return <Screen
+      header={header}
       showCommerceName={showCommerceName}
     >
       <Error>{error}</Error>

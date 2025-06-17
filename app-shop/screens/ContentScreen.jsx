@@ -24,6 +24,13 @@ function DrawerNavigator() {
   const { commerces, commerceUuid, setCommerceUuid } = useSession();
 
   return <Drawer.Navigator
+      screenOptions={{
+        headerStyle: { backgroundColor: '#e0efdc' },
+        drawerStyle: { backgroundColor: '#e0efdc' },
+        drawerActiveTintColor: '#29681b',
+        drawerInactiveTintColor: '#13310d',
+        drawerActiveBackgroundColor: '#b5f6a7',
+      }}
       drawerContent={props => <DrawerContentScrollView {...props}>
           <SelectField
             key="selector"

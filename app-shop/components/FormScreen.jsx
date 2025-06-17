@@ -108,6 +108,7 @@ function renderFields(fields, data, setData) {
 }
 
 export default function FormScreen({
+  header,
   service,
   uuid,
   fields,
@@ -263,6 +264,7 @@ export default function FormScreen({
   }
 
   return <Screen
+      header={header}
       busy={loading}
       showCommerceName={showCommerceName}
     >
