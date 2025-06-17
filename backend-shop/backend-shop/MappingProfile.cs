@@ -60,13 +60,17 @@ namespace backend_shop
                 .ForMember(dest => dest.CommerceId, opt => opt.MapFrom<StoreAddRequest_CommerceIdResolverAsync>())
                 .ForMember(dest => dest.Location, opt => opt.MapFrom(src => src.Location == null? null: src.Location.ToGeometryPoint()));
             CreateMap<Store, StoreResponse>();
+            CreateMap<Store, StoreMinimalDTO>();
 
             CreateMap<Category, CategoryResponse>();
+            CreateMap<Category, CategoryMinimalDTO>();
 
             CreateMap<ItemAddRequest, Item>()
                 .ForMember(dest => dest.CategoryId, opt => opt.MapFrom<ItemAddRequest_CategoryIdResolverAsync>())
                 .ForMember(dest => dest.StoreId, opt => opt.MapFrom<ItemAddRequest_StoreIdResolverAsync>());
-            CreateMap<Item, ItemResponse>();
+            CreateMap<Item, ItemResponse>()
+                .ForMember(dest => dest.CategoryUuid, opt => opt.MapFrom(src => src.Category != null ? (Guid?)src.Category.Uuid : null))
+                .ForMember(dest => dest.StoreUuid, opt => opt.MapFrom(src => src.Store != null ? (Guid?)src.Store.Uuid : null));
         }
     }
 }

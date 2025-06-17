@@ -6,7 +6,11 @@ export default function Busy({busy, children}) {
     <View style={styles.busy}>
       {children}
       {busy && <View style={{...styles.busyIndicatorContainer}}>
-          <ActivityIndicator size="" color="#0060E0" style={{...styles.busyIndicator}} />
+          <ActivityIndicator
+            size="large"
+            color="#0060E0"
+            style={{...styles.busyIndicator}}
+          />
         </View> || null}
     </View >
   );

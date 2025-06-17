@@ -9,6 +9,7 @@ export default function ItemsListScreen() {
       loadOptions={{ query: { isEnabled: true } }}
       elements={[
         {
+          name: 'items',
           elements: [
             { control: 'isEnabled' },
             { fieldHeader: 'name' },

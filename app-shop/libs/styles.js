@@ -127,15 +127,15 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#29681b',
     backgroundColor: '#daf9d4',
-    borderRadius: '1em',
-    padding: '.5em',
+    borderRadius: 12,
+    padding: 6,
     alignItems: 'center',
-    marginVertical: '0.2em',
+    marginVertical: 5,
   },
 
   itemHeader: {
     fontSize: 18,
-    margin: '.2em',
+    margin: 2,
   },
 
   buttonIcon: {

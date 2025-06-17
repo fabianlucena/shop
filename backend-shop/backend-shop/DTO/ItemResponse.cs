@@ -12,9 +12,13 @@
 
         public required CategoryMinimalDTO Category { get; set; }
 
+        public Guid? CategoryUuid { get; set; }
+
         public required StoreMinimalDTO Store { get; set; }
 
-        public required decimal Price { get; set; }
+        public Guid? StoreUuid { get; set; }
+
+        public required string Price { get; set; }
 
         public int? Stock { get; set; }
 

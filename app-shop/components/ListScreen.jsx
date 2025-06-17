@@ -95,7 +95,7 @@ export default function ListScreen({
 
   function renderElement(element, item) {
     return <View
-      key={`${element.name ?? element.field ?? element.fieldHeader}-${item.uuid}`}
+      key={`${ element.name ?? element.field ?? element.fieldHeader ?? element.control ?? element.button }-${item.uuid}`}
       style={{
         ...styles.sameLine,
         ...element.style,
@@ -143,7 +143,7 @@ export default function ListScreen({
       <FlatList
         style= {{
           width: '100%',
-          padding: '.5em',
+          padding: '10',
           flexDirection: 'column',
           gap: '.5em',
         }}

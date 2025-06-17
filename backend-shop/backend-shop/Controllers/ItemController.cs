@@ -54,8 +54,10 @@ namespace backend_shop.Controllers
             if (uuid != null)
                 options.AddFilter("Uuid", uuid);
 
-            options.AddFilter("InheritedIsEnabled", true);
-
+            options
+                .AddFilter("InheritedIsEnabled", true)
+                .Include("Category")
+                .Include("Store");
             var itemsList = await itemService.GetListAsync(options);
 
             var response = itemsList.Select(mapper.Map<Item, ItemResponse>);
