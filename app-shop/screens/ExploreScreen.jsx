@@ -1,10 +1,14 @@
 import ListScreen from '../components/ListScreen';
 import useItem from '../services/useItem';
 import styles from '../libs/styles';
+import { useNavigation } from '@react-navigation/native';
 
 export default function ExploreScreen() {
+  const navigation = useNavigation();
+
   return <ListScreen
       service={useItem()}
+      onPressItem={item => navigation.navigate('ViewItem', { uuid: item.uuid })}
       elements={[
         {
           name: 'items',
@@ -17,7 +21,7 @@ export default function ExploreScreen() {
         {
           field: 'description',
           style: {
-            ...styles.itemDescription,
+            ...styles.listItemDescription,
             width: '100%',
           },
         },

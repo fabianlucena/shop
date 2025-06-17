@@ -123,6 +123,7 @@ export default function FormScreen({
   onSuccessNavigate,
   validate,
   showCommerceName,
+  hideMessage = false,
 }) {
   const navigation = useNavigation();
   const route = useRoute();
@@ -269,7 +270,7 @@ export default function FormScreen({
       showCommerceName={showCommerceName}
     >
       <Error>{error}</Error>
-      <Message>{message}</Message>
+      {!hideMessage? <Message>{message}</Message>: null}
       {renderFields(_fields, data, setData)}
       <Button
         disabled={!canSubmit}

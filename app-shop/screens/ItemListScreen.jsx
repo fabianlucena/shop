@@ -23,7 +23,7 @@ export default function ItemsListScreen() {
         {
           field: 'description',
           style: {
-            ...styles.itemDescription,
+            ...styles.listItemDescription,
             width: '100%',
           },
         },

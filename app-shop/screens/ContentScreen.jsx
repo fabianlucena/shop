@@ -7,6 +7,7 @@ import { useSession } from '../contexts/Session';
 import ButtonIconAdd from '../components/ButtonIconAdd';
 
 import ExploreScreen from './ExploreScreen';
+import ViewItemScreen from './ViewItemScreen';
 import LogoutScreen from './LogoutScreen';
 import ChangePasswordScreen from './ChangePasswordScreen';
 import CommercesListScreen from './CommercesListScreen';
@@ -55,6 +56,7 @@ export default function ContentScreen() {
   return <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Drawer"       component={DrawerNavigator}    options={{ headerShown: false }} />
+        <Stack.Screen name="ViewItem"     component={ViewItemScreen}     options={{ title: 'Artículo' }} />
         <Stack.Screen name="CommerceForm" component={CommerceFormScreen} options={{ title: 'Comercio' }}/>
         <Stack.Screen name="StoreForm"    component={StoreFormScreen}    options={{ title: 'Local' }}/>
         <Stack.Screen name="ItemForm"     component={ItemFormScreen}     options={{ title: 'Artículo' }}/>

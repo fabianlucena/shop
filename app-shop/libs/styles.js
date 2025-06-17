@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     height: '25%',
   },
 
-  item: {
+  listItem: {
     borderWidth: 2,
     borderColor: '#29681b',
     backgroundColor: '#daf9d4',
@@ -133,12 +133,12 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
 
-  itemHeader: {
+  listItemHeader: {
     fontSize: 20,
     margin: 2,
   },
 
-  itemDescription: {
+  listItemDescription: {
     fontSize: 16,
     margin: 2,
   },
@@ -175,6 +175,27 @@ const styles = StyleSheet.create({
     padding: 10,
     flexDirection: 'column',
     gap: 1,
+  },
+
+  itemHeader: {
+    fontSize: 26,
+    fontWeight: 'bold',
+    padding: 5,
+    width: '100%',
+  },
+
+  itemLabel: {
+    marginTop: 10,
+    fontSize: 12,
+    padding: 5,
+    paddingBottom: 0,
+    width: '100%',
+  },
+
+  itemData: {
+    fontSize: 16,
+    padding: 5,
+    width: '100%',
   },
 });
 

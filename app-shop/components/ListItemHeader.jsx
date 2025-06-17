@@ -7,7 +7,7 @@ export default function ItemHeader({children, style}) {
         ...styles.text,
         ...styles.label,
         ...styles.header,
-        ...styles.itemHeader,
+        ...styles.listItemHeader,
         ...style,
       }}
     >

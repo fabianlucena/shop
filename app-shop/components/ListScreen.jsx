@@ -1,11 +1,11 @@
 import { useState, useCallback } from 'react';
-import { FlatList, View, Text, Switch } from 'react-native';
+import { FlatList, View, Text, Switch, Pressable } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
 import styles from '../libs/styles';
 
 import Screen from './Screen';
-import ItemHeader from './ItemHeader';
+import ListItemHeader from './ListItemHeader';
 import ButtonIconEdit from './ButtonIconEdit';
 import ButtonIconDelete from './ButtonIconDelete';
 import useDialog from './useDialog';
@@ -25,6 +25,7 @@ export default function ListScreen({
   showCommerceName,
   loadingError = 'Error de carga',
   loadOptions = {},
+  onPressItem,
 }) {
   const [data, setData] = useState([]);
   const dialog = useDialog();
@@ -113,7 +114,7 @@ export default function ListScreen({
         })
       }} >
         {element.label && <Text style={styles.label}>{element.label}</Text> || null }
-        {element.fieldHeader && <ItemHeader >{item[element.fieldHeader]}</ItemHeader> || null}
+        {element.fieldHeader && <ListItemHeader >{item[element.fieldHeader]}</ListItemHeader> || null}
         {element.type == 'currency'?
           <Currency style={{...element.style}} >{item[element.field]}</Currency> || null
         : element.field && <Text style={{...element.style}}>{item[element.field]}</Text> || null}
@@ -133,12 +134,16 @@ export default function ListScreen({
   }
 
   function renderItem({ item }) {
-    return <View
-        key={item.uuid}
-        style={styles.item}
+    return <Pressable
+        onPress={() => onPressItem && onPressItem(item)}
       >
-        {renderElements(elements, item)}
-      </View>;
+        <View
+          key={item.uuid}
+          style={styles.listItem}
+        >
+          {renderElements(elements, item)}
+        </View>
+      </Pressable>;
   }
 
   return <Screen
