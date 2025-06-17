@@ -9,6 +9,7 @@ export default function ExploreScreen() {
   return <ListScreen
       service={useItem()}
       onPressItem={item => navigation.navigate('ViewItem', { uuid: item.uuid })}
+      numColumns={1}
       elements={[
         {
           name: 'items',

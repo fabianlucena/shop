@@ -26,6 +26,7 @@ export default function ListScreen({
   loadingError = 'Error de carga',
   loadOptions = {},
   onPressItem,
+  numColumns,
 }) {
   const [data, setData] = useState([]);
   const dialog = useDialog();
@@ -156,6 +157,7 @@ export default function ListScreen({
         data={data}
         renderItem={renderItem}
         keyExtractor={item => item.uuid}
+        numColumns={numColumns}
       />
     </Screen>;
 }

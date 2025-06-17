@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Text } from 'react-native';
+import { Text, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/native';
 
 import Screen from './Screen';
@@ -10,6 +10,7 @@ import CurrencyField from './CurrencyField';
 import Button from './Button';
 import Message from './Message';
 import Error from './Error';
+import styles from '../libs/styles';
 
 function getArrangedFields(fields) {
   return fields.map(f => {
@@ -168,12 +169,6 @@ export default function FormScreen({
       setCanSubmit(false);
       return;
     }
-
-    if (JSON.stringify(data) === originalData) {
-      setMessage('No hay cambios para enviar');
-      setCanSubmit(false);
-      return;
-    }
     
     if (validate) {
       const priorFields = JSON.stringify(_fields);
@@ -195,6 +190,12 @@ export default function FormScreen({
         setCanSubmit(false);
         return;
       }
+    }
+
+    if (JSON.stringify(data) === originalData) {
+      setMessage('No hay cambios para enviar');
+      setCanSubmit(false);
+      return;
     }
 
     setMessage('Listo para enviar');
@@ -264,19 +265,30 @@ export default function FormScreen({
       .finally(() => setLoading(false));
   }
 
-  return <Screen
-      header={header}
-      busy={loading}
-      showCommerceName={showCommerceName}
+  return <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <Error>{error}</Error>
-      {!hideMessage? <Message>{message}</Message>: null}
-      {renderFields(_fields, data, setData)}
-      <Button
-        disabled={!canSubmit}
-        onPress={handleOnSubmit}
+      <Screen
+        header={header}
+        busy={loading}
+        showCommerceName={showCommerceName}
       >
-        {_uuid? 'Modificar': 'Agregar'}
-      </Button>
-    </Screen>;
+        <Error>{error}</Error>
+        {!hideMessage? <Message>{message}</Message>: null}
+        <ScrollView
+          contentContainerStyle={{ paddingBottom: 60 }}
+          keyboardShouldPersistTaps="handled"
+          style={{ flex: 1, width: '100%' }}
+        >
+          {renderFields(_fields, data, setData)}
+          <Button
+            disabled={!canSubmit}
+            onPress={handleOnSubmit}
+          >
+            {_uuid? 'Modificar': 'Agregar'}
+          </Button>
+        </ScrollView>
+      </Screen>
+    </KeyboardAvoidingView>;
 }
