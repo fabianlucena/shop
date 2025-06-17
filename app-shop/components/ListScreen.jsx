@@ -110,7 +110,7 @@ export default function ListScreen({
           flexGrow: 1,
         }),
       }} >
-        {element.fieldHeader && <ItemHeader key={element.name ?? element.fieldHeader} style={{flexGrow: 1}}>{item[element.fieldHeader]}</ItemHeader> || null}
+        {element.fieldHeader && <ItemHeader key={element.name ?? element.fieldHeader}>{item[element.fieldHeader]}</ItemHeader> || null}
         {element.field && <Text key={element.name ?? element.field}>{item[element.field]}</Text> || null}
         {element.elements && renderElements(element.elements, item) || null}
         {element.button && renderButton(element.button, item) || null}
@@ -141,12 +141,7 @@ export default function ListScreen({
     >
       <Error>{error}</Error>
       <FlatList
-        style= {{
-          width: '100%',
-          padding: '10',
-          flexDirection: 'column',
-          gap: '.5em',
-        }}
+        style={styles.list}
         data={data}
         renderItem={renderItem}
         keyExtractor={item => item.uuid}

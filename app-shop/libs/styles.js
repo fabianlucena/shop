@@ -164,6 +164,13 @@ const styles = StyleSheet.create({
     marginTop: '.3em',
     marginBottom: 0,
   },
+
+  list: {
+    width: '100%',
+    padding: 10,
+    flexDirection: 'column',
+    gap: 1,
+  },
 });
 
 export default styles;
