@@ -15,7 +15,7 @@ export default function ItemsListScreen() {
             { control: 'isEnabled' },
             { fieldHeader: 'name' },
             { field: 'price', type: 'currency' },
-            { field: 'stock', label: 'Nº: ', type: 'number' },
+            { field: 'stock', label: 'Quedan: ', type: 'number' },
             { button:  'edit' },
             { button:  'delete' },
           ]
