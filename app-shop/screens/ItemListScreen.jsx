@@ -13,7 +13,7 @@ export default function ItemsListScreen() {
           name: 'items',
           elements: [
             { control: 'isEnabled' },
-            { fieldHeader: 'name' },
+            { fieldHeader: 'name', style: { flexGrow: 1 }},
             { field: 'price', type: 'currency' },
             { field: 'stock', label: 'Quedan: ', type: 'number' },
             { button:  'edit' },

@@ -130,7 +130,18 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 6,
     alignItems: 'center',
-    marginVertical: 5,
+    marginVertical: 4,
+    marginHorizontal: 5,
+    flex: 1,
+
+  },
+
+  listItemEmpty: {
+    padding: 6,
+    alignItems: 'center',
+    marginVertical: 3,
+    marginHorizontal: 2,
+    flex: 1,
   },
 
   listItemHeader: {

@@ -41,7 +41,15 @@ export default function ListScreen({
   
   function loadData() {
     service.get(loadOptions?.query)
-      .then(data => setData(data.rows))
+      .then(data => {
+        const newData = data.rows;
+        const rest = data.rows.length % numColumns;
+        if (rest > 0) {
+          const emptyRows = Array.from({ length: numColumns - rest }, () => (null));
+          newData.push(...emptyRows);
+        }
+        setData(newData);
+      })
       .catch(e => setError(`${loadingError}\n${e.message}`));
   }
 
@@ -109,10 +117,6 @@ export default function ListScreen({
           flexDirection: 'row',
           width: '100%',
         }),
-        ...((element.fieldHeader || element.field || element.elements) &&
-        {
-          flexGrow: 1,
-        })
       }} >
         {element.label && <Text style={styles.label}>{element.label}</Text> || null }
         {element.fieldHeader && <ListItemHeader >{item[element.fieldHeader]}</ListItemHeader> || null}
@@ -135,15 +139,16 @@ export default function ListScreen({
   }
 
   function renderItem({ item }) {
+    if (!item) {
+      return <View style={styles.listItemEmpty} key="empty-item" />;
+    }
+
     return <Pressable
+        key={item.uuid}
         onPress={() => onPressItem && onPressItem(item)}
+        style={styles.listItem}
       >
-        <View
-          key={item.uuid}
-          style={styles.listItem}
-        >
-          {renderElements(elements, item)}
-        </View>
+        {renderElements(elements, item)}
       </Pressable>;
   }
 
@@ -156,7 +161,7 @@ export default function ListScreen({
         style={styles.list}
         data={data}
         renderItem={renderItem}
-        keyExtractor={item => item.uuid}
+        keyExtractor={item => item?.uuid}
         numColumns={numColumns}
       />
     </Screen>;

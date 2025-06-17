@@ -9,23 +9,12 @@ export default function ExploreScreen() {
   return <ListScreen
       service={useItem()}
       onPressItem={item => navigation.navigate('ViewItem', { uuid: item.uuid })}
-      numColumns={1}
+      numColumns={2}
       elements={[
-        {
-          name: 'items',
-          elements: [
-            { fieldHeader: 'name' },
-            { field: 'price', label: 'Precio: ', type: 'currency' },
-            { field: 'stock', label: 'Quedan: ', type: 'number' },
-          ]
-        },
-        {
-          field: 'description',
-          style: {
-            ...styles.listItemDescription,
-            width: '100%',
-          },
-        },
+        { fieldHeader: 'name' },
+        { field: 'price', type: 'currency' },
+        { field: 'stock', label: 'Quedan: ', type: 'number' },
+        { field: 'description', style: styles.listItemDescription },
       ]}
     />;
 }
