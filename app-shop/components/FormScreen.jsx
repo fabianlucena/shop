@@ -166,6 +166,12 @@ export default function FormScreen({
       setCanSubmit(false);
       return;
     }
+
+    if (JSON.stringify(data) === originalData) {
+      setMessage('No hay cambios para enviar');
+      setCanSubmit(false);
+      return;
+    }
     
     if (validate) {
       const priorFields = JSON.stringify(_fields);
@@ -179,13 +185,7 @@ export default function FormScreen({
         return;
       }
 
-      if (result === true) {
-        setMessage('Listo para enviar');
-        setCanSubmit(true);
-        return;
-      }
-
-      if (result) {
+      if (result && result !== true) {
         if (typeof result !== 'string')
           result = JSON.stringify(result);
     
@@ -193,12 +193,6 @@ export default function FormScreen({
         setCanSubmit(false);
         return;
       }
-    }
-
-    if (JSON.stringify(data) === originalData) {
-      setMessage('No hay cambios para enviar');
-      setCanSubmit(false);
-      return;
     }
 
     setMessage('Listo para enviar');

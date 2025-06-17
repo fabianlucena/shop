@@ -24,7 +24,7 @@ export default function TextField({
         value={value}
         disabled={disabled}
         onChangeValue={onChangeValue}
-        prefix="$"
+        prefix="$ "
         delimiter="."
         separator=","
         precision={2}

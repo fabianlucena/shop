@@ -27,11 +27,17 @@ export default function ExploreScreen() {
             name: 'items',
             elements: [
               { fieldHeader: 'name' },
-              { field: 'price' },
-              { field: 'stock' },
+              { field: 'price', label: 'Precio: ', type: 'currency' },
+              { field: 'stock', label: 'Cantidad: ', type: 'number' },
             ]
           },
-          {field: 'description'},
+          {
+            field: 'description',
+            style: {
+              ...styles.itemDescription,
+              width: '100%',
+            },
+          },
         ]}
       />
         </View>

@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { FlatList, View, Text, Switch } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -10,6 +10,7 @@ import ButtonIconEdit from './ButtonIconEdit';
 import ButtonIconDelete from './ButtonIconDelete';
 import useDialog from './useDialog';
 import Error from './Error';
+import Currency from './Currency';
 
 export default function ListScreen({
   confirmDeletionMessage,
@@ -108,15 +109,18 @@ export default function ListScreen({
         ...((element.fieldHeader || element.field || element.elements) &&
         {
           flexGrow: 1,
-        }),
+        })
       }} >
-        {element.fieldHeader && <ItemHeader key={element.name ?? element.fieldHeader}>{item[element.fieldHeader]}</ItemHeader> || null}
-        {element.field && <Text key={element.name ?? element.field}>{item[element.field]}</Text> || null}
+        {element.label && <Text style={styles.label}>{element.label}</Text> || null }
+        {element.fieldHeader && <ItemHeader >{item[element.fieldHeader]}</ItemHeader> || null}
+        {element.type == 'currency'?
+          <Currency style={{...element.style}} >{item[element.field]}</Currency> || null
+        : element.field && <Text style={{...element.style}}>{item[element.field]}</Text> || null}
         {element.elements && renderElements(element.elements, item) || null}
         {element.button && renderButton(element.button, item) || null}
         {element.control && renderControl(element.control, item) || null}
         {!element.field && !element.fieldHeader && !element.elements && !element.button && !element.control
-          && <Text key={element.name}>Elemento desconocido: {JSON.stringify(element)}</Text> || null
+          && <Text>Elemento desconocido: {JSON.stringify(element)}</Text> || null
         }
       </View>;
   }

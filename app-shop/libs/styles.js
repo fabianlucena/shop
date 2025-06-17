@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
 
   label: {
     color: '#194210',
-    fontSize: 18,
+    fontSize: 14,
   },
 
   header: {
@@ -134,7 +134,12 @@ const styles = StyleSheet.create({
   },
 
   itemHeader: {
-    fontSize: 18,
+    fontSize: 20,
+    margin: 2,
+  },
+
+  itemDescription: {
+    fontSize: 16,
     margin: 2,
   },
 
