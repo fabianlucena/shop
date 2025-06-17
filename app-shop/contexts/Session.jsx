@@ -82,8 +82,10 @@ export function SessionProvider({ children }) {
   }, [commerces]);
 
   useEffect(() => {
-    updateCurrentCommerceName(commerces, commerceUuid);
-    loadStores();
+    if (isLogguedIn && commerceUuid) {
+      updateCurrentCommerceName(commerces, commerceUuid);
+      loadStores();
+    }
   }, [commerces, commerceUuid]);
 
   return (

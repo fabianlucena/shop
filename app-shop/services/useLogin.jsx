@@ -32,8 +32,8 @@ export default function useLogin() {
         return;
       }
 
-      setIsLoggedIn(true);
       Api.headers.Authorization = 'Bearer ' + data.authorizationToken;
+      setIsLoggedIn(true);
 
       if (data.deviceToken) {
         AsyncStorage.setItem('deviceToken', data.deviceToken);

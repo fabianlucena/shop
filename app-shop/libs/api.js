@@ -7,7 +7,11 @@ export class Api {
   };
 
   static async fetch(service, options) {
-    let fetchOptions = {...options};
+    let fetchOptions = {
+      ...options,
+      debug: undefined,
+      errorHandler: undefined,
+    };
     let url = this.urlBase + service;
 
     if (fetchOptions.path) {

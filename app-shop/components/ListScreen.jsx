@@ -94,7 +94,9 @@ export default function ListScreen({
   }
 
   function renderElement(element, item) {
-    return <View style={{
+    return <View
+      key={`${element.name ?? element.field ?? element.fieldHeader}-${item.uuid}`}
+      style={{
         ...styles.sameLine,
         ...element.style,
         ...(element.elements &&

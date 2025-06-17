@@ -24,6 +24,7 @@ export default function ExploreScreen() {
         service={useItem()}
         elements={[
           {
+            name: 'items',
             elements: [
               { fieldHeader: 'name' },
               { field: 'price' },
