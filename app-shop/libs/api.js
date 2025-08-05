@@ -34,7 +34,11 @@ export class Api {
       }
     }
 
-    if (fetchOptions.body && typeof fetchOptions.body !== 'string') {
+    if (fetchOptions.body
+      && typeof fetchOptions.body !== 'string'
+      && !(fetchOptions.body instanceof FormData)
+      && !(fetchOptions.body instanceof URLSearchParams)
+    ) {
       fetchOptions.body = JSON.stringify(fetchOptions.body);
     }
 
@@ -43,7 +47,7 @@ export class Api {
     } else {
       fetchOptions.headers = {...this.headers, ...fetchOptions.headers};
       if (fetchOptions.json) {
-        if (!fetchOptions.headers['Content-Type']) {
+        if (!fetchOptions.headers['Content-Type'] && !(fetchOptions.body instanceof FormData)) {
           fetchOptions.headers['Content-Type'] = 'application/json';
         }
 

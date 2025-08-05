@@ -56,13 +56,14 @@ export default function ItemFormScreen() {
         'isEnabled',
         'name',
         'description',
-        { name: 'categoryUuid', type: 'select',   label: 'Rubro', options: categoriesOptions },
-        { name: 'storeUuid',    type: 'select',   label: 'Local', options: storesOptions },
-        { name: 'price',        type: 'currency', label: 'Precio' },
-        { name: 'stock',        type: 'number',   label: 'Disponibilidad' },
-        { name: 'isPresent',    type: 'switch',   label: 'Apto para regalar' },
-        { name: 'minAge',       type: 'number',   label: 'Edad mínima' },
-        { name: 'maxAge',       type: 'number',   label: 'Edad máxima' },
+        { name: 'images',       type: 'imageGalery', label: 'Imágenes' },
+        { name: 'categoryUuid', type: 'select',      label: 'Rubro', options: categoriesOptions },
+        { name: 'storeUuid',    type: 'select',      label: 'Local', options: storesOptions },
+        { name: 'price',        type: 'currency',    label: 'Precio' },
+        { name: 'stock',        type: 'number',      label: 'Disponibilidad' },
+        { name: 'isPresent',    type: 'switch',      label: 'Apto para regalar' },
+        { name: 'minAge',       type: 'number',      label: 'Edad mínima' },
+        { name: 'maxAge',       type: 'number',      label: 'Edad máxima' },
       ]}
       validate={validate}
     />;

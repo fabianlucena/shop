@@ -15,7 +15,7 @@ export default function ItemsListScreen() {
             { control: 'isEnabled' },
             { fieldHeader: 'name', style: { flexGrow: 1 }},
             { field: 'price', type: 'currency' },
-            { field: 'stock', label: 'Quedan: ', type: 'number' },
+            { field: 'stock', label: '#', type: 'number' },
             { button:  'edit' },
             { button:  'delete' },
           ]

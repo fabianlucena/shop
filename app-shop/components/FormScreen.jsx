@@ -7,10 +7,10 @@ import TextField from './TextField';
 import SwitchField from './SwitchField';
 import SelectField from './SelectField';
 import CurrencyField from './CurrencyField';
+import ImageGaleryField from './ImageGaleryField';
 import Button from './Button';
 import Message from './Message';
 import Error from './Error';
-import styles from '../libs/styles';
 
 function getArrangedFields(fields) {
   return fields.map(f => {
@@ -102,6 +102,15 @@ function renderFields(fields, data, setData) {
         >
           {f.label}
         </TextField>;
+    }
+
+    if (f.type === 'imageGalery') {
+      return <ImageGaleryField
+          key={f.name}
+          name={f.name}
+          value={data[f.name] || []}
+          setValue={images => setData({...data, [f.name]: images})}
+        />;
     }
     
     return <Text key={f.name}>Tipo de campo desconocido {JSON.stringify(f)}</Text>
@@ -241,6 +250,10 @@ export default function FormScreen({
     setError(`${_uuid? updateErrorMessage: createErrorMessage}\n${err.message}`)
   }
 
+  function getFieldByName(name) {
+    return _fields.find(f => f.name === name);
+  }
+
   function handleOnSubmit() {
     if (!canSubmit)
       return;
@@ -248,14 +261,38 @@ export default function FormScreen({
     setLoading(true);
     setError('');
 
+    let sendData;
+    if (_fields.some(f => (f.visible || typeof f.visible === 'undefined') && f.type === 'imageGalery' && data[f.name]?.length )) {
+      sendData = new FormData();
+      for (var name in data) {
+        const value = data[name];
+        const field = getFieldByName(name);
+        if (field.type === 'imageGalery' && value?.length) {
+          console.log(value);
+          for (var uri of value) {
+            console.log(uri);
+            sendData.append(name, {
+              uri,
+              name: 'imagen.jpg',
+              type: 'image/jpeg',
+            });
+          }
+        } else {
+          sendData.append(name, value);
+        }
+      }
+    } else {
+      sendData = data;
+    }
+
     let messageText,
       method;
     if (_uuid) {
       messageText = 'Actualizando...';
-      method = service.updateForUuid(_uuid, data);
+      method = service.updateForUuid(_uuid, sendData);
     } else {
       messageText = 'Creando...';
-      method = service.add(data);
+      method = service.add(sendData);
     }
 
     setMessage(messageText);

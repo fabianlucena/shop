@@ -8,6 +8,7 @@ using RFService.Authorization;
 using RFService.Data;
 using RFService.Libs;
 using RFService.Repo;
+using System.Text.Json;
 
 namespace backend_shop.Controllers
 {
@@ -79,11 +80,25 @@ namespace backend_shop.Controllers
 
         [HttpPatch("{uuid}")]
         [Permission("item.get")]
-        public async Task<IActionResult> PatchAsync([FromRoute] Guid uuid, [FromBody] DataDictionary data)
+        public async Task<IActionResult> PatchAsync([FromRoute] Guid uuid)
         {
             logger.LogInformation("Updating item");
 
-            data = data.GetPascalized();
+            DataDictionary data;
+            if (Request.HasFormContentType)
+            {
+                data = [];
+                var formData = Request.Form;
+                foreach (var key in formData.Keys)
+                    data[key] = formData[key];
+            }
+            else
+            {
+                using var reader = new StreamReader(Request.Body);
+                string bodyContent = await reader.ReadToEndAsync();
+                data = JsonSerializer.Deserialize<DataDictionary>(bodyContent)!
+                    .GetPascalized();
+            }
 
             var result = await itemService.UpdateForUuidAsync(data, uuid);
 
