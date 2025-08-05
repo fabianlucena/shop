@@ -14,6 +14,6 @@ namespace backend_shop.IServices
     {
         Task<Plan> GetBaseAsync();
 
-        Task<Plan> GetSingleOrBaseAsync(GetOptions options);
+        Task<Plan> GetSingleOrBaseAsync(QueryOptions options);
     }
 }

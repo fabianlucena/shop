@@ -58,7 +58,7 @@ namespace backend_shop.Controllers
 
             var commercesIdList = await commerceService.GetListIdForCurrentUserAsync();
 
-            var options = GetOptions.CreateFromQuery(HttpContext);
+            var options = QueryOptions.CreateFromQuery(HttpContext);
             options.AddFilter("CommerceId", commercesIdList);
             if (uuid != null)
                 options.AddFilter("Uuid", uuid);
@@ -122,7 +122,7 @@ namespace backend_shop.Controllers
 
             await storeService.CheckForUuidAndCurrentUserAsync(
                 uuid,
-                new GetOptions { IncludeDeleted = true }
+                new QueryOptions { Switches = { { "IncludeDeleted", true } } }
             );
 
             var result = await storeService.RestoreForUuidAsync(uuid);

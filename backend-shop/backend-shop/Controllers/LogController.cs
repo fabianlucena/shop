@@ -26,7 +26,7 @@ namespace backend_shop.Controllers
             logger.LogInformation("Getting log");
 
             var query = HttpContext.Request.Query.GetPascalized();
-            var options = GetOptions.CreateFromQuery(query);
+            var options = QueryOptions.CreateFromQuery(query);
 
             options.Include("Level");
             options.Include("Action"); 

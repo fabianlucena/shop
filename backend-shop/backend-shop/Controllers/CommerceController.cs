@@ -53,7 +53,7 @@ namespace backend_shop.Controllers
             var ownerId = (HttpContext.Items["UserId"] as Int64?)
                 ?? throw new NoAuthorizationHeaderException();
 
-            var options = GetOptions.CreateFromQuery(HttpContext);
+            var options = QueryOptions.CreateFromQuery(HttpContext);
             options.AddFilter("OwnerId", ownerId);
             if (uuid != null)
                 options.AddFilter("Uuid", uuid);
@@ -117,7 +117,7 @@ namespace backend_shop.Controllers
 
             await commerceService.CheckForUuidAndCurrentUserAsync(
                 uuid,
-                new GetOptions { IncludeDeleted = true }
+                new QueryOptions { Switches = { { "IncludeDeleted", true } } }
             );
 
             var result = await commerceService.RestoreForUuidAsync(uuid);

@@ -31,7 +31,7 @@ namespace backend_shop.Service
                     throw new NoOwnerException();
             }
 
-            var existent = await GetSingleOrDefaultAsync(new GetOptions
+            var existent = await GetSingleOrDefaultAsync(new QueryOptions
             {
                 Filters = {
                     { "OwnerId", data.OwnerId},
@@ -42,7 +42,7 @@ namespace backend_shop.Service
             if (existent != null)
                 throw new ACommerceForThatNameAlreadyExistException();
 
-            var totalCommercesCount = await GetCountForCurrentUserAsync(new GetOptions { Filters = { { "IsEnabled", null } } });
+            var totalCommercesCount = await GetCountForCurrentUserAsync(new QueryOptions { Filters = { { "IsEnabled", null } } });
             if (totalCommercesCount >= (await userPlanService.GetMaxTotalCommercesForCurrentUser()))
                 throw new TotalCommercesLimitReachedException();
 
@@ -58,16 +58,16 @@ namespace backend_shop.Service
             return data;
         }
 
-        public override async Task<IDataDictionary> ValidateForUpdateAsync(IDataDictionary data, GetOptions options)
+        public override async Task<IDataDictionary> ValidateForUpdateAsync(IDataDictionary data, QueryOptions options)
         {
             data = await base.ValidateForUpdateAsync(data, options);
 
             if (data.TryGetValue("IsEnabled", out var isEnabledValue)
                 && isEnabledValue is bool isEnabled && isEnabled)
             {
-                var getOptions = new GetOptions(options)
+                var getOptions = new QueryOptions(options)
                 {
-                    IncludeDisabled = true
+                    Switches = { { "IncludeDisabled", true } }
                 };
                 _ = await GetSingleOrDefaultAsync(getOptions)
                     ?? throw new CommerceDoesNotExistException();
@@ -81,7 +81,7 @@ namespace backend_shop.Service
             return data;
         }
 
-        public async Task<bool> CheckForUuidAndCurrentUserAsync(Guid uuid, GetOptions? options = null)
+        public async Task<bool> CheckForUuidAndCurrentUserAsync(Guid uuid, QueryOptions? options = null)
         {
             var httpContext = httpContextAccessor.HttpContext
                 ?? throw new NoAuthorizationHeaderException();
@@ -89,8 +89,8 @@ namespace backend_shop.Service
             var ownerId = (httpContext.Items["UserId"] as Int64?)
                 ?? throw new NoAuthorizationHeaderException();
 
-            options ??= GetOptions.CreateFromQuery(httpContext);
-            options.IncludeDisabled = true;
+            options ??= QueryOptions.CreateFromQuery(httpContext);
+            options.Switches["IncludeDisabled"] = true;
             options.AddFilter("OwnerId", ownerId);
             options.AddFilter("Uuid", uuid);
 
@@ -100,7 +100,7 @@ namespace backend_shop.Service
             throw new CommerceDoesNotExistException();
         }
 
-        public Task<GetOptions> GetFilterForCurrentUserAsync(GetOptions? options = null)
+        public Task<QueryOptions> GetFilterForCurrentUserAsync(QueryOptions? options = null)
         {
             var httpContext = httpContextAccessor.HttpContext
                 ?? throw new NoAuthorizationHeaderException();
@@ -112,17 +112,17 @@ namespace backend_shop.Service
                 throw new NoSessionUserDataException();
 
             options = (options != null) ?
-                new GetOptions(options) :
+                new QueryOptions(options) :
                 new();
             options.AddFilter("OwnerId", ownerId);
 
             return Task.FromResult(options);
         }
 
-        public async Task<Int64> GetCountForCurrentUserAsync(GetOptions? options = null)
+        public async Task<Int64> GetCountForCurrentUserAsync(QueryOptions? options = null)
             => await GetCountAsync(await GetFilterForCurrentUserAsync(options));
 
-        public async Task<IEnumerable<Int64>> GetListIdForCurrentUserAsync(GetOptions? options = null)
+        public async Task<IEnumerable<Int64>> GetListIdForCurrentUserAsync(QueryOptions? options = null)
             => await GetListIdAsync(await GetFilterForCurrentUserAsync(options));
     }
 }

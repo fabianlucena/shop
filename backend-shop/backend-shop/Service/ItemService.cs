@@ -34,10 +34,10 @@ namespace backend_shop.Service
 
             var store = await storeService.GetSingleOrDefaultForIdAsync(
                     data.StoreId,
-                    new GetOptions
+                    new QueryOptions
                     {
                         Join = { { "Commerce" } },
-                        IncludeDisabled = true,
+                        Switches = { { "IncludeDisabled", true } },
                     }
                 )
                 ?? throw new StoreDoesNotExistException();
@@ -45,7 +45,7 @@ namespace backend_shop.Service
             if (store.Commerce == null)
                 throw new CommerceDoesNotExistException();
 
-            var totalStoresCount = await GetCountForCurrentUserAsync(new GetOptions { Filters = { { "IsEnabled", null } } });
+            var totalStoresCount = await GetCountForCurrentUserAsync(new QueryOptions { Filters = { { "IsEnabled", null } } });
             if (totalStoresCount >= (await userPlanService.GetMaxTotalItemsForCurrentUser()))
                 throw new TotalItemsLimitReachedException();
 
@@ -64,16 +64,16 @@ namespace backend_shop.Service
             return data;
         }
 
-        public override async Task<IDataDictionary> ValidateForUpdateAsync(IDataDictionary data, GetOptions options)
+        public override async Task<IDataDictionary> ValidateForUpdateAsync(IDataDictionary data, QueryOptions options)
         {
             data = await base.ValidateForUpdateAsync(data, options);
 
             if (data.TryGetValue("IsEnabled", out var isEnabledValue)
                 && isEnabledValue is bool isEnabled && isEnabled)
             {
-                var getOptions = new GetOptions(options)
+                var getOptions = new QueryOptions(options)
                 {
-                    IncludeDisabled = true
+                    Switches = { { "IncludeDisabled", true } }
                 };
                 _ = await GetSingleOrDefaultAsync(getOptions)
                     ?? throw new ItemDoesNotExistException();
@@ -87,12 +87,12 @@ namespace backend_shop.Service
             return data;
         }
 
-        public async Task<bool> CheckForUuidAndCurrentUserAsync(Guid uuid, GetOptions? options = null)
+        public async Task<bool> CheckForUuidAndCurrentUserAsync(Guid uuid, QueryOptions? options = null)
         {
             var storesId = await storeService.GetListIdForCurrentUserAsync(options);
 
             options ??= new ();
-            options.IncludeDisabled = true;
+            options.Switches["IncludeDisabled"] = true;
             options.AddFilter("Uuid", uuid);
             options.AddFilter("StoreId", storesId);
             _ = await GetSingleOrDefaultAsync(options)
@@ -101,28 +101,28 @@ namespace backend_shop.Service
             return true;
         }
 
-        public async Task<GetOptions> GetFilterForCurrentUserAsync(GetOptions? options = null)
+        public async Task<QueryOptions> GetFilterForCurrentUserAsync(QueryOptions? options = null)
         {
             var storesId = await storeService.GetListIdForCurrentUserAsync(options);
 
             options = (options != null) ?
-                new GetOptions(options) :
+                new QueryOptions(options) :
                 new();
             options.AddFilter("StoreId", storesId);
 
             return options;
         }
 
-        public async Task<Int64> GetCountForCurrentUserAsync(GetOptions? options = null)
+        public async Task<Int64> GetCountForCurrentUserAsync(QueryOptions? options = null)
             => await GetCountAsync(await GetFilterForCurrentUserAsync(options));
 
-        public async Task<IEnumerable<Int64>> GetListIdForCurrentUserAsync(GetOptions? options = null)
+        public async Task<IEnumerable<Int64>> GetListIdForCurrentUserAsync(QueryOptions? options = null)
             => await GetListIdAsync(await GetFilterForCurrentUserAsync(options));
 
-        public async Task<IEnumerable<Guid>> GetListUuidForCurrentUserAsync(GetOptions? options = null)
+        public async Task<IEnumerable<Guid>> GetListUuidForCurrentUserAsync(QueryOptions? options = null)
             => await GetListUuidAsync(await GetFilterForCurrentUserAsync(options));
 
-        public (GetOptions, DataDictionary) GetOptionsForUpdateInherited(GetOptions? options = null)
+        public (QueryOptions, DataDictionary) GetOptionsForUpdateInherited(QueryOptions? options = null)
         {
             options ??= new();
             options.Include("Store", "store");
@@ -148,7 +148,7 @@ namespace backend_shop.Service
             return (options, data);
         }
 
-        public async Task<int> UpdateInheritedForUuid(Guid uuid, GetOptions? options = null)
+        public async Task<int> UpdateInheritedForUuid(Guid uuid, QueryOptions? options = null)
         {
             (options, DataDictionary data) = GetOptionsForUpdateInherited(options);
             options.AddFilter("uuid", uuid);
@@ -156,7 +156,7 @@ namespace backend_shop.Service
             return await UpdateAsync(data, options);
         }
 
-        public async Task<int> UpdateInheritedForStoreUuid(Guid storeUuid, GetOptions? options = null)
+        public async Task<int> UpdateInheritedForStoreUuid(Guid storeUuid, QueryOptions? options = null)
         {
             (options, DataDictionary data) = GetOptionsForUpdateInherited(options);
             options.AddFilter("store.Uuid", storeUuid);
@@ -165,7 +165,7 @@ namespace backend_shop.Service
             return await UpdateAsync(data, options);
         }
 
-        public async Task<int> UpdateInheritedForCommerceUuid(Guid commerceUuid, GetOptions? options = null)
+        public async Task<int> UpdateInheritedForCommerceUuid(Guid commerceUuid, QueryOptions? options = null)
         {
             (options, DataDictionary data) = GetOptionsForUpdateInherited(options);
             options.AddFilter("commerce.Uuid", commerceUuid);

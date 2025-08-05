@@ -13,12 +13,12 @@ namespace backend_shop.IServices
             IServiceName<Store>,
             IServiceIdUuidName<Store>
     {
-        Task<bool> CheckForUuidAndCurrentUserAsync(Guid uuid, GetOptions? options = null);
+        Task<bool> CheckForUuidAndCurrentUserAsync(Guid uuid, QueryOptions? options = null);
 
-        Task<GetOptions> GetFilterForCurrentUserAsync(GetOptions? options = null);
+        Task<QueryOptions> GetFilterForCurrentUserAsync(QueryOptions? options = null);
         
-        Task<Int64> GetCountForCurrentUserAsync(GetOptions? options = null);
+        Task<Int64> GetCountForCurrentUserAsync(QueryOptions? options = null);
 
-        Task<IEnumerable<Int64>> GetListIdForCurrentUserAsync(GetOptions? options = null);
+        Task<IEnumerable<Int64>> GetListIdForCurrentUserAsync(QueryOptions? options = null);
     }
 }

@@ -30,7 +30,7 @@ namespace backend_shop.Service
         public async Task<Plan> GetBaseAsync()
             => await GetSingleForNameAsync("Base");
 
-        public async Task<Plan> GetSingleOrBaseAsync(GetOptions options)
+        public async Task<Plan> GetSingleOrBaseAsync(QueryOptions options)
             => await GetSingleOrDefaultAsync(options)
                 ?? await GetBaseAsync();
     }

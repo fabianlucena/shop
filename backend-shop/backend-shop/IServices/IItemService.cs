@@ -12,20 +12,20 @@ namespace backend_shop.IServices
             IServiceName<Item>,
             IServiceIdUuidName<Item>
     {
-        Task<bool> CheckForUuidAndCurrentUserAsync(Guid uuid, GetOptions? options = null);
+        Task<bool> CheckForUuidAndCurrentUserAsync(Guid uuid, QueryOptions? options = null);
 
-        Task<GetOptions> GetFilterForCurrentUserAsync(GetOptions? options = null);
+        Task<QueryOptions> GetFilterForCurrentUserAsync(QueryOptions? options = null);
 
-        Task<Int64> GetCountForCurrentUserAsync(GetOptions? options = null);
+        Task<Int64> GetCountForCurrentUserAsync(QueryOptions? options = null);
 
-        Task<IEnumerable<Int64>> GetListIdForCurrentUserAsync(GetOptions? options = null);
+        Task<IEnumerable<Int64>> GetListIdForCurrentUserAsync(QueryOptions? options = null);
 
-        Task<IEnumerable<Guid>> GetListUuidForCurrentUserAsync(GetOptions? options = null);
+        Task<IEnumerable<Guid>> GetListUuidForCurrentUserAsync(QueryOptions? options = null);
 
-        Task<int> UpdateInheritedForUuid(Guid uuid, GetOptions? options = null);
+        Task<int> UpdateInheritedForUuid(Guid uuid, QueryOptions? options = null);
 
-        Task<int> UpdateInheritedForStoreUuid(Guid storeUuid, GetOptions? options = null);
+        Task<int> UpdateInheritedForStoreUuid(Guid storeUuid, QueryOptions? options = null);
 
-        Task<int> UpdateInheritedForCommerceUuid(Guid commerceUuid, GetOptions? options = null);
+        Task<int> UpdateInheritedForCommerceUuid(Guid commerceUuid, QueryOptions? options = null);
     }
 }

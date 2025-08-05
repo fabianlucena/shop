@@ -51,7 +51,7 @@ namespace backend_shop.Controllers
         {
             logger.LogInformation("Getting items");
 
-            var options = GetOptions.CreateFromQuery(HttpContext);
+            var options = QueryOptions.CreateFromQuery(HttpContext);
             if (uuid != null)
                 options.AddFilter("Uuid", uuid);
 

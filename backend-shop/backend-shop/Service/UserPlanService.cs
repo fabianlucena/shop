@@ -18,7 +18,7 @@ namespace backend_shop.Service
     {
         public async Task<int> GetMaxTotalCommercesForUserId(Int64 userId)
         {
-            var options = new GetOptions
+            var options = new QueryOptions
             {
                 Join = { { "Plan", "plan" } },
                 Filters = {
@@ -37,7 +37,7 @@ namespace backend_shop.Service
 
         public async Task<int> GetMaxEnabledCommercesForUserId(Int64 userId)
         {
-            var options = new GetOptions
+            var options = new QueryOptions
             {
                 Join = { { "Plan", "plan" } },
                 Filters = {
@@ -56,7 +56,7 @@ namespace backend_shop.Service
 
         public async Task<int> GetMaxTotalStoresForUserId(Int64 userId)
         {
-            var options = new GetOptions
+            var options = new QueryOptions
             {
                 Join = { { "Plan", "plan" } },
                 Filters = {
@@ -75,7 +75,7 @@ namespace backend_shop.Service
 
         public async Task<int> GetMaxEnabledStoresForUserId(Int64 userId)
         {
-            var options = new GetOptions
+            var options = new QueryOptions
             {
                 Join = { { "Plan", "plan" } },
                 Filters = {
@@ -94,7 +94,7 @@ namespace backend_shop.Service
 
         public async Task<int> GetMaxTotalItemsForUserId(Int64 userId)
         {
-            var options = new GetOptions
+            var options = new QueryOptions
             {
                 Join = { { "Plan", "plan" } },
                 Filters = {
@@ -113,7 +113,7 @@ namespace backend_shop.Service
 
         public async Task<int> GetMaxEnabledItemsForUserId(Int64 userId)
         {
-            var options = new GetOptions
+            var options = new QueryOptions
             {
                 Join = { { "Plan", "plan" } },
                 Filters = {
