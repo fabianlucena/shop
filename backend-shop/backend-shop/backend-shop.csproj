@@ -31,21 +31,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\rh-nugets\RFAuthDapper\RFAuthDapper.csproj" />
-    <ProjectReference Include="..\..\rh-nugets\RFAuth\RFAuth.csproj" />
-    <ProjectReference Include="..\..\rh-nugets\RFDapperDriverSQLServer\RFDapperDriverSQLServer.csproj" />
-    <ProjectReference Include="..\..\rh-nugets\RFHttpActionDapper\RFHttpActionDapper.csproj" />
-    <ProjectReference Include="..\..\rh-nugets\RFHttpAction\RFHttpAction.csproj" />
-    <ProjectReference Include="..\..\rh-nugets\RFHttpExceptionsL10n\RFHttpExceptionsL10n.csproj" />
-    <ProjectReference Include="..\..\rh-nugets\RFHttpExceptions\RFHttpExceptions.csproj" />
-    <ProjectReference Include="..\..\rh-nugets\RFLoggerProviderDapper\RFLoggerProviderDapper.csproj" />
-    <ProjectReference Include="..\..\rh-nugets\RFLoggerProvider\RFLoggerProvider.csproj" />
-    <ProjectReference Include="..\..\rh-nugets\RFLogger\RFLogger.csproj" />
-    <ProjectReference Include="..\..\rh-nugets\RFRBACDapper\RFRBACDapper.csproj" />
-    <ProjectReference Include="..\..\rh-nugets\RFRBAC\RFRBAC.csproj" />
-    <ProjectReference Include="..\..\rh-nugets\RFRegister\RFRegister.csproj" />
-    <ProjectReference Include="..\..\rh-nugets\RFUserEmailVerifiedDapper\RFUserEmailVerifiedDapper.csproj" />
-    <ProjectReference Include="..\..\rh-nugets\RFUserEmailVerified\RFUserEmailVerified.csproj" />
+    <ProjectReference Include="..\rf-nugets\RFAuthDapper\RFAuthDapper.csproj" />
+    <ProjectReference Include="..\rf-nugets\RFAuth\RFAuth.csproj" />
+    <ProjectReference Include="..\rf-nugets\RFDapperDriverSQLServer\RFDapperDriverSQLServer.csproj" />
+    <ProjectReference Include="..\rf-nugets\RFHttpActionDapper\RFHttpActionDapper.csproj" />
+    <ProjectReference Include="..\rf-nugets\RFHttpAction\RFHttpAction.csproj" />
+    <ProjectReference Include="..\rf-nugets\RFHttpExceptionsL10n\RFHttpExceptionsL10n.csproj" />
+    <ProjectReference Include="..\rf-nugets\RFHttpExceptions\RFHttpExceptions.csproj" />
+    <ProjectReference Include="..\rf-nugets\RFLoggerProviderDapper\RFLoggerProviderDapper.csproj" />
+    <ProjectReference Include="..\rf-nugets\RFLoggerProvider\RFLoggerProvider.csproj" />
+    <ProjectReference Include="..\rf-nugets\RFLogger\RFLogger.csproj" />
+    <ProjectReference Include="..\rf-nugets\RFRBACDapper\RFRBACDapper.csproj" />
+    <ProjectReference Include="..\rf-nugets\RFRBAC\RFRBAC.csproj" />
+    <ProjectReference Include="..\rf-nugets\RFRegister\RFRegister.csproj" />
+    <ProjectReference Include="..\rf-nugets\RFUserEmailVerifiedDapper\RFUserEmailVerifiedDapper.csproj" />
+    <ProjectReference Include="..\rf-nugets\RFUserEmailVerified\RFUserEmailVerified.csproj" />
   </ItemGroup>
 
   <ItemGroup>
