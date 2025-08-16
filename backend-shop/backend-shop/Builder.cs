@@ -8,6 +8,7 @@ using RFDapper;
 using RFDapperDriverSQLServer;
 using RFHttpAction;
 using RFHttpActionDapper;
+using RFHttpExceptionsL10n;
 using RFL10n;
 using RFLogger;
 using RFLoggerProvider;
@@ -54,6 +55,7 @@ namespace backend_shop
             services.AddRFRBAC();
             services.AddRFRegister();
             services.AddRFHttpAction();
+            services.AddRFHttpExceptionsL10n();
 
             services.AddScoped<IPlanService, PlanService>();
             services.AddScoped<IUserPlanService, UserPlanService>();
