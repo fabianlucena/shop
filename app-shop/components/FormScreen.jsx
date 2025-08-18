@@ -268,13 +268,34 @@ export default function FormScreen({
         const value = data[name];
         const field = getFieldByName(name);
         if (field.type === 'imageGalery' && value?.length) {
-          console.log(value);
-          for (var uri of value) {
-            console.log(uri);
-            sendData.append(name, {
+          const rootName = name + '_';
+          for (var index in value) {
+            const thisName = rootName + index;
+            const uri = value[index];
+            const ext = uri.split('.').pop().toLowerCase();
+            let type;
+            switch (ext) {
+              case 'jpg':
+              case 'jpeg':
+                type = 'image/jpeg';
+                break;
+              case 'png':
+                type = 'image/png';
+                break;
+              case 'webp':
+                type = 'image/webp';
+                break;
+              case 'gif':
+                type = 'image/gif';
+                break;
+              default:
+                type = 'application/octet-stream';
+            }
+
+            sendData.append(thisName, {
               uri,
-              name: 'imagen.jpg',
-              type: 'image/jpeg',
+              name: thisName + '.' + ext,
+              type,
             });
           }
         } else {

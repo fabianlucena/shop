@@ -124,4 +124,8 @@ export class Api {
   static deleteJson(service, options) {
     return this.delete(service, {...options, json: true});
   }
+
+  static async get(service, options) {
+    return this.fetch(service, {...options, method: 'GET'});
+  }
 };

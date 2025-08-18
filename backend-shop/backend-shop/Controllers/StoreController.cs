@@ -67,7 +67,7 @@ namespace backend_shop.Controllers
 
             var response = storeList.Select(mapper.Map<Store, StoreResponse>);
 
-            logger.LogInformation("Stores getted");
+            logger.LogInformation("Stores retrieved");
 
             return Ok(new DataRowsResult(response));
         }

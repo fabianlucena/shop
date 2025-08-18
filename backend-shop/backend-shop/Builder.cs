@@ -63,6 +63,7 @@ namespace backend_shop
             services.AddScoped<IStoreService, StoreService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IItemService, ItemService>();
+            services.AddScoped<IItemFileService, ItemFileService>();
 
             services.AddRFLoggerProviderDapper();
             services.AddRFAuthDapper();
@@ -76,6 +77,7 @@ namespace backend_shop
             services.AddScoped<Dapper<Store>, Dapper<Store>>();
             services.AddScoped<Dapper<Category>, Dapper<Category>>();
             services.AddScoped<Dapper<Item>, Dapper<Item>>();
+            services.AddScoped<Dapper<ItemFile>, Dapper<ItemFile>>();
 
             services.AddScoped<IRepo<Plan>, Dapper<Plan>>();
             services.AddScoped<IRepo<UserPlan>, Dapper<UserPlan>>();
@@ -83,6 +85,7 @@ namespace backend_shop
             services.AddScoped<IRepo<Store>, Dapper<Store>>();
             services.AddScoped<IRepo<Category>, Dapper<Category>>();
             services.AddScoped<IRepo<Item>, Dapper<Item>>();
+            services.AddScoped<IRepo<ItemFile>, Dapper<ItemFile>>();
 
             services.AddRFDapperDriverSQLServer(new SQLServerDDOptions
             {

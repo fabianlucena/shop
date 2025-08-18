@@ -1,4 +1,5 @@
-﻿using backend_shop.Entities;
+﻿using backend_shop.DTO;
+using backend_shop.Entities;
 using RFService.IServices;
 using RFService.Repo;
 
@@ -8,6 +9,7 @@ namespace backend_shop.IServices
         : IService<Item>,
             IServiceId<Item>,
             IServiceUuid<Item>,
+            IServiceIdUuid<Item>,
             IServiceSoftDeleteUuid<Item>,
             IServiceName<Item>,
             IServiceIdUuidName<Item>

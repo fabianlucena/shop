@@ -23,6 +23,7 @@ namespace backend_shop
             CreateTable<Store>(services);
             CreateTable<Category>(services);
             CreateTable<Item>(services);
+            CreateTable<ItemFile>(services);
         }
 
         public static void ConfigureShop(IServiceProvider provider)

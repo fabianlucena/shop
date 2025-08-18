@@ -17,6 +17,7 @@ namespace backend_shop.Controllers
     public class ItemController(
         ILogger<ItemController> logger,
         IItemService itemService,
+        IItemFileService itemFileService,
         IMapper mapper
     )
         : ControllerBase
@@ -65,21 +66,29 @@ namespace backend_shop.Controllers
 
             if (response.Any())
             {
-                var uuidList = (await itemService.GetListUuidForCurrentUserAsync()).ToList();
-                if (uuidList.Count > 0)
+                var uuidList = (await itemService.GetListUuidForCurrentUserAsync()).ToHashSet();
+                var itemIdMap = itemsList.ToDictionary(i => i.Uuid, i => i.Id);
+
+                response = await Task.WhenAll(response.Select(async item =>
                 {
-                    foreach (var item in response)
-                        item.IsMine = uuidList.Contains(item.Uuid);
-                }
+                    item.IsMine = uuidList.Contains(item.Uuid);
+                    if (itemIdMap.TryGetValue(item.Uuid, out var itemId))
+                    {
+                        var files = await itemFileService.GetListForItemIdAsync(itemId);
+                        item.Images = [.. files.Select(f => f.Uuid).ToList()];
+                    }
+
+                    return item;
+                }));
             }
 
-            logger.LogInformation("Items getted");
+            logger.LogInformation("Items retrieved");
 
             return Ok(new DataRowsResult(response));
         }
 
         [HttpPatch("{uuid}")]
-        [Permission("item.get")]
+        [Permission("item.edit")]
         public async Task<IActionResult> PatchAsync([FromRoute] Guid uuid)
         {
             logger.LogInformation("Updating item");
@@ -101,16 +110,47 @@ namespace backend_shop.Controllers
             }
 
             var result = await itemService.UpdateForUuidAsync(data, uuid);
-
             if (result <= 0)
                 return BadRequest();
+
+            if (Request.HasFormContentType && Request.Form.Files.Count > 0)
+            {
+                var files = new FilesCollectionDTO(Request.Form.Files);
+                foreach (var file in Request.Form.Files)
+                {
+                    if (file.Length == 0)
+                        continue;
+
+                    if (!file.ContentType.StartsWith("image/"))
+                        return BadRequest("Only image files are allowed.");
+                }
+
+                await itemFileService.UpdateForItemUuidAsync(uuid, files);
+                if (result <= 0)
+                    return BadRequest();
+            }
 
             if (data.ContainsKey("IsEnabled"))
                 _ = await itemService.UpdateInheritedForUuid(uuid);
 
-            logger.LogInformation("Commerce updated");
+            logger.LogInformation("Item updated");
 
             return Ok();
+        }
+
+
+        [HttpGet("image/{uuid}")]
+        [Permission("item.get")]
+        public async Task<IActionResult> GetImageAsync([FromRoute] Guid uuid)
+        {
+            logger.LogInformation("Getting item image for UUID: {Uuid}", uuid);
+
+            var file = await itemFileService.GetSingleOrDefaultForUuidAsync(uuid)
+                ?? throw new ItemImageNotFoundException();
+
+            logger.LogInformation("Item image retrieved for UUID: {Uuid}", uuid);
+
+            return File(file.Content, file.ContentType);
         }
     }
 }

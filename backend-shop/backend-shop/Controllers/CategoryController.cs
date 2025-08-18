@@ -32,7 +32,7 @@ namespace backend_shop.Controllers
 
             var response = categoriesList.Select(mapper.Map<Category, CategoryResponse>);
 
-            logger.LogInformation("Categories getted");
+            logger.LogInformation("Categories retrieved");
 
             return Ok(new DataRowsResult(response));
         }

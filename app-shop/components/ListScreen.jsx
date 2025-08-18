@@ -11,6 +11,7 @@ import ButtonIconDelete from './ButtonIconDelete';
 import useDialog from './useDialog';
 import Error from './Error';
 import Currency from './Currency';
+import ImageGaleryShow from './ImageGaleryShow';
 
 export default function ListScreen({
   header,
@@ -105,6 +106,29 @@ export default function ListScreen({
     return <Text key={control.name}>Control desconocido: {JSON.stringify(control)}</Text>;
   }
 
+  function renderElementType(element, item) {
+    switch (element.type) {
+      case 'currency':
+        return <Currency
+            style={{...element.style}}
+          >
+            {item[element.field]}
+          </Currency>;
+
+      case 'image':
+        return <ImageGaleryShow
+            style={{...element.style}}
+            service={service[element.endPoint]}
+            images={item[element.field]}
+          />;
+    }
+
+    if (!element.field)
+      return null;
+
+    return <Text style={{...element.style}}>{item[element.field]}</Text>;
+  }
+
   function renderElement(element, item) {
     return <View
       key={`${ element.name ?? element.field ?? element.fieldHeader ?? element.control ?? element.button }-${item.uuid}`}
@@ -120,9 +144,7 @@ export default function ListScreen({
       }} >
         {element.label && <Text style={styles.label}>{element.label}</Text> || null }
         {element.fieldHeader && <ListItemHeader >{item[element.fieldHeader]}</ListItemHeader> || null}
-        {element.type == 'currency'?
-          <Currency style={{...element.style}} >{item[element.field]}</Currency> || null
-        : element.field && <Text style={{...element.style}}>{item[element.field]}</Text> || null}
+        {renderElementType(element, item)}
         {element.elements && renderElements(element.elements, item) || null}
         {element.button && renderButton(element.button, item) || null}
         {element.control && renderControl(element.control, item) || null}

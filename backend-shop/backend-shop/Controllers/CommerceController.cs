@@ -62,7 +62,7 @@ namespace backend_shop.Controllers
 
             var response = commerceList.Select(mapper.Map<Commerce, CommerceResponse>);
 
-            logger.LogInformation("Commerces getted");
+            logger.LogInformation("Commerces retrieved");
 
             return Ok(new DataRowsResult(response));
         }
