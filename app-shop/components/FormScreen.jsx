@@ -270,6 +270,7 @@ export default function FormScreen({
         const field = getFieldByName(name);
         if (field.type === 'imageGalery' && value?.length) {
           const rootName = name + '_';
+          const deleted = [];
           for (var index in value) {
             const thisValue = value[index];
             const uri = thisValue.uri;
@@ -301,8 +302,12 @@ export default function FormScreen({
                 type,
               });
             } else if (thisValue.image && thisValue.deleted) {
-              sendData.append(rootName + 'deleted', thisValue.image);
+              deleted.push(thisValue.image);
             }
+          }
+
+          if (deleted.length) {
+            sendData.append(field.deleteFieldName ?? 'delete' + name, JSON.stringify(deleted));
           }
         } else {
           sendData.append(name, value);

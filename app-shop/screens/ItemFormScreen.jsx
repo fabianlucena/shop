@@ -57,7 +57,7 @@ export default function ItemFormScreen() {
         'isEnabled',
         'name',
         'description',
-        { name: 'images',       type: 'imageGalery', label: 'Imágenes', service: service.getImage },
+        { name: 'images',       type: 'imageGalery', label: 'Imágenes', service: service.getImage, deleteFieldName: 'deleteImages' },
         { name: 'categoryUuid', type: 'select',      label: 'Rubro', options: categoriesOptions },
         { name: 'storeUuid',    type: 'select',      label: 'Local', options: storesOptions },
         { name: 'price',        type: 'currency',    label: 'Precio' },
