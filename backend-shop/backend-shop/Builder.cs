@@ -142,6 +142,7 @@ namespace backend_shop
                 using var scope = app.Services.CreateScope();
                 var serviceProvider = scope.ServiceProvider;
 
+                RFAuth.Setup.ConfigureRFAuth(serviceProvider);
                 RFAuth.Setup.ConfigureDataRFAuth(serviceProvider);
                 RFUserEmailVerified.Setup.ConfigureRFUserEmailVerified(serviceProvider);
                 RFRBAC.Setup.ConfigureRFRBAC(serviceProvider);

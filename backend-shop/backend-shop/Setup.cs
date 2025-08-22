@@ -43,7 +43,7 @@ namespace backend_shop
                     "commerce.get", "commerce.add", "commerce.edit", "commerce.delete", "commerce.restore",
                     "store.get", "store.add", "store.edit", "store.delete", "store.restore",
                     "category.get",
-                    "item.get", "item.add",
+                    "item.get", "item.add", "item.edit", "item.delete", "item.restore",
                 ] },
             };
 
