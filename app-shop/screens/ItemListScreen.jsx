@@ -11,21 +11,24 @@ export default function ItemsListScreen() {
       elements={[
         {
           name: 'items',
+          style: { width: '100%' },
           elements: [
             { control: 'isEnabled' },
             { fieldHeader: 'name', style: { flexGrow: 1 }},
             { field: 'price', type: 'currency' },
             { field: 'stock', label: '#', type: 'number' },
-            { button:  'edit' },
-            { button:  'delete' },
-          ]
+            {
+              field: 'buttons',
+              elements: [
+                { button: 'edit' },
+                { button: 'delete' },
+              ],
+            },
+          ],
         },
         {
           field: 'description',
-          style: {
-            ...styles.listItemDescription,
-            width: '100%',
-          },
+          style: styles.listItemDescription,
         },
       ]}
     />;

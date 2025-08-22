@@ -138,7 +138,9 @@ export default function ListScreen({
         {
           display: 'flex',
           flexDirection: 'row',
-          width: '100%',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          ...element.style,
         }),
       }} >
         {element.label && <Text style={styles.label}>{element.label}</Text> || null }
