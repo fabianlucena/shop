@@ -5,31 +5,34 @@ import { Buffer } from 'buffer';
 export default function ImageShow({
   style,
   service,
+  uri,
   image,
 }) {
-  const [contentType, setContentType] = useState('');
-  const [uri, setUri] = useState('');
+  const [localUri, setLocalUri] = useState('');
 
   useEffect(() => {
-    setContentType('');
-    setUri('');
+    if (uri) {
+      setLocalUri(uri);
+      return;
+    }
 
-    service(image)
-      .then(res => {
-        setContentType(res.headers.get('Content-Type') || 'image/jpeg');
-        return res.arrayBuffer();
-      })
-      .then(arrayBuffer => {
-        const base64 = Buffer.from(arrayBuffer).toString('base64');
-        setUri(`data:${contentType};base64,${base64}`);
-      });
-  }, [service, image]);
-
-  console.log(!!uri);
+    setLocalUri('');
+    if (service && image) {
+      service(image)
+        .then(res => {
+          res.arrayBuffer()
+            .then(arrayBuffer => {
+              const contentType = res.headers.get('Content-Type') || 'image/jpeg';
+              const base64 = Buffer.from(arrayBuffer).toString('base64');
+              setLocalUri(`data:${contentType};base64,${base64}`);
+            });
+        });
+    }
+  }, [uri, service, image]);
 
   return <View style={styles.container}>
-      {uri && <Image
-        source={{ uri }}
+      {localUri && <Image
+        source={{ uri: localUri }}
         style={style}
         resizeMode="cover"
       /> || <ActivityIndicator style={style} size="large" color="#888" />}

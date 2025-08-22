@@ -3,7 +3,6 @@ import { Image } from 'react-native';
 import styles from '../libs/styles';
 
 import ButtonBase from './ButtonBase';
-import Background from './Background';
 
 export default function ButtonIcon({
   onPress,

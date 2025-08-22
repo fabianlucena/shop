@@ -108,8 +108,9 @@ function renderFields(fields, data, setData) {
       return <ImageGaleryField
           key={f.name}
           name={f.name}
-          value={data[f.name] || []}
+          value={data[f.name]?.map(image => (typeof image === 'string' ? { image } : image)) || []}
           setValue={images => setData({...data, [f.name]: images})}
+          service={f.service}
         />;
     }
     
@@ -270,33 +271,38 @@ export default function FormScreen({
         if (field.type === 'imageGalery' && value?.length) {
           const rootName = name + '_';
           for (var index in value) {
-            const thisName = rootName + index;
-            const uri = value[index];
-            const ext = uri.split('.').pop().toLowerCase();
-            let type;
-            switch (ext) {
-              case 'jpg':
-              case 'jpeg':
-                type = 'image/jpeg';
-                break;
-              case 'png':
-                type = 'image/png';
-                break;
-              case 'webp':
-                type = 'image/webp';
-                break;
-              case 'gif':
-                type = 'image/gif';
-                break;
-              default:
-                type = 'application/octet-stream';
-            }
+            const thisValue = value[index];
+            const uri = thisValue.uri;
+            if (uri) {
+              const thisName = rootName + index;
+              const ext = uri.split('.').pop().toLowerCase();
+              let type;
+              switch (ext) {
+                case 'jpg':
+                case 'jpeg':
+                  type = 'image/jpeg';
+                  break;
+                case 'png':
+                  type = 'image/png';
+                  break;
+                case 'webp':
+                  type = 'image/webp';
+                  break;
+                case 'gif':
+                  type = 'image/gif';
+                  break;
+                default:
+                  type = 'application/octet-stream';
+              }
 
-            sendData.append(thisName, {
-              uri,
-              name: thisName + '.' + ext,
-              type,
-            });
+              sendData.append(thisName, {
+                uri,
+                name: thisName + '.' + ext,
+                type,
+              });
+            } else if (thisValue.image && thisValue.deleted) {
+              sendData.append(rootName + 'deleted', thisValue.image);
+            }
           }
         } else {
           sendData.append(name, value);

@@ -43,10 +43,11 @@ function validate(data, fields) {
 
 export default function ItemFormScreen() {
   const { categoriesOptions, storesOptions } = useSession();
+  const service = useItem();
 
   return <FormScreen
       showCommerceName={true}
-      service={useItem()}
+      service={service}
       createTitle="Agregar artículo"
       updateTitle="Modificar artículo"
       loadingError="No se pudo cargar el artículo."
@@ -56,7 +57,7 @@ export default function ItemFormScreen() {
         'isEnabled',
         'name',
         'description',
-        { name: 'images',       type: 'imageGalery', label: 'Imágenes' },
+        { name: 'images',       type: 'imageGalery', label: 'Imágenes', service: service.getImage },
         { name: 'categoryUuid', type: 'select',      label: 'Rubro', options: categoriesOptions },
         { name: 'storeUuid',    type: 'select',      label: 'Local', options: storesOptions },
         { name: 'price',        type: 'currency',    label: 'Precio' },
