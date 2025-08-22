@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Image } from 'react-native';
+import { Image, StyleSheet, View, ActivityIndicator } from 'react-native';
 import { Buffer } from 'buffer';
 
 export default function ImageShow({
@@ -25,9 +25,26 @@ export default function ImageShow({
       });
   }, [service, image]);
 
-  return <Image
-      source={{ uri }}
-      style={style}
-      resizeMode="cover"
-    />;
+  console.log(!!uri);
+
+  return <View style={styles.container}>
+      {uri && <Image
+        source={{ uri }}
+        style={style}
+        resizeMode="cover"
+      /> || <ActivityIndicator style={style} size="large" color="#888" />}
+    </View>;
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1, // asegura que el layout se resuelva
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 8,
+  },
+});

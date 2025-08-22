@@ -110,16 +110,16 @@ export default function ListScreen({
     switch (element.type) {
       case 'currency':
         return <Currency
-            style={{...element.style}}
+            style={element.style}
           >
             {item[element.field]}
           </Currency>;
 
       case 'image':
         return <ImageGaleryShow
-            style={{...element.style}}
-            service={service[element.endPoint]}
             images={item[element.field]}
+            style={element.style}
+            service={service[element.endPoint]}
           />;
     }
 
@@ -134,7 +134,6 @@ export default function ListScreen({
       key={`${ element.name ?? element.field ?? element.fieldHeader ?? element.control ?? element.button }-${item.uuid}`}
       style={{
         ...styles.sameLine,
-        ...element.style,
         ...(element.elements &&
         {
           display: 'flex',
