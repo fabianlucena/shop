@@ -1,4 +1,4 @@
-import { View, ScrollView, Text } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Button from './Button';
 import ImageShow from './ImageShow';
@@ -9,7 +9,6 @@ export default function ImageGaleryField({
   name,
   value,
   setValue,
-  service,
 }) {
   return <View>
       <ScrollView
@@ -20,23 +19,22 @@ export default function ImageGaleryField({
           paddingRight: 24,
         }}
       >
-        {value?.map((data, index) => <View
+        {value?.map((image, index) => <View
             key={`${name}-${index}`}
           >
             <ImageShow
-              {...data}
-              service={service}
+              {...image}
               style={{
                 width: 200,
                 height: 200,
-                opacity: data.deleted ? 0.33 : 1,
-                backgroundColor: data.deleted ? '#9c0000ff' : 'transparent',
+                opacity: image.deleted ? 0.33 : 1,
+                backgroundColor: image.deleted ? '#9c0000ff' : 'transparent',
               }}
             />
-            {!data.deleted && <ButtonIconDelete
+            {!image.deleted && <ButtonIconDelete
               onPress={() => setValue(value
-                .filter(image => !data.uri || image.uri !== data.uri)
-                ?.map(image => data.image && data.image === image.image ? { ...image, deleted: true } : image )
+                .filter(img => img.uri !== image.uri || !img.added)
+                ?.map(img => image.uri === img.uri ? { ...img, deleted: true } : img )
               )}
               style={{
                 position: 'absolute',
@@ -52,11 +50,11 @@ export default function ImageGaleryField({
                 marginBottom: 3,
               }}
             /> || null}
-            {data.deleted && <ButtonIconAdd
+            {image.deleted && <ButtonIconAdd
               onPress={() => setValue(value
-                .map(image => data.image && data.image === image.image && image.deleted ?
-                  { ...image, deleted: undefined }
-                  : image
+                .map(img => image.uri === img.uri && img.deleted ?
+                  { ...img, deleted: undefined }
+                  : img
                 )
               )}
               style={{
@@ -87,7 +85,7 @@ export default function ImageGaleryField({
             });
 
             if (!result.canceled) {
-              setValue([...value, { uri: result.assets[0].uri }]);
+              setValue([...value, { uri: result.assets[0].uri, urlBase: '', added: true }]);
             }
           }}
         >

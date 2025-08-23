@@ -17,9 +17,9 @@ namespace backend_shop.IServices
             IServiceName<ItemFile>,
             IServiceIdUuidName<ItemFile>
     {
-        Task<int> UpdateForItemUuidAsync(Guid itemUuid, FilesCollectionDTO files);
+        Task<IEnumerable<ItemFile>> AddForItemUuidAsync(Guid itemUuid, FilesCollectionDTO files);
 
-        Task<int> UpdateForItemIdAsync(Int64 itemId, FilesCollectionDTO files);
+        Task<IEnumerable<ItemFile>> AddForItemIdAsync(Int64 itemId, FilesCollectionDTO files);
 
         Task<IEnumerable<ItemFile>> GetListForItemIdAsync(Int64 itemId);
     }

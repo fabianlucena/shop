@@ -15,8 +15,8 @@ export default function ImageGaleryShow({
       {images?.map((image, index) => (
         <ImageShow
           key={index}
-          image={image}
           {...props}
+          {...image}
         />
       )) ?? null}
     </View>;

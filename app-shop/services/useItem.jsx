@@ -7,7 +7,6 @@ export default function useItem() {
     getSingleForUuid,
     updateForUuid,
     deleteForUuid,
-    getImage,
   };
 }
 
@@ -46,8 +45,4 @@ async function updateForUuid(uuid, data, options) {
 
 async function deleteForUuid(uuid, options) {
   return await Api.deleteJson('/v1/item', {...options, path: uuid});
-}
-
-async function getImage(uuid, options) {
-  return await Api.get(`/v1/item/image/${uuid}`, options);
 }

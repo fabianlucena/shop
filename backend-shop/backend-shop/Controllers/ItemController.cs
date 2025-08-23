@@ -8,6 +8,7 @@ using RFService.Authorization;
 using RFService.Data;
 using RFService.Libs;
 using RFService.Repo;
+using Sprache;
 using System.Text.Json;
 
 namespace backend_shop.Controllers
@@ -75,7 +76,10 @@ namespace backend_shop.Controllers
                     if (itemIdMap.TryGetValue(item.Uuid, out var itemId))
                     {
                         var files = await itemFileService.GetListForItemIdAsync(itemId);
-                        item.Images = [.. files.Select(f => f.Uuid).ToList()];
+                        item.Images = [.. files.Select(f => new ItemImageDTO {
+                            Uuid = f.Uuid,
+                            Uri = $"/v1/item/image/{f.Uuid}",
+                        }).ToList()];
                     }
 
                     return item;
@@ -113,7 +117,24 @@ namespace backend_shop.Controllers
             if (result <= 0)
                 return BadRequest();
 
-            if (Request.HasFormContentType && Request.Form.Files.Count > 0)
+            var updateImagesResult = await UpdateImages(uuid);
+            if (updateImagesResult is BadRequestObjectResult)
+                return updateImagesResult;
+
+            if (data.ContainsKey("IsEnabled"))
+                _ = await itemService.UpdateInheritedForUuid(uuid);
+
+            logger.LogInformation("Item updated");
+
+            return Ok();
+        }
+
+        private async Task<IActionResult> UpdateImages(Guid itemUuid)
+        {
+            if (!Request.HasFormContentType)
+                return Ok();
+
+            if (Request.Form.Files.Count > 0)
             {
                 var files = new FilesCollectionDTO(Request.Form.Files);
                 foreach (var file in Request.Form.Files)
@@ -125,22 +146,30 @@ namespace backend_shop.Controllers
                         return BadRequest("Only image files are allowed.");
                 }
 
-                await itemFileService.UpdateForItemUuidAsync(uuid, files);
+                var result = await itemFileService.AddForItemUuidAsync(itemUuid, files);
+                if (!result.Any())
+                    return BadRequest("Error uploading image.");
+            }
+
+            var deletedImagesStrings = Request.Form["deletedImages"];
+            if (deletedImagesStrings.Count == 0)
+                return Ok();
+
+            if (deletedImagesStrings.Count > 1)
+                return BadRequest("Error multiple deleted images objects.");
+
+            var deletedImages = JsonSerializer.Deserialize<List<Guid>>(deletedImagesStrings[0]!);
+            foreach (var uuid in deletedImages!)
+            {
+                var result = await itemFileService.DeleteForUuidAsync(uuid);
                 if (result <= 0)
                     return BadRequest();
             }
 
-            if (data.ContainsKey("IsEnabled"))
-                _ = await itemService.UpdateInheritedForUuid(uuid);
-
-            logger.LogInformation("Item updated");
-
             return Ok();
         }
 
-
         [HttpGet("image/{uuid}")]
-        [Permission("item.get")]
         public async Task<IActionResult> GetImageAsync([FromRoute] Guid uuid)
         {
             logger.LogInformation("Getting item image for UUID: {Uuid}", uuid);

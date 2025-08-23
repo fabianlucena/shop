@@ -36,6 +36,6 @@
 
         public DateTime? DeletedAt { get; set; }
 
-        public Guid[] Images { get; set; } = [];
+        public ItemImageDTO[] Images { get; set; } = [];
     }
 }

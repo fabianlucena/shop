@@ -119,7 +119,6 @@ export default function ListScreen({
         return <ImageGaleryShow
             images={item[element.field]}
             style={element.style}
-            service={service[element.endPoint]}
           />;
     }
 

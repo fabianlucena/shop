@@ -272,9 +272,12 @@ export default function FormScreen({
           const rootName = name + '_';
           const deleted = [];
           for (var index in value) {
-            const thisValue = value[index];
-            const uri = thisValue.uri;
-            if (uri) {
+            const image = value[index];
+            const uri = image.uri;
+            if (!uri)
+              continue;
+
+            if (image.added) {
               const thisName = rootName + index;
               const ext = uri.split('.').pop().toLowerCase();
               let type;
@@ -301,8 +304,10 @@ export default function FormScreen({
                 name: thisName + '.' + ext,
                 type,
               });
-            } else if (thisValue.image && thisValue.deleted) {
-              deleted.push(thisValue.image);
+            } else if (image.deleted) {
+              if (image.uuid) {
+                deleted.push(image.uuid);
+              }
             }
           }
 

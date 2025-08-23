@@ -4,6 +4,7 @@ using backend_shop.IServices;
 using RFService.IRepo;
 using RFService.Repo;
 using RFService.Services;
+using System.Collections.Generic;
 
 namespace backend_shop.Service
 {
@@ -14,11 +15,12 @@ namespace backend_shop.Service
         : ServiceSoftDeleteCreatedAtIdUuidName<IRepo<ItemFile>, ItemFile>(repo),
             IItemFileService
     {
-        public async Task<int> UpdateForItemUuidAsync(Guid itemUuid, FilesCollectionDTO files)
-            => await UpdateForItemIdAsync(await itemService.GetSingleIdForUuidAsync(itemUuid), files);
+        public async Task<IEnumerable<ItemFile>> AddForItemUuidAsync(Guid itemUuid, FilesCollectionDTO files)
+            => await AddForItemIdAsync(await itemService.GetSingleIdForUuidAsync(itemUuid), files);
 
-        public async Task<int> UpdateForItemIdAsync(Int64 itemId, FilesCollectionDTO files)
+        public async Task<IEnumerable<ItemFile>> AddForItemIdAsync(Int64 itemId, FilesCollectionDTO files)
         {
+            var result = new List<ItemFile>();
             foreach (var file in files)
             {
                 if (file.Content.Length == 0)
@@ -32,10 +34,10 @@ namespace backend_shop.Service
                     Content = file.Content,
                 };
 
-                await CreateAsync(itemImage);
+                result.Add(await CreateAsync(itemImage));
             }
 
-            return 0;
+            return result;
         }
 
         public async Task<IEnumerable<ItemFile>> GetListForItemIdAsync(Int64 itemId)

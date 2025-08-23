@@ -1,38 +1,14 @@
-import { useState, useEffect } from 'react';
 import { Image, StyleSheet, View, ActivityIndicator } from 'react-native';
-import { Buffer } from 'buffer';
+import { Api } from '../libs/api';
 
 export default function ImageShow({
   style,
-  service,
   uri,
-  image,
+  urlBase = Api.urlBase,
 }) {
-  const [localUri, setLocalUri] = useState('');
-
-  useEffect(() => {
-    if (uri) {
-      setLocalUri(uri);
-      return;
-    }
-
-    setLocalUri('');
-    if (service && image) {
-      service(image)
-        .then(res => {
-          res.arrayBuffer()
-            .then(arrayBuffer => {
-              const contentType = res.headers.get('Content-Type') || 'image/jpeg';
-              const base64 = Buffer.from(arrayBuffer).toString('base64');
-              setLocalUri(`data:${contentType};base64,${base64}`);
-            });
-        });
-    }
-  }, [uri, service, image]);
-
   return <View style={styles.container}>
-      {localUri && <Image
-        source={{ uri: localUri }}
+      {uri && <Image
+        source={{ uri: urlBase + uri }}
         style={style}
         resizeMode="cover"
       /> || <ActivityIndicator style={style} size="large" color="#888" />}
