@@ -15,21 +15,20 @@ export default function ImageShow({
     if (!newLocalStyle.width) {
       if (newLocalStyle.height && newLocalStyle.aspectRatio) {
         newLocalStyle.width = newLocalStyle.height * newLocalStyle.aspectRatio;
-      } else {
-        newLocalStyle.width = 100;
       }
     }
 
     if (!newLocalStyle.height) {
       if (newLocalStyle.width && newLocalStyle.aspectRatio) {
         newLocalStyle.height = newLocalStyle.width / newLocalStyle.aspectRatio;
-      } else {
-        newLocalStyle.height = 100;
       }
     }
 
-    newLocalStyle.width = Math.floor(newLocalStyle.width);
-    newLocalStyle.height = Math.floor(newLocalStyle.height);
+    if (newLocalStyle.width)
+      newLocalStyle.width = Math.floor(newLocalStyle.width);
+
+    if (newLocalStyle.height)
+      newLocalStyle.height = Math.floor(newLocalStyle.height);
 
     if (JSON.stringify(localStyle) !== JSON.stringify(newLocalStyle)) {
       setLocalStyle(newLocalStyle);

@@ -36,44 +36,47 @@ export default function ViewItemScreen({
   return <Screen
       busy={loading}
     >
+      <Text style={ styles.itemHeader }>{data.name}</Text>
+
+      <Text style={ styles.itemLabel }>Descripción: </Text>
+      <Text style={ styles.itemData }>{data.description}</Text>
+
+      <Text style={ styles.itemLabel }>Rubro: </Text>
+      <Text style={ styles.itemData }>{data.category?.name}</Text>
+
+      <Text style={ styles.itemData }>Precio: {data.price ? formatCurrency(data.price) : 'No disponible'}</Text>
+
+      <Text style={ styles.itemData }>Quedan: {typeof data.stock !== 'undefined' ? data.stock : 'Sin datos'}</Text>
+
+      {data.isPresent ?
+        data.minAge || data.minAge === 0 ?
+          data.maxAge ?
+            <Text style={ styles.itemData }>Para regalar de {data.minAge} a {data.maxAge} años</Text>
+          : <Text style={ styles.itemData }>Para regalar a partir de {data.minAge} años</Text>
+          : data.maxAge ?
+            <Text style={ styles.itemData }>Para regalar hasta {data.maxAge} años</Text>
+          : <Text style={ styles.itemData }>Para regalar todas las edades</Text>
+      : null}
+
       <View
-        onLayout={event => console.log(event.nativeEvent.layout.width)}
+        style={{
+          position: 'static',
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
       >
-        <Text style={ styles.itemHeader }>{data.name}</Text>
-
-        <Text style={ styles.itemLabel }>Descripción: </Text>
-        <Text style={ styles.itemData }>{data.description}</Text>
-
-        <Text style={ styles.itemLabel }>Rubro: </Text>
-        <Text style={ styles.itemData }>{data.category?.name}</Text>
-
-        <Text style={ styles.itemData }>Precio: {data.price ? formatCurrency(data.price) : 'No disponible'}</Text>
-
-        <Text style={ styles.itemData }>Quedan: {typeof data.stock !== 'undefined' ? data.stock : 'Sin datos'}</Text>
-
-        {data.isPresent ?
-          data.minAge || data.minAge === 0 ?
-            data.maxAge ?
-              <Text style={ styles.itemData }>Para regalar de {data.minAge} a {data.maxAge} años</Text>
-            : <Text style={ styles.itemData }>Para regalar a partir de {data.minAge} años</Text>
-            : data.maxAge ?
-              <Text style={ styles.itemData }>Para regalar hasta {data.maxAge} años</Text>
-            : <Text style={ styles.itemData }>Para regalar todas las edades</Text>
-        : null}
-
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
+        <ImageGaleryShow
+          images={data.images}
+          containerStyle={{
+            margin: '15%',
           }}
-          onLayout={event => console.log(event.nativeEvent.layout.width)}
-        >
-          <ImageGaleryShow
-            images={data.images}
-          />
-        </View>
+          style={{
+            aspectRatio: 9 / 16,
+          }}
+        />
       </View>
     </Screen>;
 }

@@ -113,7 +113,8 @@ export default function ListScreen({
       case 'image':
         return <ImageGaleryShow
             images={item[element.field]}
-            style={element.style}
+            onPress={() => onPressItem?.(item)}
+            {...element}
           />;
     }
 
@@ -162,7 +163,7 @@ export default function ListScreen({
 
     return <Pressable
         key={item.uuid}
-        onPress={() => onPressItem && onPressItem(item)}
+        onPress={() => onPressItem?.(item)}
         style={styles.listItem}
       >
         {renderElements(elements, item)}
