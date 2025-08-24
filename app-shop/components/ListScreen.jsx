@@ -9,7 +9,6 @@ import ListItemHeader from './ListItemHeader';
 import ButtonIconEdit from './ButtonIconEdit';
 import ButtonIconDelete from './ButtonIconDelete';
 import useDialog from './useDialog';
-import Error from './Error';
 import Currency from './Currency';
 import ImageGaleryShow from './ImageGaleryShow';
 
@@ -31,13 +30,9 @@ export default function ListScreen({
 }) {
   const [data, setData] = useState([]);
   const dialog = useDialog();
-  const [error, setError] = useState('');
 
   useFocusEffect(
-    useCallback(() => {
-      setError('');
-      loadData();
-    }, [])
+    useCallback(() => loadData(), [])
   );
   
   function loadData() {
@@ -178,7 +173,6 @@ export default function ListScreen({
       header={header}
       showCommerceName={showCommerceName}
     >
-      <Error>{error}</Error>
       <FlatList
         style={styles.list}
         data={data}

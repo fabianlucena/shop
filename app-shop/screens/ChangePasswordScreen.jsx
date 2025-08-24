@@ -6,7 +6,7 @@ import Button from '../components/Button';
 import Screen from '../components/Screen';
 import Message from '../components/Message';
 import TextField from '../components/TextField';
-import SuccessMessage from '../components/SuccessMessage';
+import ScreenMessage from '../components/ScreenMessage';
 
 export default function ChangePasswordScreen({ navigation }) {
   const [loading, setLoading] = useState(false);
@@ -58,11 +58,11 @@ export default function ChangePasswordScreen({ navigation }) {
 
   if (success) {
     return (
-      <SuccessMessage
+      <ScreenMessage
         onPress={() => navigation.navigate('Home')}
       >
         Contraseña cambiada satisfactoriamente
-      </SuccessMessage>
+      </ScreenMessage>
     );    
   }
 

@@ -2,6 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { Text, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/native';
 
+import { useSession } from '../contexts/Session';
+
 import Screen from './Screen';
 import TextField from './TextField';
 import SwitchField from './SwitchField';
@@ -10,7 +12,6 @@ import CurrencyField from './CurrencyField';
 import ImageGaleryField from './ImageGaleryField';
 import Button from './Button';
 import Message from './Message';
-import Error from './Error';
 
 function getArrangedFields(fields) {
   return fields.map(f => {
@@ -134,24 +135,17 @@ export default function FormScreen({
   onSuccessNavigate,
   validate,
   showCommerceName,
-  hideMessage = false,
 }) {
   const navigation = useNavigation();
   const route = useRoute();
   const [data, setData] = useState({...defaultData, ...additionalData});
   const [originalData, setOriginalData] = useState('');
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
   const [canSubmit, setCanSubmit] = useState(false);
   const [loading, setLoading] = useState(false);
   const _uuid = uuid ?? route?.params?.uuid;
   const [_fields, setFields] = useState([]);
-
-  useFocusEffect(
-    useCallback(() => {
-      setError('');
-    }, [])
-  );
+  const { addError } = useSession();
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     setFields(getArrangedFields(fields));
@@ -195,7 +189,7 @@ export default function FormScreen({
       if (result && result !== true) {
         if (typeof result !== 'string')
           result = JSON.stringify(result);
-    
+
         setMessage(result);
         setCanSubmit(false);
         return;
@@ -230,7 +224,7 @@ export default function FormScreen({
         setData(newData);
         setOriginalData(JSON.stringify(newData));
       })
-      .catch(e => setError(`${loadingError}\n${e.message}`))
+      .catch(e => addError(`${loadingError}\n${e.message}`))
       .finally(() => setLoading(false));
   }
 
@@ -248,7 +242,7 @@ export default function FormScreen({
   }
 
   function handleOnError(err) {
-    setError(`${_uuid? updateErrorMessage: createErrorMessage}\n${err.message}`)
+    addError(`${_uuid? updateErrorMessage: createErrorMessage}\n${err.message}`)
   }
 
   function getFieldByName(name) {
@@ -260,7 +254,6 @@ export default function FormScreen({
       return;
 
     setLoading(true);
-    setError('');
 
     let sendData;
     if (_fields.some(f => (f.visible || typeof f.visible === 'undefined') && f.type === 'imageGalery' && data[f.name]?.length )) {
@@ -348,12 +341,14 @@ export default function FormScreen({
         busy={loading}
         showCommerceName={showCommerceName}
       >
-        <Error>{error}</Error>
-        {!hideMessage? <Message>{message}</Message>: null}
+        <Message>{message}</Message>
         <ScrollView
           contentContainerStyle={{ paddingBottom: 60 }}
           keyboardShouldPersistTaps="handled"
-          style={{ flex: 1, width: '100%' }}
+          style={{
+            flex: 1,
+            width: '100%',
+          }}
         >
           {renderFields(_fields, data, setData)}
           <Button

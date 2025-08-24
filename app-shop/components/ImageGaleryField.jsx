@@ -1,15 +1,24 @@
 import { View, ScrollView } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
 import Button from './Button';
 import ImageShow from './ImageShow';
 import ButtonIconDelete from './ButtonIconDelete';
 import ButtonIconAdd from './ButtonIconAdd';
+import { getImageFrom } from '../libs/images';
 
 export default function ImageGaleryField({
   name,
   value,
   setValue,
+  aspect = [9, 16],
+  maxWidth = 1080,
+  maxHeight = 1920,
 }) {
+  async function addImageFrom(source) {
+    const image = await getImageFrom({ source, aspect, maxWidth, maxHeight });
+    if (image)
+      setValue([...value, {...image, added: true, urlBase: ''}]);  
+  }
+
   return <View>
       <ScrollView
         horizontal
@@ -76,34 +85,12 @@ export default function ImageGaleryField({
       </ScrollView>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
         <Button
-          onPress={async () => {
-            let result = await ImagePicker.launchImageLibraryAsync({
-              mediaTypes: ['images'],
-              allowsEditing: true,
-              aspect: [4, 3],
-              quality: 1,
-            });
-
-            if (!result.canceled) {
-              setValue([...value, { uri: result.assets[0].uri, urlBase: '', added: true }]);
-            }
-          }}
+          onPress={() => addImageFrom('library')}
         >
           Seleccionar imagen
         </Button>
         <Button
-          onPress={async () => {
-            let result = await ImagePicker.launchCameraAsync({
-              mediaTypes: ['images'],
-              allowsEditing: true,
-              aspect: [4, 3],
-              quality: 1,
-            });
-
-            if (!result.canceled) {
-              setValue([...value, result.assets[0].uri]);
-            }
-          }}
+          onPress={() => addImageFrom('camera')}
         >
           Tomar foto
         </Button>

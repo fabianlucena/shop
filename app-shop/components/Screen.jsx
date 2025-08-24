@@ -3,6 +3,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useSession } from '../contexts/Session';
 
+import Messages from './Messages';
 import Background from './Background';
 import Busy from './Busy';
 import Header from './Header';
@@ -32,6 +33,7 @@ export default function Screeen({
         ]}>
           {showCommerceName && commerceName && <Text style={{...styles.text, ...styles.header, ...styles.currentCommerce}}>Administrando: {commerceName}</Text> || null}
           {header && <Header>{header}</Header> || null}
+          <Messages />
           {children}
         </View>
       </Busy>

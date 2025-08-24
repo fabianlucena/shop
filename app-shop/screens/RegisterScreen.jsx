@@ -8,7 +8,7 @@ import Button from '../components/Button';
 import Screen from '../components/Screen';
 import TextField from '../components/TextField';
 import Message from '../components/Message';
-import SuccessMessage from '../components/SuccessMessage';
+import ScreenMessage from '../components/ScreenMessage';
 
 export default function RegisterScreen({ navigation }) {
   const [loading, setLoading] = useState(false);
@@ -71,12 +71,12 @@ export default function RegisterScreen({ navigation }) {
 
   if (success) {
     return (
-      <SuccessMessage
+      <ScreenMessage
         onPressMessage='Ir a ingresar'
         onPress={() => navigation.navigate('Login')}
       >
         Usuario registrado satisfactoriamente
-      </SuccessMessage>
+      </ScreenMessage>
     );    
   }
 

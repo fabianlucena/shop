@@ -1,4 +1,5 @@
-import { Image, StyleSheet, View, ActivityIndicator } from 'react-native';
+import { useState, useEffect } from 'react';
+import { Image, View, ActivityIndicator } from 'react-native';
 import { Api } from '../libs/api';
 
 export default function ImageShow({
@@ -6,24 +7,46 @@ export default function ImageShow({
   uri,
   urlBase = Api.urlBase,
 }) {
-  return <View style={styles.container}>
+  const [localStyle, setLocalStyle] = useState({ ...style });
+
+  useEffect(() => {
+    const newLocalStyle = {...style};
+
+    if (!newLocalStyle.width) {
+      if (newLocalStyle.height && newLocalStyle.aspectRatio) {
+        newLocalStyle.width = newLocalStyle.height * newLocalStyle.aspectRatio;
+      } else {
+        newLocalStyle.width = 100;
+      }
+    }
+
+    if (!newLocalStyle.height) {
+      if (newLocalStyle.width && newLocalStyle.aspectRatio) {
+        newLocalStyle.height = newLocalStyle.width / newLocalStyle.aspectRatio;
+      } else {
+        newLocalStyle.height = 100;
+      }
+    }
+
+    newLocalStyle.width = Math.floor(newLocalStyle.width);
+    newLocalStyle.height = Math.floor(newLocalStyle.height);
+
+    if (JSON.stringify(localStyle) !== JSON.stringify(newLocalStyle)) {
+      setLocalStyle(newLocalStyle);
+    }
+  }, [style]);
+
+  return <View
+      style={{
+        flex: 1, // asegura que el layout se resuelva
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
       {uri && <Image
         source={{ uri: urlBase + uri }}
-        style={style}
+        style={localStyle}
         resizeMode="cover"
-      /> || <ActivityIndicator style={style} size="large" color="#888" />}
+      /> || <ActivityIndicator size="large" color="#888" />}
     </View>;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1, // asegura que el layout se resuelva
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  image: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 8,
-  },
-});

@@ -6,6 +6,8 @@ import useStore from '../services/useStore';
 
 export const SessionContext = createContext();
 
+export default useSession;
+
 export function useSession() {
   return useContext(SessionContext);
 }
@@ -24,6 +26,8 @@ export function SessionProvider({ children }) {
   const [stores, setStores] = useState([]);
   const [categoriesOptions, setCategoriesOptions] = useState([]);
   const [storesOptions, setStoresOptions] = useState([]);
+  const [messages, setMessages] = useState([]);
+  const [, setMessageCounter] = useState(0);
 
   function loadCommerces() {
     serviceCommerce.get()
@@ -88,6 +92,58 @@ export function SessionProvider({ children }) {
     }
   }, [commerces, commerceUuid]);
 
+  function normalizeMessage(message, options) {
+    if (typeof message === 'string')
+      message = { message };
+
+    message = {
+      variant: 'message',
+      ...options,
+      ...message,
+    };
+
+    return message;
+  }
+
+  function addMessage(message, options) {
+    message = normalizeMessage(message, options);
+
+    setMessageCounter(c => {
+      const newC = c + 1;
+      message.id ||= newC;
+      return newC;
+    });
+
+    if (message.variant === 'error') {
+      console.error(message.message);
+    } else {
+      console.log(message.message);
+    }
+
+    setMessages(messages => [...messages, message]);
+
+    return message;
+  }
+
+  function addError(message) {
+    return addMessage(message, { variant: 'error' });
+  }
+
+  function updateMessage(messageId, message, options) {
+    message = normalizeMessage(
+      message,
+      {
+        ...message,
+        ...options,
+        message: undefined,
+      }
+    );
+
+    setMessages(messages => [
+      ...messages.map(m => m.id === messageId ? { ...m, ...message } : m),
+    ]);
+  }
+
   return (
     <SessionContext.Provider value={{
       isInitiated, setIsInitiated,
@@ -101,6 +157,7 @@ export function SessionProvider({ children }) {
       stores,
       categoriesOptions,
       storesOptions,
+      addMessage, addError, updateMessage, messages, setMessages
     }}>
       {children}
     </SessionContext.Provider>

@@ -30,6 +30,15 @@ const styles = StyleSheet.create({
 
   messageContainer: {
     width: '100%',
+    padding: 5,
+    zIndex: 1000,
+  },
+
+  messagesContainer: {
+    position: 'absolute',
+    width: '100%',
+    padding: 5,
+    zIndex: 1000,
   },
 
   message: {
@@ -41,7 +50,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#daf9d4',
     paddingVertical: 6,
     paddingHorizontal: 10,
-    margin: '.5em',
+    margin: 2,
   },
 
   error: {
