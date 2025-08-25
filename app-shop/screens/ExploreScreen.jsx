@@ -15,7 +15,7 @@ export default function ExploreScreen() {
         { field: 'price', type: 'currency' },
         { field: 'stock', label: 'Quedan: ', type: 'number' },
         { field: 'description', style: styles.listItemDescription },
-        { field: 'images', type: 'image', style: { aspectRatio: 9 / 16, borderRadius: 8 }, canFullScreen: false },
+        { field: 'images', type: 'images', style: { aspectRatio: 9 / 16, borderRadius: 8 }, canFullScreen: false },
       ]}
     />;
 }

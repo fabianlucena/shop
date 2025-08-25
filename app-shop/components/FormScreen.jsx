@@ -345,6 +345,7 @@ export default function FormScreen({
         <ScrollView
           contentContainerStyle={{ paddingBottom: 60 }}
           keyboardShouldPersistTaps="handled"
+          nestedScrollEnabled={true}
           style={{
             flex: 1,
             width: '100%',

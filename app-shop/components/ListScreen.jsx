@@ -110,7 +110,7 @@ export default function ListScreen({
             {item[element.field]}
           </Currency>;
 
-      case 'image':
+      case 'images':
         return <ImageGaleryShow
             images={item[element.field]}
             onPress={() => onPressItem?.(item)}

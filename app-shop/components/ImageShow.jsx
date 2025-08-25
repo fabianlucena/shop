@@ -6,6 +6,7 @@ export default function ImageShow({
   style,
   uri,
   urlBase = Api.urlBase,
+  overlay,
 }) {
   const [localStyle, setLocalStyle] = useState({ ...style });
 
@@ -47,5 +48,6 @@ export default function ImageShow({
         style={localStyle}
         resizeMode="cover"
       /> || <ActivityIndicator size="large" color="#888" />}
+      {overlay}
     </View>;
 }
