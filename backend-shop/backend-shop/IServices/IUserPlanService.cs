@@ -7,6 +7,8 @@ namespace backend_shop.IServices
         : IService<UserPlan>,
             IServiceTimestamps<UserPlan>
     {
+        Task<Plan> GetSinglePlanForCurrentUserAsync();
+
         Task<int> GetMaxTotalCommercesForUserId(Int64 userId);
 
         Task<int> GetMaxEnabledCommercesForUserId(Int64 userId);

@@ -1,10 +1,10 @@
-﻿using RFService.Services;
-using RFService.IRepo;
-using backend_shop.Entities;
+﻿using backend_shop.Entities;
 using backend_shop.IServices;
-using RFService.Repo;
 using RFAuth.Exceptions;
 using RFOperators;
+using RFService.IRepo;
+using RFService.Repo;
+using RFService.Services;
 
 namespace backend_shop.Service
 {
@@ -16,6 +16,48 @@ namespace backend_shop.Service
         : ServiceTimestampsIdUuidEnabled<IRepo<UserPlan>, UserPlan>(repo),
             IUserPlanService
     {
+        public async Task<Plan> GetSinglePlanForCurrentUserAsync()
+        {
+            var httpContext = httpContextAccessor.HttpContext
+                ?? throw new NoAuthorizationHeaderException();
+
+            var ownerId = (httpContext.Items["UserId"] as Int64?)
+                ?? throw new NoSessionUserDataException();
+
+            if (ownerId <= 0)
+                throw new NoSessionUserDataException();
+
+            var userPlan = await GetFirstOrDefaultAsync(
+                new QueryOptions
+                {
+                    Join = { { "Plan", "plan" } },
+                    Filters = {
+                        { "UserId", ownerId },
+                        { Op.GE("ExpirationDate", DateTime.UtcNow) },
+                    },
+                    OrderBy = { "ExpirationDate DESC" },
+                    Top = 1,
+                }
+            );
+
+            var plan = userPlan?.Plan ?? new Plan { Name = "" };
+            var basePlan = await planService.GetBaseAsync();
+            plan.Uuid = plan.Uuid == Guid.Empty ? basePlan.Uuid : plan.Uuid;
+            plan.Name = string.IsNullOrWhiteSpace(plan.Name) ? basePlan.Name : plan.Name;
+            plan.MaxTotalCommerces ??= basePlan.MaxTotalCommerces;
+            plan.MaxEnabledCommerces ??= basePlan.MaxEnabledCommerces;
+            plan.MaxTotalStores ??= basePlan.MaxTotalStores;
+            plan.MaxEnabledStores ??= basePlan.MaxEnabledStores;
+            plan.MaxTotalItems ??= basePlan.MaxTotalItems;
+            plan.MaxEnabledItems ??= basePlan.MaxEnabledItems;
+            plan.MaxTotalItemsImages ??= basePlan.MaxTotalItemsImages;
+            plan.MaxEnabledItemsImages ??= basePlan.MaxEnabledItemsImages;
+            plan.MaxAggregattedSizeItemsImages ??= basePlan.MaxAggregattedSizeItemsImages;
+            plan.MaxEnabledAggregattedSizeItemsImages ??= basePlan.MaxEnabledAggregattedSizeItemsImages;
+
+            return plan;
+        }
+
         public async Task<int> GetMaxTotalCommercesForUserId(Int64 userId)
         {
             var options = new QueryOptions

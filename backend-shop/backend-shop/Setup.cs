@@ -40,6 +40,7 @@ namespace backend_shop
             var rolesPermissions = new Dictionary<string, IEnumerable<string>>{
                 { "user", [
                     "changePassword",
+                    "plan.get",
                     "commerce.get", "commerce.add", "commerce.edit", "commerce.delete", "commerce.restore",
                     "store.get", "store.add", "store.edit", "store.delete", "store.restore",
                     "category.get",

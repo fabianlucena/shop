@@ -17,6 +17,7 @@ import StoreFormScreen from './StoreFormScreen';
 import ItemListScreen from './ItemListScreen';
 import ItemFormScreen from './ItemFormScreen';
 import SelectField from '../components/SelectField';
+import PlanScreen from './PlanScreen';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -44,9 +45,10 @@ function DrawerNavigator() {
         </DrawerContentScrollView>}
     >
       <Drawer.Screen name="Explore"        component={ExploreScreen}        options={{ title: 'Explorar' }} />
+      <Drawer.Screen name="ItemsList"      component={ItemListScreen}       options={{ title: 'Mis artículos', headerRight: () => <ButtonIconAdd style={{margin: 10}} size="big" navigate="ItemForm"     /> }}/>
       <Drawer.Screen name="CommercesList"  component={CommercesListScreen}  options={{ title: 'Mis comercios', headerRight: () => <ButtonIconAdd style={{margin: 10}} size="big" navigate="CommerceForm" /> }}/>
       <Drawer.Screen name="StoresList"     component={StoresListScreen}     options={{ title: 'Mis locales',   headerRight: () => <ButtonIconAdd style={{margin: 10}} size="big" navigate="StoreForm"    /> }}/>
-      <Drawer.Screen name="ItemsList"      component={ItemListScreen}       options={{ title: 'Mis artículos', headerRight: () => <ButtonIconAdd style={{margin: 10}} size="big" navigate="ItemForm"     /> }}/>
+      <Drawer.Screen name="Plan"           component={PlanScreen}           options={{ title: 'Mi plan',       headerRight: () => <ButtonIconAdd style={{margin: 10}} size="big" navigate="Plan"         /> }}/>
       <Drawer.Screen name="ChangePassword" component={ChangePasswordScreen} options={{ title: 'Cambiar contraseña' }}/>
       <Drawer.Screen name="Logout"         component={LogoutScreen}         options={{ title: 'Salir' }}/>
     </Drawer.Navigator>;
@@ -57,9 +59,9 @@ export default function ContentScreen() {
       <Stack.Navigator>
         <Stack.Screen name="Drawer"       component={DrawerNavigator}    options={{ headerShown: false }} />
         <Stack.Screen name="ViewItem"     component={ViewItemScreen}     options={{ title: 'Artículo' }} />
+        <Stack.Screen name="ItemForm"     component={ItemFormScreen}     options={{ title: 'Artículo' }}/>
         <Stack.Screen name="CommerceForm" component={CommerceFormScreen} options={{ title: 'Comercio' }}/>
         <Stack.Screen name="StoreForm"    component={StoreFormScreen}    options={{ title: 'Local' }}/>
-        <Stack.Screen name="ItemForm"     component={ItemFormScreen}     options={{ title: 'Artículo' }}/>
       </Stack.Navigator>
     </NavigationContainer>;
 }
