@@ -129,6 +129,82 @@ namespace backend_shop.Service
                 ?? (await planService.GetBaseAsync()).MaxEnabledItems
                 ?? default;
         }
+        
+        public async Task<int> GetMaxTotalItemsImagesForCurrentUserId(Int64 userId)
+        {
+            var options = new QueryOptions
+            {
+                Join = { { "Plan", "plan" } },
+                Filters = {
+                    { "UserId", userId },
+                    { Op.IsNotNull("plan.MaxEnabledItems") },
+                    { Op.GE("ExpirationDate", DateTime.UtcNow) },
+                },
+                OrderBy = { "plan.MaxTotalItemsImages DESC" },
+                Top = 1,
+            };
+
+            return (await GetFirstOrDefaultAsync(options))?.Plan?.MaxTotalItemsImages
+                ?? (await planService.GetBaseAsync()).MaxTotalItemsImages
+                ?? default;
+        }
+
+        public async Task<int> GetMaxEnabledItemsImagesForCurrentUserId(Int64 userId)
+        {
+            var options = new QueryOptions
+            {
+                Join = { { "Plan", "plan" } },
+                Filters = {
+                    { "UserId", userId },
+                    { Op.IsNotNull("plan.MaxEnabledItems") },
+                    { Op.GE("ExpirationDate", DateTime.UtcNow) },
+                },
+                OrderBy = { "plan.MaxEnabledItemsImages DESC" },
+                Top = 1,
+            };
+
+            return (await GetFirstOrDefaultAsync(options))?.Plan?.MaxEnabledItemsImages
+                ?? (await planService.GetBaseAsync()).MaxEnabledItemsImages
+                ?? default;
+        }
+
+        public async Task<int> GetMaxAggregattedSizeItemsImagesForCurrentUserId(Int64 userId)
+        {
+            var options = new QueryOptions
+            {
+                Join = { { "Plan", "plan" } },
+                Filters = {
+                    { "UserId", userId },
+                    { Op.IsNotNull("plan.MaxEnabledItems") },
+                    { Op.GE("ExpirationDate", DateTime.UtcNow) },
+                },
+                OrderBy = { "plan.MaxAggregattedSizeItemsImages DESC" },
+                Top = 1,
+            };
+
+            return (await GetFirstOrDefaultAsync(options))?.Plan?.MaxAggregattedSizeItemsImages
+                ?? (await planService.GetBaseAsync()).MaxAggregattedSizeItemsImages
+                ?? default;
+        }
+
+        public async Task<int> GetMaxEnabledAggregattedSizeItemsImagesForCurrentUserId(Int64 userId)
+        {
+            var options = new QueryOptions
+            {
+                Join = { { "Plan", "plan" } },
+                Filters = {
+                    { "UserId", userId },
+                    { Op.IsNotNull("plan.MaxEnabledItems") },
+                    { Op.GE("ExpirationDate", DateTime.UtcNow) },
+                },
+                OrderBy = { "plan.MaxEnabledAggregattedSizeItemsImages DESC" },
+                Top = 1,
+            };
+
+            return (await GetFirstOrDefaultAsync(options))?.Plan?.MaxEnabledAggregattedSizeItemsImages
+                ?? (await planService.GetBaseAsync()).MaxEnabledAggregattedSizeItemsImages
+                ?? default;
+        }
 
         public async Task<int> GetMaxTotalCommercesForCurrentUser()
         {
@@ -212,6 +288,62 @@ namespace backend_shop.Service
                 throw new NoSessionUserDataException();
 
             return await GetMaxEnabledItemsForUserId(userId);
+        }
+
+        public async Task<int> GetMaxTotalItemsImagesForCurrentUser()
+        {
+            var httpContext = httpContextAccessor.HttpContext
+                ?? throw new NoAuthorizationHeaderException();
+
+            var userId = (httpContext.Items["UserId"] as Int64?)
+                ?? throw new NoSessionUserDataException();
+
+            if (userId <= 0)
+                throw new NoSessionUserDataException();
+
+            return await GetMaxTotalItemsImagesForCurrentUserId(userId);
+        }
+
+        public async Task<int> GetMaxEnabledItemsImagesForCurrentUser()
+        {
+            var httpContext = httpContextAccessor.HttpContext
+                ?? throw new NoAuthorizationHeaderException();
+
+            var userId = (httpContext.Items["UserId"] as Int64?)
+                ?? throw new NoSessionUserDataException();
+
+            if (userId <= 0)
+                throw new NoSessionUserDataException();
+
+            return await GetMaxEnabledItemsImagesForCurrentUserId(userId);
+        }
+
+        public async Task<int> GetMaxAggregattedSizeItemsImagesForCurrentUser()
+        {
+            var httpContext = httpContextAccessor.HttpContext
+                ?? throw new NoAuthorizationHeaderException();
+
+            var userId = (httpContext.Items["UserId"] as Int64?)
+                ?? throw new NoSessionUserDataException();
+
+            if (userId <= 0)
+                throw new NoSessionUserDataException();
+
+            return await GetMaxAggregattedSizeItemsImagesForCurrentUserId(userId);
+        }
+
+        public async Task<int> GetMaxEnabledAggregattedSizeItemsImagesForCurrentUser()
+        {
+            var httpContext = httpContextAccessor.HttpContext
+                ?? throw new NoAuthorizationHeaderException();
+
+            var userId = (httpContext.Items["UserId"] as Int64?)
+                ?? throw new NoSessionUserDataException();
+
+            if (userId <= 0)
+                throw new NoSessionUserDataException();
+
+            return await GetMaxEnabledAggregattedSizeItemsImagesForCurrentUserId(userId);
         }
     }
 }

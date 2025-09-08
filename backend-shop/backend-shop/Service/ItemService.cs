@@ -46,8 +46,8 @@ namespace backend_shop.Service
             if (store.Commerce == null)
                 throw new CommerceDoesNotExistException();
 
-            var totalStoresCount = await GetCountForCurrentUserAsync(new QueryOptions { Filters = { { "IsEnabled", null } } });
-            if (totalStoresCount >= (await userPlanService.GetMaxTotalItemsForCurrentUser()))
+            var totalItemsCount = await GetCountForCurrentUserAsync(new QueryOptions { Filters = { { "IsEnabled", null } } });
+            if (totalItemsCount >= (await userPlanService.GetMaxTotalItemsForCurrentUser()))
                 throw new TotalItemsLimitReachedException();
 
             var enabledItemsCount = await GetCountForCurrentUserAsync();

@@ -38,9 +38,12 @@ namespace backend_shop.Controllers
             var item = mapper.Map<ItemAddRequest, Item>(data);
 
             var result = await itemService.CreateAsync(item);
-
             if (result == null)
                 return BadRequest();
+
+            var updateImagesResult = await UpdateImages(result.Id);
+            if (updateImagesResult is BadRequestObjectResult)
+                return updateImagesResult;
 
             logger.LogInformation("Item created");
 
@@ -130,6 +133,9 @@ namespace backend_shop.Controllers
         }
 
         private async Task<IActionResult> UpdateImages(Guid itemUuid)
+            => await UpdateImages(await itemService.GetSingleIdForUuidAsync(itemUuid));
+
+        private async Task<IActionResult> UpdateImages(Int64 itemId)
         {
             if (!Request.HasFormContentType)
                 return Ok();
@@ -146,7 +152,7 @@ namespace backend_shop.Controllers
                         return BadRequest("Only image files are allowed.");
                 }
 
-                var result = await itemFileService.AddForItemUuidAsync(itemUuid, files);
+                var result = await itemFileService.AddForItemIdAsync(itemId, files);
                 if (!result.Any())
                     return BadRequest("Error uploading image.");
             }

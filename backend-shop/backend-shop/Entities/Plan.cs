@@ -22,5 +22,13 @@ namespace backend_shop.Entities
         public int? MaxTotalItems { get; set; }
 
         public int? MaxEnabledItems { get; set; }
+
+        public int? MaxTotalItemsImages { get; set; }
+
+        public int? MaxEnabledItemsImages { get; set; }
+
+        public int? MaxAggregattedSizeItemsImages { get; set; }
+
+        public int? MaxEnabledAggregattedSizeItemsImages { get; set; }
     }
 }
