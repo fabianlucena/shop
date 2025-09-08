@@ -6,7 +6,7 @@ namespace backend_shop.Entities
 {
     [Table("ItemsFiles", Schema = "shop")]
     public class ItemFile
-        : EntitySoftDeleteCreatedAtIdUuidName
+        : EntityCreatedAtIdUuidName
     {
         [Required]
         [ForeignKey("Item")]

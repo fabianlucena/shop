@@ -9,11 +9,7 @@ namespace backend_shop.IServices
             IServiceId<ItemFile>,
             IServiceUuid<ItemFile>,
             IServiceIdUuid<ItemFile>,
-            IServiceSoftDelete<ItemFile>,
-            IServiceSoftDeleteCreatedAt<ItemFile>,
-            IServiceSoftDeleteCreatedAtUuid<ItemFile>,
-            IServiceSoftDeleteId<ItemFile>,
-            IServiceSoftDeleteUuid<ItemFile>,
+            IServiceCreatedAt<ItemFile>,
             IServiceName<ItemFile>,
             IServiceIdUuidName<ItemFile>
     {

@@ -14,7 +14,7 @@ namespace backend_shop.Service
         IItemService itemService,
         IServiceProvider serviceProvider
     )
-        : ServiceSoftDeleteCreatedAtIdUuidName<IRepo<ItemFile>, ItemFile>(repo),
+        : ServiceCreatedAtIdUuidName<IRepo<ItemFile>, ItemFile>(repo),
             IItemFileService
     {
         public override async Task<ItemFile> ValidateForCreationAsync(ItemFile data)
@@ -70,13 +70,15 @@ namespace backend_shop.Service
                 throw new MaxEnabledItemsImagesLimitReachedException();
 
             var aggregattedSize = await GetAggregatedSizeForCurrentUserAsync(new QueryOptions { Switches = { { "IncludeDisabled", true } } });
+            aggregattedSize += data.Content.Length;
             var aggregattedSizeMax = await userPlanService.GetMaxAggregattedSizeItemsImagesForCurrentUser();
             if (aggregattedSize >= aggregattedSizeMax)
                 throw new TotalAggregattedSizeItemImagesLimitReachedException();
 
             var enabledAggregattedSize = await GetAggregatedSizeForCurrentUserAsync();
+            enabledAggregattedSize += data.Content.Length;
             var enabledAggregattedSizeMax = await userPlanService.GetMaxEnabledAggregattedSizeItemsImagesForCurrentUser();
-            if (enabledAggregattedSize > enabledAggregattedSizeMax)
+            if (enabledAggregattedSize >= enabledAggregattedSizeMax)
                 throw new MaxEnabledAggregattedSizeItemImagesLimitReachedException();
 
             return data;
