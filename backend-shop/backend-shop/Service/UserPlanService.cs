@@ -1,4 +1,5 @@
-﻿using backend_shop.Entities;
+﻿using backend_shop.DTO;
+using backend_shop.Entities;
 using backend_shop.IServices;
 using RFAuth.Exceptions;
 using RFOperators;
@@ -11,7 +12,8 @@ namespace backend_shop.Service
     public class UserPlanService(
         IRepo<UserPlan> repo,
         IPlanService planService,
-        IHttpContextAccessor httpContextAccessor
+        IHttpContextAccessor httpContextAccessor,
+        IServiceProvider serviceProvider
     )
         : ServiceTimestampsIdUuidEnabled<IRepo<UserPlan>, UserPlan>(repo),
             IUserPlanService
@@ -56,6 +58,40 @@ namespace backend_shop.Service
             plan.MaxEnabledAggregattedSizeItemsImages ??= basePlan.MaxEnabledAggregattedSizeItemsImages;
 
             return plan;
+        }
+
+        public async Task<UsedPlanDTO> GetUsedPlanForCurrentUserAsync()
+        {
+            var httpContext = httpContextAccessor.HttpContext
+                ?? throw new NoAuthorizationHeaderException();
+
+            var ownerId = (httpContext.Items["UserId"] as Int64?)
+                ?? throw new NoSessionUserDataException();
+
+            if (ownerId <= 0)
+                throw new NoSessionUserDataException();
+
+            var commerceService = serviceProvider.GetRequiredService<ICommerceService>();
+            var storeService = serviceProvider.GetRequiredService<IStoreService>();
+            var itemService = serviceProvider.GetRequiredService<IItemService>();
+            var itemFileService = serviceProvider.GetRequiredService<IItemFileService>();
+            var includeDisabledOptions = new QueryOptions { Switches = { { "IncludeDisabled", true } } };
+
+            var usedPlan = new UsedPlanDTO
+            {
+                TotalCommercesCount = await commerceService.GetCountForOwnerIdAsync(ownerId, includeDisabledOptions),
+                EnabledCommercesCount = await commerceService.GetCountForOwnerIdAsync(ownerId),
+                TotalStoresCount = await storeService.GetCountForOwnerIdAsync(ownerId, includeDisabledOptions),
+                EnabledStoresCount = await storeService.GetCountForOwnerIdAsync(ownerId),
+                TotalItemsCount = await itemService.GetCountForOwnerIdAsync(ownerId, includeDisabledOptions),
+                EnabledItemsCount = await itemService.GetCountForOwnerIdAsync(ownerId),
+                TotalItemsImagesCount = await itemFileService.GetCountForOwnerIdAsync(ownerId, includeDisabledOptions),
+                EnabledItemsImagesCount = await itemFileService.GetCountForOwnerIdAsync(ownerId),
+                AggregattedSizeItemsImagesCount = await itemFileService.GetAggregatedSizeForOwnerIdAsync(ownerId, includeDisabledOptions),
+                EnabledAggregattedSizeItemsImagesCount = await itemFileService.GetAggregatedSizeForOwnerIdAsync(ownerId),
+            };
+
+            return usedPlan;
         }
 
         public async Task<int> GetMaxTotalCommercesForUserId(Int64 userId)

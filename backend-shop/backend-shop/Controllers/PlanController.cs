@@ -23,8 +23,10 @@ namespace backend_shop.Controllers
             logger.LogInformation("Getting plan");
 
             var plan = await userPlanService.GetSinglePlanForCurrentUserAsync();
+            var used = await userPlanService.GetUsedPlanForCurrentUserAsync();
             var response = new {
-                Available = mapper.Map<Plan, PlanResponse>(plan)
+                Available = mapper.Map<Plan, PlanDTO>(plan),
+                Used = used,
             };
 
             logger.LogInformation("Plan retrieved");

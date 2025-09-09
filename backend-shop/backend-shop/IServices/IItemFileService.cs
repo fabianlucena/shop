@@ -1,6 +1,7 @@
 ﻿using backend_shop.DTO;
 using backend_shop.Entities;
 using RFService.IServices;
+using RFService.Repo;
 
 namespace backend_shop.IServices
 {
@@ -18,5 +19,13 @@ namespace backend_shop.IServices
         Task<IEnumerable<ItemFile>> AddForItemIdAsync(Int64 itemId, FilesCollectionDTO files);
 
         Task<IEnumerable<ItemFile>> GetListForItemIdAsync(Int64 itemId);
+
+        Task<int> GetCountForOwnerIdAsync(Int64 ownerId, QueryOptions? options = null);
+
+        Task<int> GetCountForCurrentUserAsync(QueryOptions? options = null);
+
+        Task<Int64> GetAggregatedSizeForOwnerIdAsync(Int64 ownerId, QueryOptions? options = null);
+
+        Task<Int64> GetAggregatedSizeForCurrentUserAsync(QueryOptions? options = null);
     }
 }

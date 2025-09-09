@@ -13,8 +13,7 @@ namespace backend_shop.Service
         IRepo<Store> repo,
         ICommerceService commerceService,
         IUserPlanService userPlanService,
-        IHttpContextAccessor httpContextAccessor/*,
-        IItemService itemService*/
+        IHttpContextAccessor httpContextAccessor
     )
         : ServiceSoftDeleteTimestampsIdUuidEnabledName<IRepo<Store>, Store>(repo),
             IStoreService
@@ -108,9 +107,9 @@ namespace backend_shop.Service
             return true;
         }
 
-        public async Task<QueryOptions> GetFilterForCurrentUserAsync(QueryOptions? options = null)
+        public async Task<QueryOptions> GetFilterForOwnerIdAsync(Int64 ownerId, QueryOptions? options = null)
         {
-            var commercesId = await commerceService.GetListIdForCurrentUserAsync(options);
+            var commercesId = await commerceService.GetListIdForOwnerIdAsync(ownerId, options);
 
             options = (options != null) ?
                 new QueryOptions(options) :
@@ -120,11 +119,31 @@ namespace backend_shop.Service
             return options;
         }
 
-        public async Task<Int64> GetCountForCurrentUserAsync(QueryOptions? options = null)
-            => await GetCountAsync(await GetFilterForCurrentUserAsync(options));
+        public async Task<int> GetCountForOwnerIdAsync(Int64 ownerId, QueryOptions? options = null)
+            => await GetCountAsync(await GetFilterForOwnerIdAsync(ownerId, options));
+
+        public Int64 GetCurrentUserId()
+        {
+            var httpContext = httpContextAccessor.HttpContext
+                ?? throw new NoAuthorizationHeaderException();
+
+            var userId = (httpContext.Items["UserId"] as Int64?)
+                ?? throw new NoSessionUserDataException();
+
+            if (userId <= 0)
+                throw new NoSessionUserDataException();
+
+            return userId!;
+        }
+        
+        public async Task<int> GetCountForCurrentUserAsync(QueryOptions? options = null)
+            => await GetCountForOwnerIdAsync(GetCurrentUserId(), options);
+
+        public async Task<IEnumerable<Int64>> GetListIdForOwnerIdAsync(Int64 ownerId, QueryOptions? options = null)
+            => await GetListIdAsync(await GetFilterForOwnerIdAsync(ownerId, options));
 
         public async Task<IEnumerable<Int64>> GetListIdForCurrentUserAsync(QueryOptions? options = null)
-            => await GetListIdAsync(await GetFilterForCurrentUserAsync(options));
+            => await GetListIdForOwnerIdAsync(GetCurrentUserId(), options);
     }
 }
 

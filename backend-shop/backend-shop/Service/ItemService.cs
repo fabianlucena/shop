@@ -1,7 +1,7 @@
-﻿using backend_shop.DTO;
-using backend_shop.Entities;
+﻿using backend_shop.Entities;
 using backend_shop.Exceptions;
 using backend_shop.IServices;
+using RFAuth.Exceptions;
 using RFOperators;
 using RFService.ILibs;
 using RFService.IRepo;
@@ -14,7 +14,8 @@ namespace backend_shop.Service
     public class ItemService(
         IRepo<Item> repo,
         IStoreService storeService,
-        IUserPlanService userPlanService
+        IUserPlanService userPlanService,
+        IHttpContextAccessor httpContextAccessor
     )
         : ServiceSoftDeleteTimestampsIdUuidEnabledName<IRepo<Item>, Item>(repo),
             IItemService
@@ -102,9 +103,9 @@ namespace backend_shop.Service
             return true;
         }
 
-        public async Task<QueryOptions> GetFilterForCurrentUserAsync(QueryOptions? options = null)
+        public async Task<QueryOptions> GetFilterForOwnerIdAsync(Int64 ownerId, QueryOptions? options = null)
         {
-            var storesId = await storeService.GetListIdForCurrentUserAsync(options);
+            var storesId = await storeService.GetListIdForOwnerIdAsync(ownerId, options);
 
             options = (options != null) ?
                 new QueryOptions(options) :
@@ -114,14 +115,34 @@ namespace backend_shop.Service
             return options;
         }
 
-        public async Task<Int64> GetCountForCurrentUserAsync(QueryOptions? options = null)
-            => await GetCountAsync(await GetFilterForCurrentUserAsync(options));
+        public async Task<int> GetCountForOwnerIdAsync(Int64 ownerId, QueryOptions? options = null)
+            => await GetCountAsync(await GetFilterForOwnerIdAsync(ownerId, options));
+
+        public Int64 GetCurrentUserId()
+        {
+            var httpContext = httpContextAccessor.HttpContext
+                ?? throw new NoAuthorizationHeaderException();
+
+            var userId = (httpContext.Items["UserId"] as Int64?)
+                ?? throw new NoSessionUserDataException();
+
+            if (userId <= 0)
+                throw new NoSessionUserDataException();
+
+            return userId!;
+        }
+
+        public async Task<int> GetCountForCurrentUserAsync(QueryOptions? options = null)
+            => await GetCountForOwnerIdAsync(GetCurrentUserId(), options);
+
+        public async Task<IEnumerable<Int64>> GetListIdForOwnerIdAsync(Int64 ownerId, QueryOptions? options = null)
+            => await GetListIdAsync(await GetFilterForOwnerIdAsync(ownerId, options));
 
         public async Task<IEnumerable<Int64>> GetListIdForCurrentUserAsync(QueryOptions? options = null)
-            => await GetListIdAsync(await GetFilterForCurrentUserAsync(options));
+            => await GetListIdForOwnerIdAsync(GetCurrentUserId(), options);
 
         public async Task<IEnumerable<Guid>> GetListUuidForCurrentUserAsync(QueryOptions? options = null)
-            => await GetListUuidAsync(await GetFilterForCurrentUserAsync(options));
+            => await GetListUuidAsync(await GetFilterForOwnerIdAsync(GetCurrentUserId(), options));
 
         public (QueryOptions, DataDictionary) GetOptionsForUpdateInherited(QueryOptions? options = null)
         {

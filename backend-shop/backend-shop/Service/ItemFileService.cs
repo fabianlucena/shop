@@ -2,6 +2,8 @@
 using backend_shop.Entities;
 using backend_shop.Exceptions;
 using backend_shop.IServices;
+using Microsoft.AspNetCore.Http;
+using RFAuth.Exceptions;
 using RFOperators;
 using RFService.IRepo;
 using RFService.Repo;
@@ -12,7 +14,8 @@ namespace backend_shop.Service
     public class ItemFileService(
         IRepo<ItemFile> repo,
         IItemService itemService,
-        IServiceProvider serviceProvider
+        IServiceProvider serviceProvider,
+        IHttpContextAccessor httpContextAccessor
     )
         : ServiceCreatedAtIdUuidName<IRepo<ItemFile>, ItemFile>(repo),
             IItemFileService
@@ -84,28 +87,46 @@ namespace backend_shop.Service
             return data;
         }
 
-        public async Task<QueryOptions> GetFilterForCurrentUserAsync(QueryOptions? options = null)
+        public async Task<QueryOptions> GetFilterForOwnerIdAsync(Int64 ownerId, QueryOptions? options = null)
         {
-            var itemsId = await itemService.GetListIdForCurrentUserAsync(options);
+            var itemsId = await itemService.GetListIdForOwnerIdAsync(ownerId, options);
 
-            options = (options != null) ?
-                new QueryOptions(options) :
-                new();
+            options = new QueryOptions();
             options.AddFilter("ItemId", itemsId);
 
             return options;
         }
 
-        public async Task<Int64> GetCountForCurrentUserAsync(QueryOptions? options = null)
-            => await GetCountAsync(await GetFilterForCurrentUserAsync(options));
+        public async Task<int> GetCountForOwnerIdAsync(Int64 ownerId, QueryOptions? options = null)
+            => await GetCountAsync(await GetFilterForOwnerIdAsync(ownerId, options));
 
-        public async Task<Int64> GetAggregatedSizeForCurrentUserAsync(QueryOptions? options = null)
+        public Int64 GetCurrentUserId()
         {
-            options = await GetFilterForCurrentUserAsync(options);
+            var httpContext = httpContextAccessor.HttpContext
+                ?? throw new NoAuthorizationHeaderException();
+
+            var userId = (httpContext.Items["UserId"] as Int64?)
+                ?? throw new NoSessionUserDataException();
+
+            if (userId <= 0)
+                throw new NoSessionUserDataException();
+
+            return userId!;
+        }
+
+        public async Task<int> GetCountForCurrentUserAsync(QueryOptions? options = null)
+            => await GetCountForOwnerIdAsync(GetCurrentUserId(), options);
+
+        public async Task<Int64> GetAggregatedSizeForOwnerIdAsync(Int64 ownerId, QueryOptions? options = null)
+        {
+            options = await GetFilterForOwnerIdAsync(ownerId, options);
             options.Select ??= [Op.Sum(Op.DataLength("Content"))];
-            
+
             return await GetInt64Async(options);
         }
+
+        public async Task<Int64> GetAggregatedSizeForCurrentUserAsync(QueryOptions? options = null)
+            => await GetAggregatedSizeForOwnerIdAsync(GetCurrentUserId(), options);
 
         public async Task<IEnumerable<ItemFile>> AddForItemUuidAsync(Guid itemUuid, FilesCollectionDTO files)
             => await AddForItemIdAsync(await itemService.GetSingleIdForUuidAsync(itemUuid), files);

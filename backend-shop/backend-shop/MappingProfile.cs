@@ -72,7 +72,7 @@ namespace backend_shop
                 .ForMember(dest => dest.CategoryUuid, opt => opt.MapFrom(src => src.Category != null ? (Guid?)src.Category.Uuid : null))
                 .ForMember(dest => dest.StoreUuid, opt => opt.MapFrom(src => src.Store != null ? (Guid?)src.Store.Uuid : null));
 
-            CreateMap<Plan, PlanResponse>();
+            CreateMap<Plan, PlanDTO>();
         }
     }
 }

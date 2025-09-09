@@ -16,9 +16,13 @@ namespace backend_shop.IServices
     {
         Task<bool> CheckForUuidAndCurrentUserAsync(Guid uuid, QueryOptions? options = null);
 
-        Task<QueryOptions> GetFilterForCurrentUserAsync(QueryOptions? options = null);
+        Task<QueryOptions> GetFilterForOwnerIdAsync(Int64 ownerId, QueryOptions? options = null);
 
-        Task<Int64> GetCountForCurrentUserAsync(QueryOptions? options = null);
+        Task<int> GetCountForOwnerIdAsync(Int64 ownerId, QueryOptions? options = null);
+
+        Task<int> GetCountForCurrentUserAsync(QueryOptions? options = null);
+
+        Task<IEnumerable<Int64>> GetListIdForOwnerIdAsync(Int64 ownerId, QueryOptions? options = null);
 
         Task<IEnumerable<Int64>> GetListIdForCurrentUserAsync(QueryOptions? options = null);
 

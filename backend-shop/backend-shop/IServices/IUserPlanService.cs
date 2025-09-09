@@ -1,4 +1,5 @@
-﻿using backend_shop.Entities;
+﻿using backend_shop.DTO;
+using backend_shop.Entities;
 using RFService.IServices;
 
 namespace backend_shop.IServices
@@ -8,6 +9,8 @@ namespace backend_shop.IServices
             IServiceTimestamps<UserPlan>
     {
         Task<Plan> GetSinglePlanForCurrentUserAsync();
+
+        Task<UsedPlanDTO> GetUsedPlanForCurrentUserAsync();
 
         Task<int> GetMaxTotalCommercesForUserId(Int64 userId);
 
