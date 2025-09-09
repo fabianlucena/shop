@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, View } from 'react-native';
 
 import Screen from '../components/Screen';
 import LabelData from '../components/LabelData';
-
+import UsedAvailablePieChart from '../components/UsedAvailablePieChart';
 import usePlan from '../services/usePlan';
-
 import { toFixed } from '../libs/format';
 
 export default function PlanScreen() {
@@ -42,70 +41,101 @@ export default function PlanScreen() {
           <LabelData
             label="Comercios:"
             description="Cantidad máxima de comercios."
-            data={plan.used.totalCommercesCount  + ' / ' + plan.available.maxTotalCommerces}
+            data={<UsedAvailablePieChart
+              used={plan.used.totalCommercesCount}
+              total={plan.available.maxTotalCommerces}
+            />}
           />
 
           <LabelData
             label="Comercios habilitados:"
             description="Cantidad máxima de comercios habilitados."
-            data={plan.used.enabledCommercesCount  + ' / ' + plan.available.maxEnabledCommerces}
+            data={<UsedAvailablePieChart
+              used={plan.used.enabledCommercesCount}
+              total={plan.available.maxEnabledCommerces}
+            />}
           />
 
           <LabelData
             label="Tiendas:"
             description="Cantidad máxima de tiendas."
-            data={plan.used.totalStoresCount  + ' / ' + plan.available.maxTotalStores}
+            data={<UsedAvailablePieChart
+              used={plan.used.totalStoresCount}
+              total={plan.available.maxTotalStores}
+            />}
           />
 
           <LabelData
             label="Tiendas habilitadas:"
             description="Cantidad máxima de tiendas habilitadas."
-            data={plan.used.enabledStoresCount  + ' / ' + plan.available.maxEnabledStores}
+            data={<UsedAvailablePieChart
+              used={plan.used.enabledStoresCount}
+              total={plan.available.maxEnabledStores}
+            />}
           />
 
           <LabelData
             label="Productos:"
             description="Cantidad máxima de productos:"
-            data={plan.used.totalItemsCount  + ' / ' + plan.available.maxTotalItems}
+            data={<UsedAvailablePieChart
+              used={plan.used.totalItemsCount}
+              total={plan.available.maxTotalItems}
+            />}
           />
 
           <LabelData
             label="Productos habilitados:"
             description="Cantidad máxima de productos habilitados."
-            data={plan.used.enabledItemsCount  + ' / ' + plan.available.maxEnabledItems}
+            data={<UsedAvailablePieChart
+              used={plan.used.enabledItemsCount}
+              total={plan.available.maxEnabledItems}
+            />}
           />
 
           <LabelData
             label="Imágenes de productos:"
             description="Cantidad máxima de imágenes de productos."
-            data={plan.used.totalItemsImagesCount  + ' / ' + plan.available.maxTotalItemsImages}
+            data={<UsedAvailablePieChart
+              used={plan.used.totalItemsImagesCount}
+              total={plan.available.maxTotalItemsImages}
+            />}
           />
 
           <LabelData
             label="Imágenes de productos habilitados:"
             description="Cantidad máxima de imágenes de productos habilitados."
-            data={plan.used.enabledItemsImagesCount  + ' / ' + plan.available.maxEnabledItemsImages}
+            data={<UsedAvailablePieChart
+              used={plan.used.enabledItemsImagesCount}
+              total={plan.available.maxEnabledItemsImages}
+            />}
           />
 
           <LabelData
             label="Capacidad para imágenes de productos:"
             description="Capacidad máxima para imágenes de productos."
-            
-            data={
-              toFixed(plan.used.aggregattedSizeItemsImages / 1000000 || 0, 2)
-              + ' / ' +
-              toFixed(plan.available.maxAggregattedSizeItemsImages / 1000000, 2) + ' MB'
-            }
+            data={<UsedAvailablePieChart
+              used={plan.used.aggregattedSizeItemsImages}
+              total={plan.available.maxAggregattedSizeItemsImages}
+              label={
+                toFixed(plan.used.aggregattedSizeItemsImages / 1000000 || 0, 2)
+                + ' / ' +
+                toFixed(plan.available.maxAggregattedSizeItemsImages / 1000000, 2) + ' MB'
+              }
+            />}
           />
 
           <LabelData
             label="Capacidad para imágenes de productos habilitados:"
             description="Capacidad máxima para imágenes de productos habilitados."
-            data={
-              toFixed(plan.used.enabledAggregattedSizeItemsImages / 1000000 || 0, 2)
-              + ' / ' +
-              toFixed(plan.available.maxEnabledAggregattedSizeItemsImages / 1000000, 2) + ' MB'
-            }
+            data={<UsedAvailablePieChart
+              used={plan.used.enabledAggregattedSizeItemsImages}
+              total={plan.available.maxEnabledAggregattedSizeItemsImages}
+              label={
+                toFixed(plan.used.enabledAggregattedSizeItemsImages / 1000000 || 0, 2)
+                + ' / ' +
+                toFixed(plan.available.maxEnabledAggregattedSizeItemsImages / 1000000, 2) + ' MB'
+              }
+            />}
           />
         </>}
       </ScrollView>
