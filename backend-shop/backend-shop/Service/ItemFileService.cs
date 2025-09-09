@@ -61,27 +61,27 @@ namespace backend_shop.Service
                 throw new CommerceDoesNotExistException();
 
             var userPlanService = serviceProvider.GetRequiredService<IUserPlanService>();
+            var plan = await userPlanService.GetSinglePlanForCurrentUserAsync();
+
+            if (data.Content.Length > plan.MaxItemImageSize)
+                throw new ImageIsTooLargeException();
 
             var totalCount = await GetCountForCurrentUserAsync(new QueryOptions { Switches = { { "IncludeDisabled", true} } });
-            var totalCountMax =  await userPlanService.GetMaxTotalItemsImagesForCurrentUser();
-            if (totalCount >= totalCountMax)
+            if (totalCount >= plan.MaxTotalItemsImages)
                 throw new TotalItemsImagesLimitReachedException();
 
             var enabledCount = await GetCountForCurrentUserAsync();
-            var enabledCountMax = await userPlanService.GetMaxEnabledItemsImagesForCurrentUser();
-            if (enabledCount > enabledCountMax)
+            if (enabledCount > plan.MaxEnabledItemsImages)
                 throw new MaxEnabledItemsImagesLimitReachedException();
 
             var aggregattedSize = await GetAggregatedSizeForCurrentUserAsync(new QueryOptions { Switches = { { "IncludeDisabled", true } } });
             aggregattedSize += data.Content.Length;
-            var aggregattedSizeMax = await userPlanService.GetMaxAggregattedSizeItemsImagesForCurrentUser();
-            if (aggregattedSize >= aggregattedSizeMax)
+            if (aggregattedSize >= plan.MaxAggregattedSizeItemsImages)
                 throw new TotalAggregattedSizeItemImagesLimitReachedException();
 
             var enabledAggregattedSize = await GetAggregatedSizeForCurrentUserAsync();
             enabledAggregattedSize += data.Content.Length;
-            var enabledAggregattedSizeMax = await userPlanService.GetMaxEnabledAggregattedSizeItemsImagesForCurrentUser();
-            if (enabledAggregattedSize >= enabledAggregattedSizeMax)
+            if (enabledAggregattedSize >= plan.MaxEnabledAggregattedSizeItemsImages)
                 throw new MaxEnabledAggregattedSizeItemImagesLimitReachedException();
 
             return data;

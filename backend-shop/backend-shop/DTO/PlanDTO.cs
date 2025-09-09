@@ -24,8 +24,10 @@
 
         public int? MaxEnabledItemsImages { get; set; }
 
-        public int? MaxAggregattedSizeItemsImages { get; set; }
+        public Int64? MaxItemImageSize { get; set; }
 
-        public int? MaxEnabledAggregattedSizeItemsImages { get; set; }
+        public Int64? MaxAggregattedSizeItemsImages { get; set; }
+
+        public Int64? MaxEnabledAggregattedSizeItemsImages { get; set; }
     }
 }

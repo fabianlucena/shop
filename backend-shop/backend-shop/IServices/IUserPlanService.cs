@@ -40,8 +40,8 @@ namespace backend_shop.IServices
 
         Task<int> GetMaxEnabledItemsImagesForCurrentUser();
 
-        Task<int> GetMaxAggregattedSizeItemsImagesForCurrentUser();
+        Task<Int64> GetMaxAggregattedSizeItemsImagesForCurrentUser();
 
-        Task<int> GetMaxEnabledAggregattedSizeItemsImagesForCurrentUser();
+        Task<Int64> GetMaxEnabledAggregattedSizeItemsImagesForCurrentUser();
     }
 }

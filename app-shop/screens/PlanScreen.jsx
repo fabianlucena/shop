@@ -111,6 +111,12 @@ export default function PlanScreen() {
           />
 
           <LabelData
+            label="Tamaño de imágenes de productos:"
+            description="Tamaño máximo para imágenes de productos."
+            data={toFixed(plan.available.maxItemImageSize / 1000000, 2) + ' MB'}
+          />
+
+          <LabelData
             label="Capacidad para imágenes de productos:"
             description="Capacidad máxima para imágenes de productos."
             data={<UsedLeftPieChart

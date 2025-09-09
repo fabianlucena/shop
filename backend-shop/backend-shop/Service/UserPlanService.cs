@@ -54,6 +54,7 @@ namespace backend_shop.Service
             plan.MaxEnabledItems ??= basePlan.MaxEnabledItems;
             plan.MaxTotalItemsImages ??= basePlan.MaxTotalItemsImages;
             plan.MaxEnabledItemsImages ??= basePlan.MaxEnabledItemsImages;
+            plan.MaxItemImageSize ??= basePlan.MaxItemImageSize;
             plan.MaxAggregattedSizeItemsImages ??= basePlan.MaxAggregattedSizeItemsImages;
             plan.MaxEnabledAggregattedSizeItemsImages ??= basePlan.MaxEnabledAggregattedSizeItemsImages;
 
@@ -246,7 +247,7 @@ namespace backend_shop.Service
                 ?? default;
         }
 
-        public async Task<int> GetMaxAggregattedSizeItemsImagesForCurrentUserId(Int64 userId)
+        public async Task<Int64> GetMaxAggregattedSizeItemsImagesForCurrentUserId(Int64 userId)
         {
             var options = new QueryOptions
             {
@@ -265,7 +266,7 @@ namespace backend_shop.Service
                 ?? default;
         }
 
-        public async Task<int> GetMaxEnabledAggregattedSizeItemsImagesForCurrentUserId(Int64 userId)
+        public async Task<Int64> GetMaxEnabledAggregattedSizeItemsImagesForCurrentUserId(Int64 userId)
         {
             var options = new QueryOptions
             {
@@ -396,7 +397,7 @@ namespace backend_shop.Service
             return await GetMaxEnabledItemsImagesForCurrentUserId(userId);
         }
 
-        public async Task<int> GetMaxAggregattedSizeItemsImagesForCurrentUser()
+        public async Task<Int64> GetMaxAggregattedSizeItemsImagesForCurrentUser()
         {
             var httpContext = httpContextAccessor.HttpContext
                 ?? throw new NoAuthorizationHeaderException();
@@ -410,7 +411,7 @@ namespace backend_shop.Service
             return await GetMaxAggregattedSizeItemsImagesForCurrentUserId(userId);
         }
 
-        public async Task<int> GetMaxEnabledAggregattedSizeItemsImagesForCurrentUser()
+        public async Task<Int64> GetMaxEnabledAggregattedSizeItemsImagesForCurrentUser()
         {
             var httpContext = httpContextAccessor.HttpContext
                 ?? throw new NoAuthorizationHeaderException();

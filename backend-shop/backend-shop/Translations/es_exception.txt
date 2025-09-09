@@ -4,6 +4,9 @@ El comercio no existe.
 Categorys does not exist.
 El rubro no existe.
 
+The image is too large.
+La imagen es demasiado grande.
+
 Item does not exist.
 No existe el artículo.
 
