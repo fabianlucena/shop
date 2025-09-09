@@ -87,8 +87,8 @@ namespace backend_shop.Service
                 EnabledItemsCount = await itemService.GetCountForOwnerIdAsync(ownerId),
                 TotalItemsImagesCount = await itemFileService.GetCountForOwnerIdAsync(ownerId, includeDisabledOptions),
                 EnabledItemsImagesCount = await itemFileService.GetCountForOwnerIdAsync(ownerId),
-                AggregattedSizeItemsImagesCount = await itemFileService.GetAggregatedSizeForOwnerIdAsync(ownerId, includeDisabledOptions),
-                EnabledAggregattedSizeItemsImagesCount = await itemFileService.GetAggregatedSizeForOwnerIdAsync(ownerId),
+                AggregattedSizeItemsImages = await itemFileService.GetAggregatedSizeForOwnerIdAsync(ownerId, includeDisabledOptions),
+                EnabledAggregattedSizeItemsImages = await itemFileService.GetAggregatedSizeForOwnerIdAsync(ownerId),
             };
 
             return usedPlan;
