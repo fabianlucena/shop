@@ -25,10 +25,10 @@ export default function Screeen({
         <View style={[
           styles.screen,
           {
-            paddingTop: insets.top,
+            paddingTop: 0,
             paddingBottom: insets.bottom,
-            paddingLeft: insets.left,
-            paddingRight: insets.right,
+            paddingLeft: 0,
+            paddingRight: 0,
           }
         ]}>
           {showCommerceName && commerceName && <Text style={{...styles.text, ...styles.header, ...styles.currentCommerce}}>Administrando: {commerceName}</Text> || null}
