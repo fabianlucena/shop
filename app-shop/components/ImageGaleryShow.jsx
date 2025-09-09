@@ -16,6 +16,7 @@ export default function ImageGaleryShow({
   ...props
 }) {
   const [scrollWidth, setScrollWidth] = useState(0);
+  const ref = useRef(null);
   const scrollRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFullScreen, setIsFullScreen] = useState(false);
@@ -62,6 +63,7 @@ export default function ImageGaleryShow({
   }
 
   const control = <View
+      ref={ref}
       onLayout={event => {
         if (Platform.OS !== 'web') {
           setScrollWidth(Math.floor(event.nativeEvent.layout.width));
