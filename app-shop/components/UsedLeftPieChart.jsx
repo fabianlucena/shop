@@ -1,17 +1,18 @@
 import { View, Text } from 'react-native';
 import { PieChart } from 'react-native-chart-kit';
 
-export default function UsedAvailablePieChart({
+export default function UsedLeftPieChart({
   used,
-  available,
+  left,
   total,
   label,
+  numberFormat = (n) => n,
 }) {
   return <View style={{flexDirection: 'row', alignItems: 'center'}}>
       <PieChart
         data={[
           { color: "blue", value: used },
-          { color: "lightblue", value: available ?? total - used },
+          { color: "lightblue", value: left ?? total - used },
         ]}
         width={35}
         height={25}
@@ -23,6 +24,6 @@ export default function UsedAvailablePieChart({
         backgroundColor="transparent"
         paddingLeft="3"
       />
-      <Text>{label ?? used  + ' / ' + total ?? available + used}</Text>
+      <Text>{label ?? numberFormat(used)  + ' de ' + numberFormat(total ?? left + used) + ' disponibles: ' + numberFormat(left ?? total - used)}</Text>
     </View>;
 }
