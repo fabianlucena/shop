@@ -5,3 +5,7 @@ export function formatCurrency(num) {
     maximumFractionDigits: 2
   }).format(num);
 }
+
+export function toFixed(num, fixed) {
+  return Number.parseFloat(num).toFixed(fixed).replaceAll(/\./g, ',');
+}

@@ -18,8 +18,8 @@
 
         public int? EnabledItemsImagesCount { get; set; }
 
-        public Int64? AggregattedSizeItemsImagesCount { get; set; }
+        public Int64? AggregattedSizeItemsImages { get; set; }
 
-        public Int64? EnabledAggregattedSizeItemsImagesCount { get; set; }
+        public Int64? EnabledAggregattedSizeItemsImages { get; set; }
     }
 }

@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     flexDirection: 'column',
     padding: 10,
+    alignItems: 'stretch',
   },
 
   background: {
@@ -98,6 +99,11 @@ const styles = StyleSheet.create({
   label: {
     color: '#194210',
     fontSize: 14,
+  },
+
+  description: {
+    color: '#194210',
+    fontSize: 10,
   },
 
   header: {
@@ -215,6 +221,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     padding: 5,
     width: '100%',
+  },
+
+  labelData: {
+    margin: 5,
+    backgroundColor: '#e6ffe6',
+    padding: 5,
+  },
+
+  labelDataData: {
+    marginHorizontal: 30,
   },
 });
 
