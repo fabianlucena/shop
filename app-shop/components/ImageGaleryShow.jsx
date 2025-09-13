@@ -79,7 +79,7 @@ export default function ImageGaleryShow({
               bottom: parseInt(computed.marginBottom),
               left: parseInt(computed.marginLeft),
             };
-            padding = {
+            const padding = {
               top: parseInt(computed.paddingTop),
               right: parseInt(computed.paddingRight),
               bottom: parseInt(computed.paddingBottom),
