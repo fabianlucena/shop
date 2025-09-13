@@ -22,6 +22,8 @@
 
         public int? MaxTotalItemsImages { get; set; }
 
+        public int? MaxTotalImagesPerSingleItem { get; set; }
+
         public int? MaxEnabledItemsImages { get; set; }
 
         public Int64? MaxItemImageSize { get; set; }
@@ -31,6 +33,8 @@
         public Int64? MaxEnabledItemsImagesAggregatedSize { get; set; }
 
         public int? MaxTotalCommercesImages { get; set; }
+
+        public int? MaxTotalImagesPerSingleCommerce { get; set; }
 
         public int? MaxEnabledCommercesImages { get; set; }
 

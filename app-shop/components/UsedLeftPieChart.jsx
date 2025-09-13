@@ -24,6 +24,6 @@ export default function UsedLeftPieChart({
         backgroundColor="transparent"
         paddingLeft="3"
       />
-      <Text>{label ?? numberFormat(used)  + ' de ' + numberFormat(total ?? left + used) + ' disponibles: ' + numberFormat(left ?? total - used)}</Text>
+      <Text>{label ?? numberFormat(used)  + ' de ' + numberFormat(total ?? left + used) + ' (' + numberFormat(left ?? total - used) + ')'}</Text>
     </View>;
 }

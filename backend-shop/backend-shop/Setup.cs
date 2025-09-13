@@ -20,6 +20,7 @@ namespace backend_shop
             CreateTable<Plan>(services);
             CreateTable<UserPlan>(services);
             CreateTable<Commerce>(services);
+            CreateTable<CommerceFile>(services);
             CreateTable<Store>(services);
             CreateTable<Category>(services);
             CreateTable<Item>(services);

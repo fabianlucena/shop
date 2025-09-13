@@ -56,7 +56,7 @@
     <None Update="Translations\es.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Translations\es_exception.txt">
+    <None Update="Translations\exception_es.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

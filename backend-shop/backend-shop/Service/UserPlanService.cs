@@ -53,11 +53,13 @@ namespace backend_shop.Service
             plan.MaxTotalItems ??= basePlan.MaxTotalItems;
             plan.MaxEnabledItems ??= basePlan.MaxEnabledItems;
             plan.MaxTotalItemsImages ??= basePlan.MaxTotalItemsImages;
+            plan.MaxTotalImagesPerSingleItem ??= basePlan.MaxTotalImagesPerSingleItem;
             plan.MaxEnabledItemsImages ??= basePlan.MaxEnabledItemsImages;
             plan.MaxItemImageSize ??= basePlan.MaxItemImageSize;
             plan.MaxItemsImagesAggregatedSize ??= basePlan.MaxItemsImagesAggregatedSize;
             plan.MaxEnabledItemsImagesAggregatedSize ??= basePlan.MaxEnabledItemsImagesAggregatedSize;
             plan.MaxTotalCommercesImages ??= basePlan.MaxTotalCommercesImages;
+            plan.MaxTotalImagesPerSingleCommerce ??= basePlan.MaxTotalImagesPerSingleCommerce;
             plan.MaxEnabledCommercesImages ??= basePlan.MaxEnabledCommercesImages;
             plan.MaxCommerceImageSize ??= basePlan.MaxCommerceImageSize;
             plan.MaxCommercesImagesAggregatedSize ??= basePlan.MaxCommercesImagesAggregatedSize;

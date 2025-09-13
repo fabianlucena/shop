@@ -121,7 +121,7 @@ namespace backend_shop.Service
             options = await GetFilterForOwnerIdAsync(ownerId, options);
             options.Select ??= [Op.Sum(Op.DataLength("Content"))];
 
-            return await GetInt64Async(options);
+            return await GetInt64Async(options) ?? 0;
         }
 
         public async Task<Int64> GetAggregatedSizeForCurrentUserAsync(QueryOptions? options = null)

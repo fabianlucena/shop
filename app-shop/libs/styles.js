@@ -230,6 +230,7 @@ const styles = StyleSheet.create({
   },
 
   labelDataData: {
+    fontSize: 18,
     marginHorizontal: 30,
   },
 });

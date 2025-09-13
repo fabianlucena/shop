@@ -93,6 +93,18 @@ export default function PlanScreen() {
           />
 
           <LabelData
+            label="Imágenes por productos:"
+            description="Cantidad máxima de imágenes para cada producto."
+            data={plan.available.maxTotalImagesPerSingleItem}
+          />
+
+          <LabelData
+            label="Tamaño de imágenes de productos:"
+            description="Tamaño máximo para imágenes de productos."
+            data={toFixed(plan.available.maxItemImageSize / 1000000, 2) + ' MB'}
+          />
+
+          <LabelData
             label="Imágenes de productos:"
             description="Cantidad máxima de imágenes de productos."
             data={<UsedLeftPieChart
@@ -108,12 +120,6 @@ export default function PlanScreen() {
               used={plan.used.enabledItemsImagesCount}
               total={plan.available.maxEnabledItemsImages}
             />}
-          />
-
-          <LabelData
-            label="Tamaño de imágenes de productos:"
-            description="Tamaño máximo para imágenes de productos."
-            data={toFixed(plan.available.maxItemImageSize / 1000000, 2) + ' MB'}
           />
 
           <LabelData
@@ -137,9 +143,33 @@ export default function PlanScreen() {
           />
 
           <LabelData
+            label="Imágenes por comercios:"
+            description="Cantidad máxima de imágenes para cada comercio."
+            data={plan.available.maxTotalImagesPerSingleCommerce}
+          />
+
+          <LabelData
             label="Tamaño de imágenes de comercios:"
             description="Tamaño máximo para imágenes de comercios."
             data={toFixed(plan.available.maxCommerceImageSize / 1000000, 2) + ' MB'}
+          />
+
+          <LabelData
+            label="Imágenes de comercios:"
+            description="Cantidad máxima de imágenes de comercios."
+            data={<UsedLeftPieChart
+              used={plan.used.totalCommercesImagesCount}
+              total={plan.available.maxTotalCommercesImages}
+            />}
+          />
+
+          <LabelData
+            label="Imágenes de comercios habilitados:"
+            description="Cantidad máxima de imágenes de comercios habilitados."
+            data={<UsedLeftPieChart
+              used={plan.used.enabledCommercesImagesCount}
+              total={plan.available.maxEnabledCommercesImages}
+            />}
           />
 
           <LabelData

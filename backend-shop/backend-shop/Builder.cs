@@ -64,6 +64,7 @@ namespace backend_shop
             services.AddScoped<IPlanService, PlanService>();
             services.AddScoped<IUserPlanService, UserPlanService>();
             services.AddScoped<ICommerceService, CommerceService>();
+            services.AddScoped<ICommerceFileService, CommerceFileService>();
             services.AddScoped<IStoreService, StoreService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IItemService, ItemService>();
@@ -79,6 +80,7 @@ namespace backend_shop
             services.AddScoped<Dapper<Plan>, Dapper<Plan>>();
             services.AddScoped<Dapper<UserPlan>, Dapper<UserPlan>>();
             services.AddScoped<Dapper<Commerce>, Dapper<Commerce>>();
+            services.AddScoped<Dapper<CommerceFile>, Dapper<CommerceFile>>();
             services.AddScoped<Dapper<Store>, Dapper<Store>>();
             services.AddScoped<Dapper<Category>, Dapper<Category>>();
             services.AddScoped<Dapper<Item>, Dapper<Item>>();
@@ -87,6 +89,7 @@ namespace backend_shop
             services.AddScoped<IRepo<Plan>, Dapper<Plan>>();
             services.AddScoped<IRepo<UserPlan>, Dapper<UserPlan>>();
             services.AddScoped<IRepo<Commerce>, Dapper<Commerce>>();
+            services.AddScoped<IRepo<CommerceFile>, Dapper<CommerceFile>>();
             services.AddScoped<IRepo<Store>, Dapper<Store>>();
             services.AddScoped<IRepo<Category>, Dapper<Category>>();
             services.AddScoped<IRepo<Item>, Dapper<Item>>();
@@ -101,8 +104,7 @@ namespace backend_shop
                 },
                 GetSqlSelectedProperty = (driver, property, options, defaultAlias) =>
                 {
-                    if (property.PropertyType == typeof(Point)
-                    )
+                    if (property.PropertyType == typeof(Point))
                         return $"{driver.GetColumnName(property.Name, options, defaultAlias)}.STAsText() AS {driver.GetColumnAlias(property.Name)}";
 
                     return null;
