@@ -18,6 +18,7 @@ import ItemListScreen from './ItemListScreen';
 import ItemFormScreen from './ItemFormScreen';
 import SelectField from '../components/SelectField';
 import PlanScreen from './PlanScreen';
+import PlanDetailScreen from './PlanDetailScreen';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -62,6 +63,7 @@ export default function ContentScreen() {
         <Stack.Screen name="ItemForm"     component={ItemFormScreen}     options={{ title: 'Artículo' }}/>
         <Stack.Screen name="CommerceForm" component={CommerceFormScreen} options={{ title: 'Comercio' }}/>
         <Stack.Screen name="StoreForm"    component={StoreFormScreen}    options={{ title: 'Local' }}/>
+        <Stack.Screen name="PlanDetail"   component={PlanDetailScreen}   options={{ title: 'Detalles del Plan' }}/>
       </Stack.Navigator>
     </NavigationContainer>;
 }
