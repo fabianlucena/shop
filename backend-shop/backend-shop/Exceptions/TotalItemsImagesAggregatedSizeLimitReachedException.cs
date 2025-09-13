@@ -2,7 +2,7 @@
 
 namespace backend_shop.Exceptions
 {
-    public class TotalAggregattedSizeItemImagesLimitReachedException()
+    public class TotalItemsImagesAggregatedSizeLimitReachedException()
         : HttpException(400, "You can't create more items images because you've reached the size limit.")
     {
     }

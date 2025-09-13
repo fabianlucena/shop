@@ -6,6 +6,9 @@ using RFAuth;
 using RFAuthDapper;
 using RFDapper;
 using RFDapperDriverSQLServer;
+using RFDBLocalizer;
+using RFDBLocalizer.IServices;
+using RFDBLocalizerDapper;
 using RFHttpAction;
 using RFHttpActionDapper;
 using RFHttpExceptionsL10n;
@@ -56,6 +59,7 @@ namespace backend_shop
             services.AddRFRegister();
             services.AddRFHttpAction();
             services.AddRFHttpExceptionsL10n();
+            services.AddRFDBLocalizer();
 
             services.AddScoped<IPlanService, PlanService>();
             services.AddScoped<IUserPlanService, UserPlanService>();
@@ -70,6 +74,7 @@ namespace backend_shop
             services.AddRFUserEmailVerifiedDapper();
             services.AddRFRBACDapper();
             services.AddRFHttpActionDapper();
+            services.AddRFDBLocalizerDapper();
 
             services.AddScoped<Dapper<Plan>, Dapper<Plan>>();
             services.AddScoped<Dapper<UserPlan>, Dapper<UserPlan>>();
@@ -115,8 +120,14 @@ namespace backend_shop
             using var scope = app.Services.CreateScope();
             var serviceProvider = scope.ServiceProvider;
 
-            var l10n = serviceProvider.GetService<IL10n>();
-            l10n?.AddTranslationsFromPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Translations"));
+            RFAuth_es.Setup.ConfigureDataRFAuthEs(serviceProvider);
+            RFService_es.Setup.ConfigureDataRFServiceEs(serviceProvider);
+
+            var l10n = serviceProvider.GetRequiredService<IL10n>();
+            var translator = serviceProvider.GetRequiredService<IDBTranslator>();
+
+            l10n.AddTranslationsFromFile("es", "", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Translations\\es.txt"));
+            l10n.AddTranslationsFromFile("es", "exception", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Translations\\exception_es.txt"));
         }
 
         public static void ConfigureRepo(this WebApplication app)

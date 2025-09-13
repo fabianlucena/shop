@@ -120,8 +120,8 @@ export default function PlanScreen() {
             label="Capacidad para imágenes de productos:"
             description="Capacidad máxima para imágenes de productos."
             data={<UsedLeftPieChart
-              used={plan.used.aggregattedSizeItemsImages}
-              total={plan.available.maxAggregattedSizeItemsImages}
+              used={plan.used.itemsImagesAggregatedSize}
+              total={plan.available.maxItemsImagesAggregatedSize}
               numberFormat={n => toFixed(n / 1000000, 2) + ' MB'}
             />}
           />
@@ -130,8 +130,34 @@ export default function PlanScreen() {
             label="Capacidad para imágenes de productos habilitados:"
             description="Capacidad máxima para imágenes de productos habilitados."
             data={<UsedLeftPieChart
-              used={plan.used.enabledAggregattedSizeItemsImages}
-              total={plan.available.maxEnabledAggregattedSizeItemsImages}
+              used={plan.used.enabledItemsImagesAggregatedSize}
+              total={plan.available.maxEnabledItemsImagesAggregatedSize}
+              numberFormat={n => toFixed(n / 1000000, 2) + ' MB'}
+            />}
+          />
+
+          <LabelData
+            label="Tamaño de imágenes de comercios:"
+            description="Tamaño máximo para imágenes de comercios."
+            data={toFixed(plan.available.maxCommerceImageSize / 1000000, 2) + ' MB'}
+          />
+
+          <LabelData
+            label="Capacidad para imágenes de comercios:"
+            description="Capacidad máxima para imágenes de comercios."
+            data={<UsedLeftPieChart
+              used={plan.used.commercesImagesAggregatedSize}
+              total={plan.available.maxCommercesImagesAggregatedSize}
+              numberFormat={n => toFixed(n / 1000000, 2) + ' MB'}
+            />}
+          />
+
+          <LabelData
+            label="Capacidad para imágenes de comercios habilitados:"
+            description="Capacidad máxima para imágenes de comercios habilitados."
+            data={<UsedLeftPieChart
+              used={plan.used.enabledCommercesImagesAggregatedSize}
+              total={plan.available.maxEnabledCommercesImagesAggregatedSize}
               numberFormat={n => toFixed(n / 1000000, 2) + ' MB'}
             />}
           />

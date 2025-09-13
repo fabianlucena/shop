@@ -33,7 +33,10 @@
   <ItemGroup>
     <ProjectReference Include="..\rf-nugets\RFAuthDapper\RFAuthDapper.csproj" />
     <ProjectReference Include="..\rf-nugets\RFAuth\RFAuth.csproj" />
+    <ProjectReference Include="..\rf-nugets\RFAuth_es\RFAuth_es.csproj" />
     <ProjectReference Include="..\rf-nugets\RFDapperDriverSQLServer\RFDapperDriverSQLServer.csproj" />
+    <ProjectReference Include="..\rf-nugets\RFDBLocalizerDapper\RFDBLocalizerDapper.csproj" />
+    <ProjectReference Include="..\rf-nugets\RFDBLocalizer\RFDBLocalizer.csproj" />
     <ProjectReference Include="..\rf-nugets\RFHttpActionDapper\RFHttpActionDapper.csproj" />
     <ProjectReference Include="..\rf-nugets\RFHttpAction\RFHttpAction.csproj" />
     <ProjectReference Include="..\rf-nugets\RFHttpExceptionsL10n\RFHttpExceptionsL10n.csproj" />
@@ -44,11 +47,15 @@
     <ProjectReference Include="..\rf-nugets\RFRBACDapper\RFRBACDapper.csproj" />
     <ProjectReference Include="..\rf-nugets\RFRBAC\RFRBAC.csproj" />
     <ProjectReference Include="..\rf-nugets\RFRegister\RFRegister.csproj" />
+    <ProjectReference Include="..\rf-nugets\RFService_es\RFService_es.csproj" />
     <ProjectReference Include="..\rf-nugets\RFUserEmailVerifiedDapper\RFUserEmailVerifiedDapper.csproj" />
     <ProjectReference Include="..\rf-nugets\RFUserEmailVerified\RFUserEmailVerified.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Translations\es.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Translations\es_exception.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

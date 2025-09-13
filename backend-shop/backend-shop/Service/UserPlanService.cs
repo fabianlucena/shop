@@ -55,8 +55,13 @@ namespace backend_shop.Service
             plan.MaxTotalItemsImages ??= basePlan.MaxTotalItemsImages;
             plan.MaxEnabledItemsImages ??= basePlan.MaxEnabledItemsImages;
             plan.MaxItemImageSize ??= basePlan.MaxItemImageSize;
-            plan.MaxAggregattedSizeItemsImages ??= basePlan.MaxAggregattedSizeItemsImages;
-            plan.MaxEnabledAggregattedSizeItemsImages ??= basePlan.MaxEnabledAggregattedSizeItemsImages;
+            plan.MaxItemsImagesAggregatedSize ??= basePlan.MaxItemsImagesAggregatedSize;
+            plan.MaxEnabledItemsImagesAggregatedSize ??= basePlan.MaxEnabledItemsImagesAggregatedSize;
+            plan.MaxTotalCommercesImages ??= basePlan.MaxTotalCommercesImages;
+            plan.MaxEnabledCommercesImages ??= basePlan.MaxEnabledCommercesImages;
+            plan.MaxCommerceImageSize ??= basePlan.MaxCommerceImageSize;
+            plan.MaxCommercesImagesAggregatedSize ??= basePlan.MaxCommercesImagesAggregatedSize;
+            plan.MaxEnabledCommercesImagesAggregatedSize ??= basePlan.MaxEnabledCommercesImagesAggregatedSize;
 
             return plan;
         }
@@ -76,6 +81,7 @@ namespace backend_shop.Service
             var storeService = serviceProvider.GetRequiredService<IStoreService>();
             var itemService = serviceProvider.GetRequiredService<IItemService>();
             var itemFileService = serviceProvider.GetRequiredService<IItemFileService>();
+            var commerceFileService = serviceProvider.GetRequiredService<ICommerceFileService>();
             var includeDisabledOptions = new QueryOptions { Switches = { { "IncludeDisabled", true } } };
 
             var usedPlan = new UsedPlanDTO
@@ -88,8 +94,12 @@ namespace backend_shop.Service
                 EnabledItemsCount = await itemService.GetCountForOwnerIdAsync(ownerId),
                 TotalItemsImagesCount = await itemFileService.GetCountForOwnerIdAsync(ownerId, includeDisabledOptions),
                 EnabledItemsImagesCount = await itemFileService.GetCountForOwnerIdAsync(ownerId),
-                AggregattedSizeItemsImages = await itemFileService.GetAggregatedSizeForOwnerIdAsync(ownerId, includeDisabledOptions),
-                EnabledAggregattedSizeItemsImages = await itemFileService.GetAggregatedSizeForOwnerIdAsync(ownerId),
+                ItemsImagesAggregatedSize = await itemFileService.GetAggregatedSizeForOwnerIdAsync(ownerId, includeDisabledOptions),
+                EnabledItemsImagesAggregatedSize = await itemFileService.GetAggregatedSizeForOwnerIdAsync(ownerId),
+                TotalCommercesImagesCount = await commerceFileService.GetCountForOwnerIdAsync(ownerId, includeDisabledOptions),
+                EnabledCommercesImagesCount = await commerceFileService.GetCountForOwnerIdAsync(ownerId),
+                CommercesImagesAggregatedSize = await commerceFileService.GetAggregatedSizeForOwnerIdAsync(ownerId, includeDisabledOptions),
+                EnabledCommercesImagesAggregatedSize = await commerceFileService.GetAggregatedSizeForOwnerIdAsync(ownerId),
             };
 
             return usedPlan;
@@ -247,7 +257,7 @@ namespace backend_shop.Service
                 ?? default;
         }
 
-        public async Task<Int64> GetMaxAggregattedSizeItemsImagesForCurrentUserId(Int64 userId)
+        public async Task<Int64> GetMaxItemsImagesAggregatedSizeForCurrentUserId(Int64 userId)
         {
             var options = new QueryOptions
             {
@@ -257,16 +267,16 @@ namespace backend_shop.Service
                     { Op.IsNotNull("plan.MaxEnabledItems") },
                     { Op.GE("ExpirationDate", DateTime.UtcNow) },
                 },
-                OrderBy = { "plan.MaxAggregattedSizeItemsImages DESC" },
+                OrderBy = { "plan.MaxItemsImagesAggregatedSize DESC" },
                 Top = 1,
             };
 
-            return (await GetFirstOrDefaultAsync(options))?.Plan?.MaxAggregattedSizeItemsImages
-                ?? (await planService.GetBaseAsync()).MaxAggregattedSizeItemsImages
+            return (await GetFirstOrDefaultAsync(options))?.Plan?.MaxItemsImagesAggregatedSize
+                ?? (await planService.GetBaseAsync()).MaxItemsImagesAggregatedSize
                 ?? default;
         }
 
-        public async Task<Int64> GetMaxEnabledAggregattedSizeItemsImagesForCurrentUserId(Int64 userId)
+        public async Task<Int64> GetMaxEnabledItemsImagesAggregatedSizeForCurrentUserId(Int64 userId)
         {
             var options = new QueryOptions
             {
@@ -276,12 +286,12 @@ namespace backend_shop.Service
                     { Op.IsNotNull("plan.MaxEnabledItems") },
                     { Op.GE("ExpirationDate", DateTime.UtcNow) },
                 },
-                OrderBy = { "plan.MaxEnabledAggregattedSizeItemsImages DESC" },
+                OrderBy = { "plan.MaxEnabledItemsImagesAggregatedSize DESC" },
                 Top = 1,
             };
 
-            return (await GetFirstOrDefaultAsync(options))?.Plan?.MaxEnabledAggregattedSizeItemsImages
-                ?? (await planService.GetBaseAsync()).MaxEnabledAggregattedSizeItemsImages
+            return (await GetFirstOrDefaultAsync(options))?.Plan?.MaxEnabledItemsImagesAggregatedSize
+                ?? (await planService.GetBaseAsync()).MaxEnabledItemsImagesAggregatedSize
                 ?? default;
         }
 
@@ -397,7 +407,7 @@ namespace backend_shop.Service
             return await GetMaxEnabledItemsImagesForCurrentUserId(userId);
         }
 
-        public async Task<Int64> GetMaxAggregattedSizeItemsImagesForCurrentUser()
+        public async Task<Int64> GetMaxItemsImagesAggregatedSizeForCurrentUser()
         {
             var httpContext = httpContextAccessor.HttpContext
                 ?? throw new NoAuthorizationHeaderException();
@@ -408,10 +418,10 @@ namespace backend_shop.Service
             if (userId <= 0)
                 throw new NoSessionUserDataException();
 
-            return await GetMaxAggregattedSizeItemsImagesForCurrentUserId(userId);
+            return await GetMaxItemsImagesAggregatedSizeForCurrentUserId(userId);
         }
 
-        public async Task<Int64> GetMaxEnabledAggregattedSizeItemsImagesForCurrentUser()
+        public async Task<Int64> GetMaxEnabledItemsImagesAggregatedSizeForCurrentUser()
         {
             var httpContext = httpContextAccessor.HttpContext
                 ?? throw new NoAuthorizationHeaderException();
@@ -422,7 +432,7 @@ namespace backend_shop.Service
             if (userId <= 0)
                 throw new NoSessionUserDataException();
 
-            return await GetMaxEnabledAggregattedSizeItemsImagesForCurrentUserId(userId);
+            return await GetMaxEnabledItemsImagesAggregatedSizeForCurrentUserId(userId);
         }
     }
 }

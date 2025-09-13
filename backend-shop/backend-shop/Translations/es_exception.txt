@@ -1,7 +1,7 @@
 ﻿Commerce does not exist.
 El comercio no existe.
 
-Categorys does not exist.
+Category does not exist.
 El rubro no existe.
 
 The image is too large.
@@ -10,11 +10,17 @@ La imagen es demasiado grande.
 Item does not exist.
 No existe el artículo.
 
+Item image not found.
+No se encontró la imagen del artículo.
+
 No commerce provided.
 No se ha provisto comercio.
 
 No category provided.
 No se ha provisto una categoría.
+
+No item provided.
+No se ha provisto un artículo.
 
 No item UUID provided.
 No se ha provisto un UUID de artículo.
@@ -43,8 +49,20 @@ La característica de plan ya existe.
 Store does not exist.
 No existe el local.
 
+The maximum limit of enabled commerce images has been reached.
+Se ha alcanzado el límite máximo de imágenes de comercio habilitadas.
+
+The maximum limit of enabled commerce images size has been reached.
+Se ha alcanzado el límite máximo de tamaño de imágenes de comercio habilitadas.
+
 The maximum limit of enabled commerces has been reached.
 Se ha alcanzado el límite máximo de comercios habilitados.
+
+The maximum limit of enabled item images has been reached.
+Se ha alcanzado el límite máximo de imágenes de artículos habilitadas.
+
+The maximum limit of enabled item images size has been reached.
+Se ha alcanzado el límite máximo de tamaño de imágenes de artículos habilitadas.
 
 The maximum limit of enabled items has been reached.
 Se ha alcanzado el límite máximo de artículos habilitadas.
@@ -58,11 +76,23 @@ Uste ya posee un comercio con ese nombre.
 You already own a store with that name.
 Uste ya posee un local con ese nombre.
 
+You can't create more commerce images because you've reached the limit.
+Usted no puede crear más imágenes de comercio porque ha alcanzado el límite.
+
+You can't create more commerce images because you've reached the size limit.
+Usted no puede crear más imágenes de comercio porque ha alcanzado el límite de tamaño.
+
 You can't create more commerces because you've reached the limit.
 Usted no puede crear más comercios porque ha alcanzado el límite.
 
 You can't create more items because you've reached the limit.
 Usted no puede crear más artículos porque ha alcanzado el límite.
+
+You can't create more items images because you've reached the limit.
+Usted no puede crear más imágenes de artículos porque ha alcanzado el límite.
+
+You can't create more items images because you've reached the size limit.
+Usted no puede crear más imágenes de artículos porque ha alcanzado el límite de tamaño.
 
 You can't create more stores because you've reached the limit.
 Usted no puede crear más locales porque ha alcanzado el límite.

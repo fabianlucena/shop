@@ -3,7 +3,7 @@
 namespace backend_shop.Exceptions
 {
     public class ItemImageNotFoundException()
-        : HttpException(404, "Image not found.")
+        : HttpException(404, "Item image not found.")
     {
     }
 }

@@ -10,88 +10,65 @@ using RFService.Services;
 
 namespace backend_shop.Service
 {
-    public class ItemFileService(
-        IRepo<ItemFile> repo,
-        IItemService itemService,
+    public class CommerceFileService(
+        IRepo<CommerceFile> repo,
+        ICommerceService commerceService,
         IServiceProvider serviceProvider,
         IHttpContextAccessor httpContextAccessor
     )
-        : ServiceCreatedAtIdUuidName<IRepo<ItemFile>, ItemFile>(repo),
-            IItemFileService
+        : ServiceCreatedAtIdUuidName<IRepo<CommerceFile>, CommerceFile>(repo),
+            ICommerceFileService
     {
-        public override async Task<ItemFile> ValidateForCreationAsync(ItemFile data)
+        public override async Task<CommerceFile> ValidateForCreationAsync(CommerceFile data)
         {
             data = await base.ValidateForCreationAsync(data);
 
             if (string.IsNullOrWhiteSpace(data.Name))
                 throw new NoNameException();
 
-            if (data.Item == null)
+            if (data.Commerce == null)
             {
-                if (data.ItemId <= 0)
-                    throw new NoItemException();
+                if (data.CommerceId <= 0)
+                    throw new NoCommerceException();
 
-                data.Item = await itemService.GetSingleOrDefaultForIdAsync(data.ItemId);
-                if (data.Item == null)
-                    throw new NoItemException();
+                data.Commerce = await commerceService.GetSingleOrDefaultForIdAsync(data.CommerceId);
+                if (data.Commerce == null)
+                    throw new NoCommerceException();
             }
-
-            if (data.Item.Store == null)
-            {
-                if (data.Item.StoreId <= 0)
-                    throw new NoStoreException();
-
-                var storeService = serviceProvider.GetRequiredService<IStoreService>();
-                data.Item.Store = await storeService.GetSingleOrDefaultForIdAsync(
-                    data.Item.StoreId,
-                    new QueryOptions
-                    {
-                        Join = { { "Commerce" } },
-                        Switches = { { "IncludeDisabled", true } },
-                    }
-                );
-
-                if (data.Item.Store == null)
-                    throw new NoStoreException();
-            }
-
-            var store = data.Item.Store;
-            if (store.Commerce == null)
-                throw new CommerceDoesNotExistException();
 
             var userPlanService = serviceProvider.GetRequiredService<IUserPlanService>();
             var plan = await userPlanService.GetSinglePlanForCurrentUserAsync();
 
-            if (data.Content.Length > plan.MaxItemImageSize)
+            if (data.Content.Length > plan.MaxCommerceImageSize)
                 throw new ImageIsTooLargeException();
 
             var totalCount = await GetCountForCurrentUserAsync(new QueryOptions { Switches = { { "IncludeDisabled", true} } });
-            if (totalCount >= plan.MaxTotalItemsImages)
-                throw new TotalItemsImagesLimitReachedException();
+            if (totalCount >= plan.MaxTotalCommercesImages)
+                throw new TotalCommercesImagesLimitReachedException();
 
             var enabledCount = await GetCountForCurrentUserAsync();
-            if (enabledCount > plan.MaxEnabledItemsImages)
-                throw new MaxEnabledItemsImagesLimitReachedException();
+            if (enabledCount > plan.MaxEnabledCommercesImages)
+                throw new MaxEnabledCommercesImagesLimitReachedException();
 
             var aggregatedSize = await GetAggregatedSizeForCurrentUserAsync(new QueryOptions { Switches = { { "IncludeDisabled", true } } });
             aggregatedSize += data.Content.Length;
-            if (aggregatedSize >= plan.MaxItemsImagesAggregatedSize)
-                throw new TotalItemsImagesAggregatedSizeLimitReachedException();
+            if (aggregatedSize >= plan.MaxCommercesImagesAggregatedSize)
+                throw new TotalCommercesImagesAggregatedSizeLimitReachedException();
 
             var enabledAggregatedSize = await GetAggregatedSizeForCurrentUserAsync();
             enabledAggregatedSize += data.Content.Length;
-            if (enabledAggregatedSize >= plan.MaxEnabledItemsImagesAggregatedSize)
-                throw new MaxEnabledItemsImagesAggregatedSizeLimitReachedException();
+            if (enabledAggregatedSize >= plan.MaxEnabledCommercesImagesAggregatedSize)
+                throw new MaxEnabledCommercesImagesAggregatedSizeLimitReachedException();
 
             return data;
         }
 
         public async Task<QueryOptions> GetFilterForOwnerIdAsync(Int64 ownerId, QueryOptions? options = null)
         {
-            var itemsId = await itemService.GetListIdForOwnerIdAsync(ownerId, options);
+            var commercesId = await commerceService.GetListIdForOwnerIdAsync(ownerId, options);
 
             options = new QueryOptions();
-            options.AddFilter("ItemId", itemsId);
+            options.AddFilter("CommerceId", commercesId);
 
             return options;
         }
@@ -127,35 +104,35 @@ namespace backend_shop.Service
         public async Task<Int64> GetAggregatedSizeForCurrentUserAsync(QueryOptions? options = null)
             => await GetAggregatedSizeForOwnerIdAsync(GetCurrentUserId(), options);
 
-        public async Task<IEnumerable<ItemFile>> AddForItemUuidAsync(Guid itemUuid, FilesCollectionDTO files)
-            => await AddForItemIdAsync(await itemService.GetSingleIdForUuidAsync(itemUuid), files);
+        public async Task<IEnumerable<CommerceFile>> AddForCommerceUuidAsync(Guid commerceUuid, FilesCollectionDTO files)
+            => await AddForCommerceIdAsync(await commerceService.GetSingleIdForUuidAsync(commerceUuid), files);
 
-        public async Task<IEnumerable<ItemFile>> AddForItemIdAsync(Int64 itemId, FilesCollectionDTO files)
+        public async Task<IEnumerable<CommerceFile>> AddForCommerceIdAsync(Int64 commerceId, FilesCollectionDTO files)
         {
-            var result = new List<ItemFile>();
+            var result = new List<CommerceFile>();
             foreach (var file in files)
             {
                 if (file.Content.Length == 0)
                     continue;
 
-                var itemImage = new ItemFile
+                var commerceImage = new CommerceFile
                 {
-                    ItemId = itemId,
+                    CommerceId = commerceId,
                     Name = file.Name,
                     ContentType = file.ContentType,
                     Content = file.Content,
                 };
 
-                result.Add(await CreateAsync(itemImage));
+                result.Add(await CreateAsync(commerceImage));
             }
 
             return result;
         }
 
-        public async Task<IEnumerable<ItemFile>> GetListForItemIdAsync(Int64 itemId)
+        public async Task<IEnumerable<CommerceFile>> GetListForCommerceIdAsync(Int64 commerceId)
             => await GetListAsync(new QueryOptions
             {
-                Filters = { { "ItemId", itemId } }
+                Filters = { { "CommerceId", commerceId } }
             });
     }
 }

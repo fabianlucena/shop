@@ -18,8 +18,16 @@
 
         public int? EnabledItemsImagesCount { get; set; }
 
-        public Int64? AggregattedSizeItemsImages { get; set; }
+        public Int64? ItemsImagesAggregatedSize { get; set; }
 
-        public Int64? EnabledAggregattedSizeItemsImages { get; set; }
+        public Int64? EnabledItemsImagesAggregatedSize { get; set; }
+
+        public int? TotalCommercesImagesCount { get; set; }
+
+        public int? EnabledCommercesImagesCount { get; set; }
+
+        public Int64? CommercesImagesAggregatedSize { get; set; }
+
+        public Int64? EnabledCommercesImagesAggregatedSize { get; set; }
     }
 }

@@ -29,8 +29,18 @@ namespace backend_shop.Entities
 
         public Int64? MaxItemImageSize { get; set; }
 
-        public Int64? MaxAggregattedSizeItemsImages { get; set; }
+        public Int64? MaxItemsImagesAggregatedSize { get; set; }
 
-        public Int64? MaxEnabledAggregattedSizeItemsImages { get; set; }
+        public Int64? MaxEnabledItemsImagesAggregatedSize { get; set; }
+
+        public int? MaxTotalCommercesImages { get; set; }
+
+        public int? MaxEnabledCommercesImages { get; set; }
+
+        public Int64? MaxCommerceImageSize { get; set; }
+
+        public Int64? MaxCommercesImagesAggregatedSize { get; set; }
+
+        public Int64? MaxEnabledCommercesImagesAggregatedSize { get; set; }
     }
 }

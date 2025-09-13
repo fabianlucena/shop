@@ -7,47 +7,55 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "backend-shop", "backend-sho
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RF Nugets", "RF Nugets", "{97C7CD0C-457F-4439-B1CE-0A524B391FBC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RFAuth", ".\rf-nugets\RFAuth\RFAuth.csproj", "{763441AF-4A52-478A-899F-DD619707FA2E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RFAuth", "rf-nugets\RFAuth\RFAuth.csproj", "{763441AF-4A52-478A-899F-DD619707FA2E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RFAuthDapper", ".\rf-nugets\RFAuthDapper\RFAuthDapper.csproj", "{ED7355D6-B524-4833-8623-03BDAE3EC904}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RFAuthDapper", "rf-nugets\RFAuthDapper\RFAuthDapper.csproj", "{ED7355D6-B524-4833-8623-03BDAE3EC904}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RFDapper", ".\rf-nugets\RFDapper\RFDapper.csproj", "{1494E24F-684A-450D-AC58-5931DF30696A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RFDapper", "rf-nugets\RFDapper\RFDapper.csproj", "{1494E24F-684A-450D-AC58-5931DF30696A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RFHttpAction", ".\rf-nugets\RFHttpAction\RFHttpAction.csproj", "{9754191F-58AF-47D7-8289-F4AD8C013C1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RFHttpAction", "rf-nugets\RFHttpAction\RFHttpAction.csproj", "{9754191F-58AF-47D7-8289-F4AD8C013C1B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RFHttpActionDapper", ".\rf-nugets\RFHttpActionDapper\RFHttpActionDapper.csproj", "{ABAAF539-122B-4930-A6DE-DC42DF031225}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RFHttpActionDapper", "rf-nugets\RFHttpActionDapper\RFHttpActionDapper.csproj", "{ABAAF539-122B-4930-A6DE-DC42DF031225}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RFRegister", ".\rf-nugets\RFRegister\RFRegister.csproj", "{ACA6089D-A49F-4629-AB0A-C1107E60EFDF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RFRegister", "rf-nugets\RFRegister\RFRegister.csproj", "{ACA6089D-A49F-4629-AB0A-C1107E60EFDF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RFService", ".\rf-nugets\RFService\RFService.csproj", "{CCCA1F5C-8BDB-487B-B21D-7E08D1D3B922}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RFService", "rf-nugets\RFService\RFService.csproj", "{CCCA1F5C-8BDB-487B-B21D-7E08D1D3B922}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RFUserEmail", ".\rf-nugets\RFUserEmail\RFUserEmail.csproj", "{3AACBD64-ED6F-4BDE-9DC2-D60603F37E2F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RFUserEmail", "rf-nugets\RFUserEmail\RFUserEmail.csproj", "{3AACBD64-ED6F-4BDE-9DC2-D60603F37E2F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RFUserEmailDapper", ".\rf-nugets\RFUserEmailDapper\RFUserEmailDapper.csproj", "{625FC4B0-C8B3-465B-A08A-D0F7282D1C20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RFUserEmailDapper", "rf-nugets\RFUserEmailDapper\RFUserEmailDapper.csproj", "{625FC4B0-C8B3-465B-A08A-D0F7282D1C20}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RFRBAC", ".\rf-nugets\RFRBAC\RFRBAC.csproj", "{31711B60-63CE-49E0-9A28-AA40FB1EC318}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RFRBAC", "rf-nugets\RFRBAC\RFRBAC.csproj", "{31711B60-63CE-49E0-9A28-AA40FB1EC318}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RFHttpExceptions", ".\rf-nugets\RFHttpExceptions\RFHttpExceptions.csproj", "{AC58505B-BD8B-47C1-AB4F-7D19754C9FE5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RFHttpExceptions", "rf-nugets\RFHttpExceptions\RFHttpExceptions.csproj", "{AC58505B-BD8B-47C1-AB4F-7D19754C9FE5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RFUserEmailVerified", ".\rf-nugets\RFUserEmailVerified\RFUserEmailVerified.csproj", "{AD0C95D9-ED2C-4CA6-B166-8D6721EA4799}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RFUserEmailVerified", "rf-nugets\RFUserEmailVerified\RFUserEmailVerified.csproj", "{AD0C95D9-ED2C-4CA6-B166-8D6721EA4799}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RFUserEmailVerifiedDapper", ".\rf-nugets\RFUserEmailVerifiedDapper\RFUserEmailVerifiedDapper.csproj", "{B41908D8-006F-4570-92D9-3DF422F650C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RFUserEmailVerifiedDapper", "rf-nugets\RFUserEmailVerifiedDapper\RFUserEmailVerifiedDapper.csproj", "{B41908D8-006F-4570-92D9-3DF422F650C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFDapperDriverSQLServer", ".\rf-nugets\RFDapperDriverSQLServer\RFDapperDriverSQLServer.csproj", "{53DC4E28-E05B-4FA3-942E-941EEB6EEC26}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFDapperDriverSQLServer", "rf-nugets\RFDapperDriverSQLServer\RFDapperDriverSQLServer.csproj", "{53DC4E28-E05B-4FA3-942E-941EEB6EEC26}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFRBACDapper", ".\rf-nugets\RFRBACDapper\RFRBACDapper.csproj", "{F6FB3B37-D03B-41FE-821A-129753498BFB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFRBACDapper", "rf-nugets\RFRBACDapper\RFRBACDapper.csproj", "{F6FB3B37-D03B-41FE-821A-129753498BFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFOperators", ".\rf-nugets\RFOperators\RFOperators.csproj", "{0CD71A15-60BA-41A8-971E-4D3AADA8284E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFOperators", "rf-nugets\RFOperators\RFOperators.csproj", "{0CD71A15-60BA-41A8-971E-4D3AADA8284E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFHttpExceptionsL10n", ".\rf-nugets\RFHttpExceptionsL10n\RFHttpExceptionsL10n.csproj", "{CD88AF85-F4B8-5BFD-E6B9-A239C6D2A4B5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFHttpExceptionsL10n", "rf-nugets\RFHttpExceptionsL10n\RFHttpExceptionsL10n.csproj", "{CD88AF85-F4B8-5BFD-E6B9-A239C6D2A4B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFL10n", ".\rf-nugets\RFL10n\RFL10n.csproj", "{5A284B87-2454-4D8F-93F6-4702A347DE98}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFL10n", "rf-nugets\RFL10n\RFL10n.csproj", "{5A284B87-2454-4D8F-93F6-4702A347DE98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFLogger", ".\rf-nugets\RFLogger\RFLogger.csproj", "{50A64A00-CF54-D2C1-2FCB-CD96668A27DD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFLogger", "rf-nugets\RFLogger\RFLogger.csproj", "{50A64A00-CF54-D2C1-2FCB-CD96668A27DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFLoggerProvider", ".\rf-nugets\RFLoggerProvider\RFLoggerProvider.csproj", "{9B60B401-9EF1-60E8-7041-CBD4D6FEA822}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFLoggerProvider", "rf-nugets\RFLoggerProvider\RFLoggerProvider.csproj", "{9B60B401-9EF1-60E8-7041-CBD4D6FEA822}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFLoggerProviderDapper", ".\rf-nugets\RFLoggerProviderDapper\RFLoggerProviderDapper.csproj", "{1A7AB0D1-9E37-62A0-C2BF-9BB00D367ECA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFLoggerProviderDapper", "rf-nugets\RFLoggerProviderDapper\RFLoggerProviderDapper.csproj", "{1A7AB0D1-9E37-62A0-C2BF-9BB00D367ECA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFAuth_es", "rf-nugets\RFAuth_es\RFAuth_es.csproj", "{1AC8A219-6F88-406D-6336-1445D6B7CDF7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFService_es", "rf-nugets\RFService_es\RFService_es.csproj", "{17EF90CE-3ABA-EB36-A177-C6224D1DF3C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFDBLocalizer", "rf-nugets\RFDBLocalizer\RFDBLocalizer.csproj", "{42C8DEC8-61C1-5BDE-4EFE-7E91EF6380FA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFDBLocalizerDapper", "rf-nugets\RFDBLocalizerDapper\RFDBLocalizerDapper.csproj", "{0B742221-5312-014E-D1E2-4C8BBAB540C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -143,6 +151,22 @@ Global
 		{1A7AB0D1-9E37-62A0-C2BF-9BB00D367ECA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A7AB0D1-9E37-62A0-C2BF-9BB00D367ECA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A7AB0D1-9E37-62A0-C2BF-9BB00D367ECA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AC8A219-6F88-406D-6336-1445D6B7CDF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AC8A219-6F88-406D-6336-1445D6B7CDF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AC8A219-6F88-406D-6336-1445D6B7CDF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AC8A219-6F88-406D-6336-1445D6B7CDF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17EF90CE-3ABA-EB36-A177-C6224D1DF3C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17EF90CE-3ABA-EB36-A177-C6224D1DF3C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17EF90CE-3ABA-EB36-A177-C6224D1DF3C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17EF90CE-3ABA-EB36-A177-C6224D1DF3C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42C8DEC8-61C1-5BDE-4EFE-7E91EF6380FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42C8DEC8-61C1-5BDE-4EFE-7E91EF6380FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42C8DEC8-61C1-5BDE-4EFE-7E91EF6380FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42C8DEC8-61C1-5BDE-4EFE-7E91EF6380FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B742221-5312-014E-D1E2-4C8BBAB540C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B742221-5312-014E-D1E2-4C8BBAB540C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B742221-5312-014E-D1E2-4C8BBAB540C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B742221-5312-014E-D1E2-4C8BBAB540C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -169,6 +193,10 @@ Global
 		{50A64A00-CF54-D2C1-2FCB-CD96668A27DD} = {97C7CD0C-457F-4439-B1CE-0A524B391FBC}
 		{9B60B401-9EF1-60E8-7041-CBD4D6FEA822} = {97C7CD0C-457F-4439-B1CE-0A524B391FBC}
 		{1A7AB0D1-9E37-62A0-C2BF-9BB00D367ECA} = {97C7CD0C-457F-4439-B1CE-0A524B391FBC}
+		{1AC8A219-6F88-406D-6336-1445D6B7CDF7} = {97C7CD0C-457F-4439-B1CE-0A524B391FBC}
+		{17EF90CE-3ABA-EB36-A177-C6224D1DF3C2} = {97C7CD0C-457F-4439-B1CE-0A524B391FBC}
+		{42C8DEC8-61C1-5BDE-4EFE-7E91EF6380FA} = {97C7CD0C-457F-4439-B1CE-0A524B391FBC}
+		{0B742221-5312-014E-D1E2-4C8BBAB540C6} = {97C7CD0C-457F-4439-B1CE-0A524B391FBC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7DED2E2E-A009-4B14-9ACC-73D803EC810B}
