@@ -67,27 +67,23 @@ export default function ImageGaleryShow({
       onLayout={event => {
         if (Platform.OS !== 'web') {
           setScrollWidth(Math.floor(event.nativeEvent.layout.width));
-        }
+        } else if (ref.current) {
+          let measuredWidth;
+          let measuredElement = ref.current;
+          let diff = 0;
+          do {
+            measuredWidth = measuredElement?.clientWidth;
+            if (!measuredWidth) {
+              const computed = window.getComputedStyle(measuredElement.parentNode);
+              diff += parseInt(computed.marginRight)
+                + parseInt(computed.marginLeft)
+                + parseInt(computed.paddingRight)
+                + parseInt(computed.paddingLeft);
+            }
+          } while (!measuredWidth && measuredElement && measuredElement !== document.body && (measuredElement = measuredElement.parentNode));
 
-        if (Platform.OS === 'web' && ref.current) {
-          const measuredWidth = ref.current?.parentNode?.parentNode?.clientWidth;
-          if (measuredWidth) {
-            const computed = window.getComputedStyle(ref.current.parentNode.parentNode);
-            const margin = {
-              top: parseInt(computed.marginTop),
-              right: parseInt(computed.marginRight),
-              bottom: parseInt(computed.marginBottom),
-              left: parseInt(computed.marginLeft),
-            };
-            const padding = {
-              top: parseInt(computed.paddingTop),
-              right: parseInt(computed.paddingRight),
-              bottom: parseInt(computed.paddingBottom),
-              left: parseInt(computed.paddingLeft),
-            };
-            
-            setScrollWidth(measuredWidth - margin.left - margin.right - padding.left - padding.right);
-          }
+          if (measuredWidth)
+            setScrollWidth(measuredWidth - diff);
         }
       }}
       style={[

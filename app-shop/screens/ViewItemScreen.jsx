@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useRoute } from '@react-navigation/native';
-import { Text, ScrollView } from 'react-native';
+import { Text, ScrollView, View } from 'react-native';
 
 import useSession from '../contexts/Session';
 
@@ -69,15 +69,20 @@ export default function ViewItemScreen({
             : <Text style={ styles.itemData }>Para regalar todas las edades</Text>
         : null}
 
-        <ImageGaleryShow
-          images={data.images}
-          containerStyle={{
-            margin: '15%',
-          }}
+        <View
           style={{
-            aspectRatio: 9 / 16,
+            marginTop: '5%',
+            marginLeft: '15%',
+            marginRight: '15%',
           }}
-        />
+        >
+          <ImageGaleryShow
+            images={data.images}
+            style={{
+              aspectRatio: 9 / 16,
+            }}
+          />
+        </View>
       </ScrollView>
     </Screen>;
 }
