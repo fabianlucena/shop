@@ -2,6 +2,7 @@
 using backend_shop.Entities;
 using backend_shop.Exceptions;
 using backend_shop.IServices;
+using Microsoft.Extensions.Options;
 using RFAuth.Exceptions;
 using RFOperators;
 using RFService.IRepo;
@@ -64,6 +65,13 @@ namespace backend_shop.Service
 
             if (data.Content.Length > plan.MaxItemImageSize)
                 throw new ImageIsTooLargeException();
+
+            var itemImagesCount = await GetCountAsync(new QueryOptions {
+                Switches = { { "IncludeDisabled", true } },
+                Filters = { { "ItemId", data.ItemId } }
+            });
+            if (itemImagesCount >= plan.MaxTotalImagesPerSingleItem)
+                throw new TotalImagesPerItemLimitReachedException();
 
             var totalCount = await GetCountForCurrentUserAsync(new QueryOptions { Switches = { { "IncludeDisabled", true} } });
             if (totalCount >= plan.MaxTotalItemsImages)

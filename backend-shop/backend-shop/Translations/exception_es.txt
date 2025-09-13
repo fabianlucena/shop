@@ -76,6 +76,12 @@ Uste ya posee un comercio con ese nombre.
 You already own a store with that name.
 Uste ya posee un local con ese nombre.
 
+You can't add more images to the commerce because you've reached the limit.
+Usted no puede agregar más imágenes al comercio porque ha alcanzado el límite.
+
+You can't add more images to the item because you've reached the limit.
+Usted no puede agregar más imágenes al artículo porque ha alcanzado el límite.
+
 You can't create more commerce images because you've reached the limit.
 Usted no puede crear más imágenes de comercio porque ha alcanzado el límite.
 

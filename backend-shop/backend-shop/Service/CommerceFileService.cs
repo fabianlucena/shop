@@ -42,6 +42,14 @@ namespace backend_shop.Service
             if (data.Content.Length > plan.MaxCommerceImageSize)
                 throw new ImageIsTooLargeException();
 
+            var itemImagesCount = await GetCountAsync(new QueryOptions
+            {
+                Switches = { { "IncludeDisabled", true } },
+                Filters = { { "CommerceId", data.CommerceId } }
+            });
+            if (itemImagesCount >= plan.MaxTotalImagesPerSingleCommerce)
+                throw new TotalImagesPerCommerceLimitReachedException();
+
             var totalCount = await GetCountForCurrentUserAsync(new QueryOptions { Switches = { { "IncludeDisabled", true} } });
             if (totalCount >= plan.MaxTotalCommercesImages)
                 throw new TotalCommercesImagesLimitReachedException();
