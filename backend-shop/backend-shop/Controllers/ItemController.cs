@@ -133,7 +133,15 @@ namespace backend_shop.Controllers
         }
 
         private async Task<IActionResult> UpdateImages(Guid itemUuid)
-            => await UpdateImages(await itemService.GetSingleIdForUuidAsync(itemUuid));
+            => await UpdateImages(
+                await itemService.GetSingleIdForUuidAsync(
+                    itemUuid,
+                    new QueryOptions
+                    {
+                        Switches = { { "IncludeDisabled", true } }
+                    }
+                )
+            );
 
         private async Task<IActionResult> UpdateImages(Int64 itemId)
         {
