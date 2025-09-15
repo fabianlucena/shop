@@ -7,7 +7,7 @@ export default function ItemsListScreen() {
       service={useItem()}
       confirmDeletionMessage={item => `¿Desea eliminar el artículo ${item.name}?`}
       formScreen="ItemForm"
-      loadOptions={{ query: { isEnabled: true } }}
+      loadOptions={{ query: { includeDisabled: true } }}
       elements={[
         {
           name: 'items',
