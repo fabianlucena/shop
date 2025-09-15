@@ -1,7 +1,4 @@
-﻿using AutoMapper;
-using backend_shop.DTO;
-using backend_shop.Entities;
-using backend_shop.IServices;
+﻿using backend_shop.IServices;
 using Microsoft.AspNetCore.Mvc;
 using RFService.Authorization;
 
@@ -11,8 +8,7 @@ namespace backend_shop.Controllers
     [Route("v1/plan")]
     public class PlanController(
         ILogger<PlanController> logger,
-        IUserPlanService userPlanService,
-        IMapper mapper
+        IUserPlanService userPlanService
     )
         : ControllerBase
     {
@@ -23,9 +19,13 @@ namespace backend_shop.Controllers
             logger.LogInformation("Getting plan");
 
             var plan = await userPlanService.GetSinglePlanForCurrentUserAsync();
+            var limits = await userPlanService.GetLimitsForCurrentUserAsync();
             var used = await userPlanService.GetUsedPlanForCurrentUserAsync();
             var response = new {
-                Available = mapper.Map<Plan, PlanDTO>(plan),
+                plan.Uuid,
+                plan.Name,
+                plan.Description,
+                Limits = limits.ToDictionaryLCFirst(),
                 Used = used,
             };
 

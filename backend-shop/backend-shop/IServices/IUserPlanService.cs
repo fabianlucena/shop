@@ -12,36 +12,6 @@ namespace backend_shop.IServices
 
         Task<UsedPlanDTO> GetUsedPlanForCurrentUserAsync();
 
-        Task<int> GetMaxTotalCommercesForUserId(Int64 userId);
-
-        Task<int> GetMaxEnabledCommercesForUserId(Int64 userId);
-
-        Task<int> GetMaxTotalStoresForUserId(Int64 userId);
-
-        Task<int> GetMaxEnabledStoresForUserId(Int64 userId);
-
-        Task<int> GetMaxTotalItemsForUserId(Int64 userId);
-
-        Task<int> GetMaxEnabledItemsForUserId(Int64 userId);
-
-        Task<int> GetMaxTotalCommercesForCurrentUser();
-
-        Task<int> GetMaxEnabledCommercesForCurrentUser();
-
-        Task<int> GetMaxTotalStoresForCurrentUser();
-
-        Task<int> GetMaxEnabledStoresForCurrentUser();
-
-        Task<int> GetMaxTotalItemsForCurrentUser();
-
-        Task<int> GetMaxEnabledItemsForCurrentUser();
-
-        Task<int> GetMaxTotalItemsImagesForCurrentUser();
-
-        Task<int> GetMaxEnabledItemsImagesForCurrentUser();
-
-        Task<Int64> GetMaxItemsImagesAggregatedSizeForCurrentUser();
-
-        Task<Int64> GetMaxEnabledItemsImagesAggregatedSizeForCurrentUser();
+        Task<PlanLimits> GetLimitsForCurrentUserAsync();
     }
 }

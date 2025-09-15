@@ -1,4 +1,5 @@
-﻿using backend_shop.Entities;
+﻿using backend_shop.DTO;
+using backend_shop.Entities;
 using RFService.IServices;
 using RFService.Repo;
 
@@ -15,5 +16,7 @@ namespace backend_shop.IServices
         Task<Plan> GetBaseAsync();
 
         Task<Plan> GetSingleOrBaseAsync(QueryOptions options);
+
+        Task<PlanLimits> GetLimitsForPlanAsync(Plan plan, QueryOptions? options = null);
     }
 }

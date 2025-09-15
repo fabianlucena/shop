@@ -1,4 +1,5 @@
-﻿using backend_shop.Entities;
+﻿using backend_shop.DTO;
+using backend_shop.Entities;
 using backend_shop.Exceptions;
 using backend_shop.IServices;
 using RFAuth.Exceptions;
@@ -13,9 +14,7 @@ namespace backend_shop.Service
 {
     public class ItemService(
         IRepo<Item> repo,
-        IStoreService storeService,
-        IUserPlanService userPlanService,
-        IHttpContextAccessor httpContextAccessor
+        IServiceProvider serviceProvider
     )
         : ServiceSoftDeleteTimestampsIdUuidEnabledName<IRepo<Item>, Item>(repo),
             IItemService
@@ -34,6 +33,7 @@ namespace backend_shop.Service
                     throw new NoStoreException();
             }
 
+            var storeService = serviceProvider.GetRequiredService<IStoreService>();
             var store = await storeService.GetSingleOrDefaultForIdAsync(
                     data.StoreId,
                     new QueryOptions
@@ -47,12 +47,15 @@ namespace backend_shop.Service
             if (store.Commerce == null)
                 throw new CommerceDoesNotExistException();
 
+            var userPlanService = serviceProvider.GetRequiredService<IUserPlanService>();
+            var limits = await userPlanService.GetLimitsForCurrentUserAsync();
+
             var totalItemsCount = await GetCountForCurrentUserAsync(new QueryOptions { Filters = { { "IsEnabled", null } } });
-            if (totalItemsCount >= (await userPlanService.GetMaxTotalItemsForCurrentUser()))
+            if (totalItemsCount >= limits[PlanLimitName.MaxTotalItems])
                 throw new TotalItemsLimitReachedException();
 
             var enabledItemsCount = await GetCountForCurrentUserAsync();
-            var enabledItemsMax = await userPlanService.GetMaxEnabledItemsForCurrentUser();
+            var enabledItemsMax = limits[PlanLimitName.MaxEnabledItems];
             if (data.IsEnabled && enabledItemsCount >= enabledItemsMax
                 || enabledItemsCount > enabledItemsMax
             )
@@ -61,7 +64,6 @@ namespace backend_shop.Service
             }
 
             data.InheritedIsEnabled = store.IsEnabled && store.Commerce.IsEnabled;
-            data.Location = store.Location;
 
             return data;
         }
@@ -80,8 +82,11 @@ namespace backend_shop.Service
                 _ = await GetSingleOrDefaultAsync(getOptions)
                     ?? throw new ItemDoesNotExistException();
 
+                var userPlanService = serviceProvider.GetRequiredService<IUserPlanService>();
+                var limits = await userPlanService.GetLimitsForCurrentUserAsync();
+
                 var enabledItemsCount = await GetCountForCurrentUserAsync();
-                var enabledItemsMax = await userPlanService.GetMaxEnabledItemsForCurrentUser();
+                var enabledItemsMax = limits[PlanLimitName.MaxEnabledItems];
                 if (enabledItemsCount >= enabledItemsMax)
                     throw new MaxEnabledItemsLimitReachedException();
             }
@@ -91,6 +96,7 @@ namespace backend_shop.Service
 
         public async Task<bool> CheckForUuidAndCurrentUserAsync(Guid uuid, QueryOptions? options = null)
         {
+            var storeService = serviceProvider.GetRequiredService<IStoreService>();
             var storesId = await storeService.GetListIdForCurrentUserAsync(options);
 
             options ??= new ();
@@ -105,6 +111,7 @@ namespace backend_shop.Service
 
         public async Task<QueryOptions> GetFilterForOwnerIdAsync(Int64 ownerId, QueryOptions? options = null)
         {
+            var storeService = serviceProvider.GetRequiredService<IStoreService>();
             var storesId = await storeService.GetListIdForOwnerIdAsync(ownerId, options);
 
             options = (options != null) ?
@@ -120,6 +127,7 @@ namespace backend_shop.Service
 
         public Int64 GetCurrentUserId()
         {
+            var httpContextAccessor = serviceProvider.GetRequiredService<IHttpContextAccessor>();
             var httpContext = httpContextAccessor.HttpContext
                 ?? throw new NoAuthorizationHeaderException();
 

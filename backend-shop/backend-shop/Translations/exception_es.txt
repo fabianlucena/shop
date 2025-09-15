@@ -25,6 +25,9 @@ No se ha provisto un artículo.
 No item UUID provided.
 No se ha provisto un UUID de artículo.
 
+No limit name {0} in plan.
+No existe el nombre de límite {0} en el plan.
+
 No name for commerce provided.
 No se ha provisto un nombre para el comercio.
 

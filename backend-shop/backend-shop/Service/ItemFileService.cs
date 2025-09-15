@@ -2,7 +2,6 @@
 using backend_shop.Entities;
 using backend_shop.Exceptions;
 using backend_shop.IServices;
-using Microsoft.Extensions.Options;
 using RFAuth.Exceptions;
 using RFOperators;
 using RFService.IRepo;
@@ -13,9 +12,7 @@ namespace backend_shop.Service
 {
     public class ItemFileService(
         IRepo<ItemFile> repo,
-        IItemService itemService,
-        IServiceProvider serviceProvider,
-        IHttpContextAccessor httpContextAccessor
+        IServiceProvider serviceProvider
     )
         : ServiceCreatedAtIdUuidName<IRepo<ItemFile>, ItemFile>(repo),
             IItemFileService
@@ -32,6 +29,7 @@ namespace backend_shop.Service
                 if (data.ItemId <= 0)
                     throw new NoItemException();
 
+                var itemService = serviceProvider.GetRequiredService<IItemService>();
                 data.Item = await itemService.GetSingleOrDefaultForIdAsync(data.ItemId);
                 if (data.Item == null)
                     throw new NoItemException();
@@ -61,34 +59,34 @@ namespace backend_shop.Service
                 throw new CommerceDoesNotExistException();
 
             var userPlanService = serviceProvider.GetRequiredService<IUserPlanService>();
-            var plan = await userPlanService.GetSinglePlanForCurrentUserAsync();
+            var limits = await userPlanService.GetLimitsForCurrentUserAsync();
 
-            if (data.Content.Length > plan.MaxItemImageSize)
+            if (data.Content.Length > limits[PlanLimitName.MaxItemImageSize])
                 throw new ImageIsTooLargeException();
 
             var itemImagesCount = await GetCountAsync(new QueryOptions {
                 Switches = { { "IncludeDisabled", true } },
                 Filters = { { "ItemId", data.ItemId } }
             });
-            if (itemImagesCount >= plan.MaxTotalImagesPerSingleItem)
+            if (itemImagesCount >= limits[PlanLimitName.MaxTotalImagesPerSingleItem])
                 throw new TotalImagesPerItemLimitReachedException();
 
             var totalCount = await GetCountForCurrentUserAsync(new QueryOptions { Switches = { { "IncludeDisabled", true} } });
-            if (totalCount >= plan.MaxTotalItemsImages)
+            if (totalCount >= limits[PlanLimitName.MaxTotalItemsImages])
                 throw new TotalItemsImagesLimitReachedException();
 
             var enabledCount = await GetCountForCurrentUserAsync();
-            if (enabledCount > plan.MaxEnabledItemsImages)
+            if (enabledCount > limits[PlanLimitName.MaxEnabledItemsImages])
                 throw new MaxEnabledItemsImagesLimitReachedException();
 
             var aggregatedSize = await GetAggregatedSizeForCurrentUserAsync(new QueryOptions { Switches = { { "IncludeDisabled", true } } });
             aggregatedSize += data.Content.Length;
-            if (aggregatedSize >= plan.MaxItemsImagesAggregatedSize)
+            if (aggregatedSize >= limits[PlanLimitName.MaxItemsImagesAggregatedSize])
                 throw new TotalItemsImagesAggregatedSizeLimitReachedException();
 
             var enabledAggregatedSize = await GetAggregatedSizeForCurrentUserAsync();
             enabledAggregatedSize += data.Content.Length;
-            if (enabledAggregatedSize >= plan.MaxEnabledItemsImagesAggregatedSize)
+            if (enabledAggregatedSize >= limits[PlanLimitName.MaxEnabledItemsImagesAggregatedSize])
                 throw new MaxEnabledItemsImagesAggregatedSizeLimitReachedException();
 
             return data;
@@ -96,6 +94,7 @@ namespace backend_shop.Service
 
         public async Task<QueryOptions> GetFilterForOwnerIdAsync(Int64 ownerId, QueryOptions? options = null)
         {
+            var itemService = serviceProvider.GetRequiredService<IItemService>();
             var itemsId = await itemService.GetListIdForOwnerIdAsync(ownerId, options);
 
             options = new QueryOptions();
@@ -109,6 +108,7 @@ namespace backend_shop.Service
 
         public Int64 GetCurrentUserId()
         {
+            var httpContextAccessor = serviceProvider.GetRequiredService<IHttpContextAccessor>();
             var httpContext = httpContextAccessor.HttpContext
                 ?? throw new NoAuthorizationHeaderException();
 
@@ -136,7 +136,10 @@ namespace backend_shop.Service
             => await GetAggregatedSizeForOwnerIdAsync(GetCurrentUserId(), options);
 
         public async Task<IEnumerable<ItemFile>> AddForItemUuidAsync(Guid itemUuid, FilesCollectionDTO files)
-            => await AddForItemIdAsync(await itemService.GetSingleIdForUuidAsync(itemUuid), files);
+        {
+            var itemService = serviceProvider.GetRequiredService<IItemService>();
+            return await AddForItemIdAsync(await itemService.GetSingleIdForUuidAsync(itemUuid), files);
+        }
 
         public async Task<IEnumerable<ItemFile>> AddForItemIdAsync(Int64 itemId, FilesCollectionDTO files)
         {

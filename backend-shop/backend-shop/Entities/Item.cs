@@ -12,8 +12,6 @@ namespace backend_shop.Entities
         [Required]
         public required bool InheritedIsEnabled { get; set; }
 
-        public Point? Location { get; set; }
-
         [Required]
         public required string Description { get; set; }
 

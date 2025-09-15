@@ -1,5 +1,6 @@
 ﻿using backend_shop.Entities;
 using backend_shop.IServices;
+using backend_shop.Service;
 using RFRBAC.IServices;
 using static RFDapper.Setup;
 
@@ -9,15 +10,18 @@ namespace backend_shop
     {
         static IRolePermissionService? rolePermissionService;
         static IPlanService? planService;
+        static IPlanLimitService? planLimitService;
         static ICategoryService? categoryService;
 
         static IRolePermissionService RolePermissionService => rolePermissionService ?? throw new Exception();
         static IPlanService PlanService => planService ?? throw new Exception();
+        static IPlanLimitService PlanLimitService => planLimitService ?? throw new Exception();
         static ICategoryService CategoryService => categoryService ?? throw new Exception();
 
         public static void ConfigureShopDapper(IServiceProvider services)
         {
             CreateTable<Plan>(services);
+            CreateTable<PlanLimit>(services);
             CreateTable<UserPlan>(services);
             CreateTable<Commerce>(services);
             CreateTable<CommerceFile>(services);
@@ -31,6 +35,7 @@ namespace backend_shop
         {
             rolePermissionService = provider.GetRequiredService<IRolePermissionService>();
             planService = provider.GetRequiredService<IPlanService>();
+            planLimitService = provider.GetRequiredService<IPlanLimitService>();
             categoryService = provider.GetRequiredService<ICategoryService>();
 
             ConfigureShopAsync().Wait();
@@ -51,16 +56,38 @@ namespace backend_shop
 
             await RolePermissionService.AddRolesPermissionsAsync(rolesPermissions);
 
-            await PlanService.GetOrCreateAsync(new Plan {
+            var basePlan = await PlanService.GetOrCreateAsync(new Plan {
                 Name = "Base",
                 Description = "Plan básico para todos los ususarios",
-                MaxTotalCommerces = 3,
-                MaxEnabledCommerces = 1,
-                MaxTotalStores = 5,
-                MaxEnabledStores = 3,
-                MaxTotalItems = 15,
-                MaxEnabledItems = 10,
             });
+            var basePlanId = basePlan.Id;
+
+            var limits = new List<PlanLimit>{
+                new () { Name = "MaxTotalCommerces", Limit = 3 },
+                new () { Name = "MaxEnabledCommerces", Limit = 1 },
+                new () { Name = "MaxCommerceImageSize", Limit = 1000000 },
+                new () { Name = "MaxTotalImagesPerSingleCommerce", Limit = 3 },
+                new () { Name = "MaxTotalCommercesImages", Limit = 5 },
+                new () { Name = "MaxEnabledCommercesImages", Limit = 3 },
+                new () { Name = "MaxCommercesImagesAggregatedSize", Limit = 5000000 },
+                new () { Name = "MaxEnabledCommercesImagesAggregatedSize", Limit = 5000000 },
+                new () { Name = "MaxTotalStores", Limit = 5 },
+                new () { Name = "MaxEnabledStores", Limit = 3 },
+                new () { Name = "MaxTotalItems", Limit = 15 },
+                new () { Name = "MaxEnabledItems", Limit = 10 },
+                new () { Name = "MaxItemImageSize", Limit = 1000000 },
+                new () { Name = "MaxTotalImagesPerSingleItem", Limit = 3 },
+                new () { Name = "MaxTotalItemsImages", Limit = 8 },
+                new () { Name = "MaxEnabledItemsImages", Limit = 6 },
+                new () { Name = "MaxItemsImagesAggregatedSize", Limit = 10000000 },
+                new () { Name = "MaxEnabledItemsImagesAggregatedSize", Limit = 10000000 },
+            };
+
+            foreach (var limit in limits)
+            {
+                limit.PlanId = basePlanId;
+                await PlanLimitService.CreateAsync(limit);
+            }
 
             var categories = new Dictionary<string, string>{
                 { "Almacén",      "Artículos de almacén, comestibles, bebidas." },

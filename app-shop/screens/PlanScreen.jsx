@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState, useCallback } from 'react';
 import { ScrollView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 import Screen from '../components/Screen';
 import LabelData from '../components/LabelData';
@@ -26,29 +26,35 @@ export default function PlanScreen() {
     loadPlan();
   }, []);
 
+  useFocusEffect(
+    useCallback(() => {
+      loadPlan();
+    }, [])
+  );
+
   return <Screen
       header='Plan'
       busy={loading}
       showCommerceName
     >
       <ScrollView>
-        {plan.available && <>
-          <LabelData
-            label="Nombre:"
-            data={plan.available.name}
-          />
+        <LabelData
+          label="Nombre:"
+          data={plan.name}
+        />
 
-          {plan.available.description && <LabelData
-            label="Descripción:"
-            data={plan.available.description}
-          />}
+        {plan.description && <LabelData
+          label="Descripción:"
+          data={plan.description}
+        />}
 
+        {plan.limits && plan.used && <>
           <LabelData
             label="Comercios:"
             description="Cantidad máxima de comercios."
             data={<UsedLeftPieChart
               used={plan.used.totalCommercesCount}
-              total={plan.available.maxTotalCommerces}
+              total={plan.limits.maxTotalCommerces}
             />}
           />
 
@@ -57,7 +63,7 @@ export default function PlanScreen() {
             description="Cantidad máxima de imágenes de comercios."
             data={<UsedLeftPieChart
               used={plan.used.totalCommercesImagesCount}
-              total={plan.available.maxTotalCommercesImages}
+              total={plan.limits.maxTotalCommercesImages}
             />}
           />
 
@@ -66,7 +72,7 @@ export default function PlanScreen() {
             description="Cantidad máxima de tiendas."
             data={<UsedLeftPieChart
               used={plan.used.totalStoresCount}
-              total={plan.available.maxTotalStores}
+              total={plan.limits.maxTotalStores}
             />}
           />
 
@@ -75,7 +81,7 @@ export default function PlanScreen() {
             description="Cantidad máxima de productos:"
             data={<UsedLeftPieChart
               used={plan.used.totalItemsCount}
-              total={plan.available.maxTotalItems}
+              total={plan.limits.maxTotalItems}
             />}
           />
 
@@ -84,7 +90,7 @@ export default function PlanScreen() {
             description="Cantidad máxima de imágenes de productos."
             data={<UsedLeftPieChart
               used={plan.used.totalItemsImagesCount}
-              total={plan.available.maxTotalItemsImages}
+              total={plan.limits.maxTotalItemsImages}
             />}
           />
 
@@ -93,7 +99,7 @@ export default function PlanScreen() {
             description="Capacidad máxima para imágenes de productos."
             data={<UsedLeftPieChart
               used={plan.used.itemsImagesAggregatedSize}
-              total={plan.available.maxItemsImagesAggregatedSize}
+              total={plan.limits.maxItemsImagesAggregatedSize}
               numberFormat={n => toFixed(n / 1000000, 2) + ' MB'}
             />}
           />

@@ -62,6 +62,7 @@ namespace backend_shop
             services.AddRFDBLocalizer();
 
             services.AddScoped<IPlanService, PlanService>();
+            services.AddScoped<IPlanLimitService, PlanLimitService>();
             services.AddScoped<IUserPlanService, UserPlanService>();
             services.AddScoped<ICommerceService, CommerceService>();
             services.AddScoped<ICommerceFileService, CommerceFileService>();
@@ -78,6 +79,7 @@ namespace backend_shop
             services.AddRFDBLocalizerDapper();
 
             services.AddScoped<Dapper<Plan>, Dapper<Plan>>();
+            services.AddScoped<Dapper<PlanLimit>, Dapper<PlanLimit>>();
             services.AddScoped<Dapper<UserPlan>, Dapper<UserPlan>>();
             services.AddScoped<Dapper<Commerce>, Dapper<Commerce>>();
             services.AddScoped<Dapper<CommerceFile>, Dapper<CommerceFile>>();
@@ -87,6 +89,7 @@ namespace backend_shop
             services.AddScoped<Dapper<ItemFile>, Dapper<ItemFile>>();
 
             services.AddScoped<IRepo<Plan>, Dapper<Plan>>();
+            services.AddScoped<IRepo<PlanLimit>, Dapper<PlanLimit>>();
             services.AddScoped<IRepo<UserPlan>, Dapper<UserPlan>>();
             services.AddScoped<IRepo<Commerce>, Dapper<Commerce>>();
             services.AddScoped<IRepo<CommerceFile>, Dapper<CommerceFile>>();
