@@ -9,6 +9,7 @@ export default function StoresListScreen() {
       formScreen="StoreForm"
       elements={[
         {
+          style: { width: '100%' },
           elements: [
             { control: 'isEnabled' },
             { fieldHeader: 'name' },

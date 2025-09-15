@@ -11,6 +11,7 @@ export default function CommercesListScreen() {
       formScreen="CommerceForm"
       elements={[
         {
+          style: { width: '100%' },
           elements: [
             { control: 'isEnabled' },
             { fieldHeader: 'name' },
