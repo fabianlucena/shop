@@ -8,7 +8,7 @@ namespace backend_shop.Controllers
     [Route("v1/plan")]
     public class PlanController(
         ILogger<PlanController> logger,
-        IUserPlanService userPlanService
+        IServiceProvider serviceProvider
     )
         : ControllerBase
     {
@@ -18,8 +18,11 @@ namespace backend_shop.Controllers
         {
             logger.LogInformation("Getting plan");
 
+            var userPlanService = serviceProvider.GetRequiredService<IUserPlanService>();
+            var planService = serviceProvider.GetRequiredService<IPlanService>();
+
             var plan = await userPlanService.GetSinglePlanForCurrentUserAsync();
-            var limits = await userPlanService.GetLimitsForCurrentUserAsync();
+            var limits = await planService.GetLimitsForPlanAsync(plan);
             var used = await userPlanService.GetUsedPlanForCurrentUserAsync();
             var response = new {
                 plan.Uuid,

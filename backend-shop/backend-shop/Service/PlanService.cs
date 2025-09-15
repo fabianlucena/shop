@@ -41,24 +41,38 @@ namespace backend_shop.Service
         {
             var planLimitService = serviceProvider.GetRequiredService<IPlanLimitService>();
 
-            var localOptions = new QueryOptions(options);
-            localOptions.AddFilter("PlanId", plan.Id);
-            var limits = (await planLimitService.GetListAsync(localOptions))
-                .ToList();
-
+            var limits = new List<PlanLimit>();
             var extendedPlan = plan;
-            while (extendedPlan.ExtendToId != null)
+            while (extendedPlan != null)
             {
-                extendedPlan = await GetSingleOrDefaultForIdAsync(extendedPlan.ExtendToId.Value);
-                if (extendedPlan == null)
+                if (extendedPlan.IsEnabled)
+                {
+                    var extendToOptions = new QueryOptions(options);
+                    extendToOptions.AddFilter("PlanId", extendedPlan.Id);
+                    extendToOptions.AddFilter(Op.NotIn("Name", limits.Select(l => l.Name)));
+                    var extendToLimits = await planLimitService.GetListAsync(extendToOptions);
+                    if (extendToLimits.Any())
+                        limits.AddRange(extendToLimits);
+                }
+
+                if (extendedPlan.ExtendToId == null)
                     break;
 
+                extendedPlan = await GetSingleOrDefaultForIdAsync(
+                    extendedPlan.ExtendToId.Value,
+                    new QueryOptions { Switches = { { "IncludeDisabled", true } } }
+                );
+            }
+
+            var basePlan = await GetSingleOrDefaultForNameAsync("Base");
+            if (basePlan is not null)
+            {
                 var extendToOptions = new QueryOptions(options);
-                extendToOptions.AddFilter("PlanId", extendedPlan.Id);
+                extendToOptions.AddFilter("PlanId", basePlan.Id);
                 extendToOptions.AddFilter(Op.NotIn("Name", limits.Select(l => l.Name)));
                 var extendToLimits = await planLimitService.GetListAsync(extendToOptions);
-
-                limits.AddRange(extendToLimits);
+                if (extendToLimits.Any())
+                    limits.AddRange(extendToLimits);
             }
 
             var result = new PlanLimits(limits);
