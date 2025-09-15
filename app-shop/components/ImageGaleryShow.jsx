@@ -1,5 +1,6 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { ScrollView, View, Platform, Pressable, Dimensions, Text, StyleSheet, Modal } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import ImageShow from './ImageShow.jsx';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
@@ -21,7 +22,46 @@ export default function ImageGaleryShow({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFullScreen, setIsFullScreen] = useState(false);
 
+  function updateScrollWidth(evt) {
+    if (Platform.OS !== 'web') {
+      if (evt?.nativeEvent?.layout?.width)
+        setScrollWidth(Math.floor(evt.nativeEvent.layout.width));
+
+      return;
+    }
+    
+    if (scrollWidth)
+      return;
+
+    let measuredWidth;
+    let measuredElement = ref.current;
+    let diff = 0;
+    do {
+      measuredWidth = measuredElement?.clientWidth;
+      if (!measuredWidth) {
+        const computed = window.getComputedStyle(measuredElement.parentNode);
+        diff += parseInt(computed.marginRight)
+          + parseInt(computed.marginLeft)
+          + parseInt(computed.paddingRight)
+          + parseInt(computed.paddingLeft);
+      }
+    } while (!measuredWidth && measuredElement && measuredElement !== document.body && (measuredElement = measuredElement.parentNode));
+
+    if (measuredWidth)
+      setScrollWidth(measuredWidth - diff);
+  }
+
+  useFocusEffect(useCallback(() => {
+    if (Platform.OS === 'web')
+      setScrollWidth(0);
+  }, []));
+
   useEffect(() => {
+    if (scrollWidth === 0) {
+      updateScrollWidth();
+      return;
+    }
+
     if (!autoSlide)
       return;
 
@@ -64,31 +104,10 @@ export default function ImageGaleryShow({
 
   const control = <View
       ref={ref}
-      onLayout={event => {
-        if (Platform.OS !== 'web') {
-          setScrollWidth(Math.floor(event.nativeEvent.layout.width));
-        } else if (ref.current) {
-          let measuredWidth;
-          let measuredElement = ref.current;
-          let diff = 0;
-          do {
-            measuredWidth = measuredElement?.clientWidth;
-            if (!measuredWidth) {
-              const computed = window.getComputedStyle(measuredElement.parentNode);
-              diff += parseInt(computed.marginRight)
-                + parseInt(computed.marginLeft)
-                + parseInt(computed.paddingRight)
-                + parseInt(computed.paddingLeft);
-            }
-          } while (!measuredWidth && measuredElement && measuredElement !== document.body && (measuredElement = measuredElement.parentNode));
-
-          if (measuredWidth)
-            setScrollWidth(measuredWidth - diff);
-        }
-      }}
+      onLayout={updateScrollWidth}
       style={[
         {
-          width: Platform.OS === 'web' ? scrollWidth : null,
+          width: Platform.OS === 'web' ? (scrollWidth || 0) : null,
           overflow: 'auto',
           flex: 1,
           display: 'flex',
@@ -149,7 +168,7 @@ export default function ImageGaleryShow({
       >
         {images?.map((image, index) => {
           const style = {
-            width: scrollWidth,
+            width: scrollWidth || 0,
             ...props.style,
             ...image.style,
           };
@@ -163,7 +182,7 @@ export default function ImageGaleryShow({
               {...props}
               {...image}
               style={{
-                width: scrollWidth,
+                width: scrollWidth || 0,
                 ...props.style,
                 ...image.style,
               }}
