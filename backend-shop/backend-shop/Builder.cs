@@ -123,6 +123,7 @@ namespace backend_shop
             var serviceProvider = scope.ServiceProvider;
 
             RFAuth_es.Setup.ConfigureDataRFAuthEs(serviceProvider);
+            RFDapper_es.Setup.ConfigureDataRFDapperEs(serviceProvider);
             RFService_es.Setup.ConfigureDataRFServiceEs(serviceProvider);
 
             var l10n = serviceProvider.GetRequiredService<IL10n>();
