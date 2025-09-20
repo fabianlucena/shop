@@ -34,6 +34,7 @@
     <ProjectReference Include="..\rf-nugets\RFAuthDapper\RFAuthDapper.csproj" />
     <ProjectReference Include="..\rf-nugets\RFAuth\RFAuth.csproj" />
     <ProjectReference Include="..\rf-nugets\RFAuth_es\RFAuth_es.csproj" />
+    <ProjectReference Include="..\rf-nugets\RFDapperDriverPostgreSQL\RFDapperDriverPostgreSQL.csproj" />
     <ProjectReference Include="..\rf-nugets\RFDapperDriverSQLServer\RFDapperDriverSQLServer.csproj" />
     <ProjectReference Include="..\rf-nugets\RFDapper_es\RFDapper_es.csproj" />
     <ProjectReference Include="..\rf-nugets\RFDBLocalizerDapper\RFDBLocalizerDapper.csproj" />

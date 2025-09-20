@@ -59,6 +59,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFDBLocalizerDapper", "rf-n
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFDapper_es", "rf-nugets\RFDapper_es\RFDapper_es.csproj", "{2C9F48C5-6DA9-44FA-8643-CCF4D04C4E17}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFDapperDriverPostgreSQL", "rf-nugets\RFDapperDriverPostgreSQL\RFDapperDriverPostgreSQL.csproj", "{84C3F3C8-ED7C-45C5-BE20-1687FEF6327F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -173,6 +175,10 @@ Global
 		{2C9F48C5-6DA9-44FA-8643-CCF4D04C4E17}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C9F48C5-6DA9-44FA-8643-CCF4D04C4E17}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C9F48C5-6DA9-44FA-8643-CCF4D04C4E17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84C3F3C8-ED7C-45C5-BE20-1687FEF6327F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84C3F3C8-ED7C-45C5-BE20-1687FEF6327F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84C3F3C8-ED7C-45C5-BE20-1687FEF6327F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84C3F3C8-ED7C-45C5-BE20-1687FEF6327F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -204,6 +210,7 @@ Global
 		{42C8DEC8-61C1-5BDE-4EFE-7E91EF6380FA} = {97C7CD0C-457F-4439-B1CE-0A524B391FBC}
 		{0B742221-5312-014E-D1E2-4C8BBAB540C6} = {97C7CD0C-457F-4439-B1CE-0A524B391FBC}
 		{2C9F48C5-6DA9-44FA-8643-CCF4D04C4E17} = {97C7CD0C-457F-4439-B1CE-0A524B391FBC}
+		{84C3F3C8-ED7C-45C5-BE20-1687FEF6327F} = {97C7CD0C-457F-4439-B1CE-0A524B391FBC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7DED2E2E-A009-4B14-9ACC-73D803EC810B}

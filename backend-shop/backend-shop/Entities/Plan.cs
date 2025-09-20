@@ -8,12 +8,10 @@ namespace backend_shop.Entities
     public class Plan
         : EntitySoftDeleteTimestampsIdUuidEnabledName
     {
-        [Required]
         [ForeignKey("ExtendTo")]
         public Int64? ExtendToId { get; set; } = default;
         public Plan? ExtendTo { get; set; } = default;
 
-        [Required]
-        public string Description { get; set; } = string.Empty;
+        public string? Description { get; set; }
     }
 }

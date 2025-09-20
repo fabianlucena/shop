@@ -1,6 +1,5 @@
 ﻿using backend_shop.Entities;
 using backend_shop.IServices;
-using backend_shop.Service;
 using RFRBAC.IServices;
 using static RFDapper.Setup;
 
@@ -86,7 +85,7 @@ namespace backend_shop
             foreach (var limit in limits)
             {
                 limit.PlanId = basePlanId;
-                await PlanLimitService.CreateAsync(limit);
+                await PlanLimitService.GetOrCreateAsync(limit);
             }
 
             var categories = new Dictionary<string, string>{

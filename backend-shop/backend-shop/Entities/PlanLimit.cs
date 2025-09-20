@@ -13,7 +13,6 @@ namespace backend_shop.Entities
         public Int64 PlanId { get; set; } = default;
         public Plan? Plan { get; set; } = default;
 
-        [Required]
         public string? Description { get; set; }
 
         public Int64 Limit { get; set; }

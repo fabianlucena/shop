@@ -5,7 +5,8 @@ using NetTopologySuite.Geometries;
 using RFAuth;
 using RFAuthDapper;
 using RFDapper;
-using RFDapperDriverSQLServer;
+//using RFDapperDriverSQLServer;
+using RFDapperDriverPostgreSQL;
 using RFDBLocalizer;
 using RFDBLocalizer.IServices;
 using RFDBLocalizerDapper;
@@ -98,12 +99,13 @@ namespace backend_shop
             services.AddScoped<IRepo<Item>, Dapper<Item>>();
             services.AddScoped<IRepo<ItemFile>, Dapper<ItemFile>>();
 
-            services.AddRFDapperDriverSQLServer(new SQLServerDDOptions
+            //services.AddRFDapperDriverSQLServer(new SQLServerDDOptions
+            services.AddRFDapperDriverPostgreSQL(new PostgreSQLDDOptions
             {
                 ConnectionString = dbConnectionString,
                 ColumnTypes =
                 {
-                    { "Point", "GEOGRAPHY" },
+                    { "Point", "GEOGRAPHY(Point, 4326)" },
                 },
                 GetSqlSelectedProperty = (driver, property, options, defaultAlias) =>
                 {
@@ -111,7 +113,7 @@ namespace backend_shop
                         return $"{driver.GetColumnName(property.Name, options, defaultAlias)}.STAsText() AS {driver.GetColumnAlias(property.Name)}";
 
                     return null;
-                }
+                },
             });
 
             services.AddAutoMapper(typeof(MappingProfile).Assembly);
@@ -143,8 +145,8 @@ namespace backend_shop
                 using var scope = app.Services.CreateScope();
                 var serviceProvider = scope.ServiceProvider;
 
-                RFLoggerProviderDapper.Setup.ConfigureRFLoggerProviderDapper(serviceProvider);
                 RFAuthDapper.Setup.ConfigureRFAuthDapper(serviceProvider);
+                RFLoggerProviderDapper.Setup.ConfigureRFLoggerProviderDapper(serviceProvider);
                 RFUserEmailVerifiedDapper.Setup.ConfigureRFUserEmailVerifiedDapper(serviceProvider);
                 RFRBACDapper.Setup.ConfigureRFRBACDapper(serviceProvider);
                 RFHttpActionDapper.Setup.ConfigureRFHttpActionDapper(serviceProvider);
