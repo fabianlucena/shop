@@ -41,27 +41,39 @@ namespace backend_shop.Services
         {
             var planLimitService = serviceProvider.GetRequiredService<IPlanLimitService>();
 
+            var extendedPlans = new List<Int64>();
             var limits = new List<PlanLimit>();
             var extendedPlan = plan;
             while (extendedPlan != null)
             {
                 if (extendedPlan.IsEnabled)
                 {
-                    var extendToOptions = new QueryOptions(options);
-                    extendToOptions.AddFilter("PlanId", extendedPlan.Id);
-                    extendToOptions.AddFilter(Op.NotIn("Name", limits.Select(l => l.Name)));
-                    var extendToLimits = await planLimitService.GetListAsync(extendToOptions);
-                    if (extendToLimits.Any())
-                        limits.AddRange(extendToLimits);
+                    var extendLimitsOptions = new QueryOptions(options);
+                    extendLimitsOptions.AddFilter("PlanId", extendedPlan.Id);
+                    var extendLimits = await planLimitService.GetListAsync(extendLimitsOptions);
+                    foreach (var limit in extendLimits)
+                    {
+                        var current = limits.Find(l => l.Name == limit.Name);
+                        if (current == null)
+                            limits.Add(limit);
+                        else if (limit.Limit > current.Limit)
+                            current.Limit = limit.Limit;
+                    }
                 }
 
                 if (extendedPlan.ExtendToId == null)
                     break;
 
-                extendedPlan = await GetSingleOrDefaultForIdAsync(
-                    extendedPlan.ExtendToId.Value,
-                    new QueryOptions { Switches = { { "IncludeDisabled", true } } }
-                );
+                extendedPlans.Add(extendedPlan.Id);
+
+                var extendToOptions = new QueryOptions
+                {
+                    Switches = { { "IncludeDisabled", true } },
+                    Filters = { { "Id", extendedPlan.ExtendToId.Value } },
+                };
+                extendedPlan = await GetSingleOrDefaultAsync(extendToOptions);
+                if (extendedPlan != null && extendedPlans.Contains(extendedPlan.Id))
+                    break;
             }
 
             var basePlan = await GetSingleOrDefaultForNameAsync("Base");
