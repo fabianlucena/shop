@@ -1,7 +1,7 @@
-﻿using NetTopologySuite.Geometries;
-using RFService.Entities;
+﻿using RFService.Entities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using RFService.Attributes;
 
 namespace backend_shop.Entities
 {
@@ -37,5 +37,9 @@ namespace backend_shop.Entities
         public int? MinAge { get; set; }
 
         public int? MaxAge { get; set; }
+
+        [Required]
+        [Size(384)]
+        public float[] Embedding { get; set; } = [];
     }
 }

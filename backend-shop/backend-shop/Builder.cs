@@ -1,11 +1,11 @@
 ﻿using backend_shop.Entities;
+using backend_shop.Exceptions;
 using backend_shop.IServices;
 using backend_shop.Service;
 using NetTopologySuite.Geometries;
 using RFAuth;
 using RFAuthDapper;
 using RFDapper;
-//using RFDapperDriverSQLServer;
 using RFDapperDriverPostgreSQL;
 using RFDBLocalizer;
 using RFDBLocalizer.IServices;
@@ -22,9 +22,13 @@ using RFRBAC.Authorization;
 using RFRBACDapper;
 using RFRegister;
 using RFService;
+using RFService.Attributes;
 using RFService.IRepo;
 using RFUserEmailVerified;
 using RFUserEmailVerifiedDapper;
+using System.ComponentModel.DataAnnotations;
+using System.Reflection;
+using System.Reflection.Metadata;
 
 namespace backend_shop
 {
@@ -105,7 +109,17 @@ namespace backend_shop
                 ConnectionString = dbConnectionString,
                 ColumnTypes =
                 {
-                    { "Point", "GEOGRAPHY(Point, 4326)" },
+                    { "Point", property => "GEOGRAPHY(Point, 4326)" },
+                    { "Single[]",  property => {
+                        var length = property.GetCustomAttribute<MaxLengthAttribute>()?.Length
+                            ?? property.GetCustomAttribute<LengthAttribute>()?.MaximumLength
+                            ?? property.GetCustomAttribute<SizeAttribute>()?.Size;
+
+                        if (!length.HasValue || length.Value <= 0)
+                            throw new MissingLengthForPropertyException(property.Name);
+                        
+                        return $"Vector({length.Value})";
+                    } },
                 },
                 GetSqlSelectedProperty = (driver, property, options, defaultAlias) =>
                 {

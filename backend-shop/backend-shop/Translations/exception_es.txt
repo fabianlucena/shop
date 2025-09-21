@@ -13,6 +13,9 @@ No existe el artículo.
 Item image not found.
 No se encontró la imagen del artículo.
 
+Missing length for property {0}.
+Falta la longitud para la propiedad {0}.
+
 No commerce provided.
 No se ha provisto comercio.
 
