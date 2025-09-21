@@ -1,8 +1,9 @@
 ﻿using backend_shop.Entities;
 using backend_shop.Exceptions;
 using backend_shop.IServices;
-using backend_shop.Service;
+using backend_shop.Services;
 using NetTopologySuite.Geometries;
+using Npgsql;
 using RFAuth;
 using RFAuthDapper;
 using RFDapper;
@@ -28,7 +29,6 @@ using RFUserEmailVerified;
 using RFUserEmailVerifiedDapper;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
-using System.Reflection.Metadata;
 
 namespace backend_shop
 {
@@ -65,6 +65,16 @@ namespace backend_shop
             services.AddRFHttpAction();
             services.AddRFHttpExceptionsL10n();
             services.AddRFDBLocalizer();
+
+            services.AddSingleton<IEmbeddingService>(provider =>
+            {
+                var url = builder.Configuration.GetValue<string>("Embedding:Url")
+                    ?? throw new Exception("No Embedding:Url configuration found");
+                var apiKey = builder.Configuration.GetValue<string>("Embedding:ApiKey") ?? string.Empty;
+                var model = builder.Configuration.GetValue<string>("Embedding:Model")
+                    ?? throw new Exception("No Embedding:Model configuration found");
+                return new EmbeddingService(url, apiKey, model);
+            });
 
             services.AddScoped<IPlanService, PlanService>();
             services.AddScoped<IPlanLimitService, PlanLimitService>();
@@ -103,10 +113,21 @@ namespace backend_shop
             services.AddScoped<IRepo<Item>, Dapper<Item>>();
             services.AddScoped<IRepo<ItemFile>, Dapper<ItemFile>>();
 
-            //services.AddRFDapperDriverSQLServer(new SQLServerDDOptions
             services.AddRFDapperDriverPostgreSQL(new PostgreSQLDDOptions
             {
                 ConnectionString = dbConnectionString,
+                OpenConnection = (driverOptions, connectionString) => {
+                    connectionString ??= driverOptions.ConnectionString;
+                    if (string.IsNullOrEmpty(connectionString))
+                        throw new ArgumentNullException(nameof(connectionString), "Connection string cannot be null or empty.");
+
+                    var dsb = new NpgsqlDataSourceBuilder(connectionString);
+                    dsb.UseVector();
+                    var dataSource = dsb.Build();
+                    var connection = dataSource.OpenConnection();
+
+                    return connection;
+                },
                 ColumnTypes =
                 {
                     { "Point", property => "GEOGRAPHY(Point, 4326)" },
@@ -124,7 +145,7 @@ namespace backend_shop
                 GetSqlSelectedProperty = (driver, property, options, defaultAlias) =>
                 {
                     if (property.PropertyType == typeof(Point))
-                        return $"{driver.GetColumnName(property.Name, options, defaultAlias)}.STAsText() AS {driver.GetColumnAlias(property.Name)}";
+                        return $"ST_AsText({driver.GetColumnName(property.Name, options, defaultAlias)}) AS {driver.GetColumnAlias(property.Name)}";
 
                     return null;
                 },
