@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35208.52
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "backend-shop", "backend-shop\backend-shop.csproj", "{66CC3ECA-2C5D-48A3-8418-75BA82565E66}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "backend-shopia", "backend-shopia\backend-shopia.csproj", "{66CC3ECA-2C5D-48A3-8418-75BA82565E66}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RF Nugets", "RF Nugets", "{97C7CD0C-457F-4439-B1CE-0A524B391FBC}"
 EndProject
