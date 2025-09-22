@@ -116,18 +116,7 @@ namespace backend_shopia
             services.AddRFDapperDriverPostgreSQL(new PostgreSQLDDOptions
             {
                 ConnectionString = dbConnectionString,
-                OpenConnection = (driverOptions, connectionString) => {
-                    connectionString ??= driverOptions.ConnectionString;
-                    if (string.IsNullOrEmpty(connectionString))
-                        throw new ArgumentNullException(nameof(connectionString), "Connection string cannot be null or empty.");
-
-                    var dsb = new NpgsqlDataSourceBuilder(connectionString);
-                    dsb.UseVector();
-                    var dataSource = dsb.Build();
-                    var connection = dataSource.OpenConnection();
-
-                    return connection;
-                },
+                PrepareDataSourceBuilder = ds => ds.UseVector(),
                 ColumnTypes =
                 {
                     { "Point", property => "GEOGRAPHY(Point, 4326)" },
