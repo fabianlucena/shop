@@ -23,6 +23,7 @@ export default function ListScreen({
   onDeleted,
   onEnable,
   onEnabled,
+  onSuccess,
   showCommerceName,
   loadingError = 'Error de carga',
   loadOptions = {},
@@ -59,6 +60,7 @@ export default function ListScreen({
           service.deleteForUuid(item.uuid)
             .then(() => {
               onDeleted && onDeleted(item);
+              onSuccess && onSuccess();
               loadData();
             })
             .catch(err => dialog.message(err));
@@ -92,6 +94,7 @@ export default function ListScreen({
               service.updateForUuid(item.uuid, { isEnabled: value })
                 .then(() => {
                   onEnabled && onEnabled(value);
+                  onSuccess && onSuccess();
                   loadData();
                 })
                 .catch(err => dialog.message(err));

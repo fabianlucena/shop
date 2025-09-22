@@ -154,7 +154,8 @@ export function SessionProvider({ children }) {
       commerceUuid, setCommerceUuid,
       commerceName,
       categories,
-      stores,
+      loadStores,
+      stores, setStores,
       categoriesOptions,
       storesOptions,
       addMessage, addError, updateMessage, messages, setMessages

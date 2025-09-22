@@ -9,6 +9,8 @@ export default function CommercesListScreen() {
       service={useCommerce()}
       confirmDeletionMessage={item => `¿Desea eliminar el comercio ${item.name}?`}
       formScreen="CommerceForm"
+      loadOptions={{ query: { includeDisabled: true } }}
+      onSuccess={loadCommerces}
       elements={[
         {
           style: { width: '100%' },
@@ -21,7 +23,5 @@ export default function CommercesListScreen() {
         },
         {field: 'description'},
       ]}
-      onDeleted={loadCommerces}
-      onEnabled={loadCommerces}
     />;
 }
