@@ -1,7 +1,7 @@
-﻿using backend_shop.Entities;
-using backend_shop.Exceptions;
+﻿using backend_shopia.Entities;
+using backend_shopia.Exceptions;
 
-namespace backend_shop.DTO
+namespace backend_shopia.DTO
 {
     public class PlanLimits
     {

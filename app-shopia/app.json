@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Shop",
-    "slug": "shop",
+    "name": "ShopIA",
+    "slug": "shopia",
     "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -14,7 +14,7 @@
     "ios": {
       "buildNumber": "1",
       "supportsTablet": true,
-      "bundleIdentifier": "ar.com.shop"
+      "bundleIdentifier": "ar.com.shopia"
     },
     "android": {
       "versionCode": 1,
@@ -22,7 +22,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#b5f6a7"
       },
-      "package": "ar.com.shop"
+      "package": "ar.com.shopia"
     },
     "web": {
       "favicon": "./assets/favicon.png"

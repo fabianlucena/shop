@@ -1,9 +1,9 @@
-﻿using backend_shop.DTO;
-using backend_shop.Entities;
+﻿using backend_shopia.DTO;
+using backend_shopia.Entities;
 using RFService.IServices;
 using RFService.Repo;
 
-namespace backend_shop.IServices
+namespace backend_shopia.IServices
 {
     public interface IItemService
         : IService<Item>,

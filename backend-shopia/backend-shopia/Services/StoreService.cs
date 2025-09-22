@@ -1,14 +1,14 @@
 ﻿using RFService.Services;
 using RFService.IRepo;
-using backend_shop.Entities;
-using backend_shop.IServices;
-using backend_shop.Exceptions;
+using backend_shopia.Entities;
+using backend_shopia.IServices;
+using backend_shopia.Exceptions;
 using RFService.Repo;
 using RFAuth.Exceptions;
 using RFService.ILibs;
-using backend_shop.DTO;
+using backend_shopia.DTO;
 
-namespace backend_shop.Services
+namespace backend_shopia.Services
 {
     public class StoreService(
         IRepo<Store> repo,

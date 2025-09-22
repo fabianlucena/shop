@@ -1,7 +1,7 @@
-﻿using backend_shop.Entities;
-using backend_shop.Exceptions;
-using backend_shop.IServices;
-using backend_shop.Services;
+﻿using backend_shopia.Entities;
+using backend_shopia.Exceptions;
+using backend_shopia.IServices;
+using backend_shopia.Services;
 using NetTopologySuite.Geometries;
 using Npgsql;
 using RFAuth;
@@ -30,7 +30,7 @@ using RFUserEmailVerifiedDapper;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
-namespace backend_shop
+namespace backend_shopia
 {
     public static class MvcServiceCollectionExtensions
     {
@@ -185,7 +185,7 @@ namespace backend_shop
                 RFUserEmailVerifiedDapper.Setup.ConfigureRFUserEmailVerifiedDapper(serviceProvider);
                 RFRBACDapper.Setup.ConfigureRFRBACDapper(serviceProvider);
                 RFHttpActionDapper.Setup.ConfigureRFHttpActionDapper(serviceProvider);
-                Setup.ConfigureShopDapper(serviceProvider);
+                Setup.ConfigureShopiaDapper(serviceProvider);
             }
         }
 
@@ -201,7 +201,7 @@ namespace backend_shop
                 RFUserEmailVerified.Setup.ConfigureRFUserEmailVerified(serviceProvider);
                 RFRBAC.Setup.ConfigureRFRBAC(serviceProvider);
                 RFRegister.Setup.ConfigureRFRegister(serviceProvider);
-                Setup.ConfigureShop(serviceProvider);
+                Setup.ConfigureShopia(serviceProvider);
             }
         }
     }

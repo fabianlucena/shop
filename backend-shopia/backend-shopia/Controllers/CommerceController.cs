@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using backend_shop.DTO;
-using backend_shop.Entities;
-using backend_shop.IServices;
+using backend_shopia.DTO;
+using backend_shopia.Entities;
+using backend_shopia.IServices;
 using Microsoft.AspNetCore.Mvc;
 using RFAuth.Exceptions;
 using RFService.Authorization;
@@ -9,7 +9,7 @@ using RFService.Data;
 using RFService.Libs;
 using RFService.Repo;
 
-namespace backend_shop.Controllers
+namespace backend_shopia.Controllers
 {
     [ApiController]
     [Route("v1/commerce")]

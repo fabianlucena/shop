@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using RFService.Attributes;
 
-namespace backend_shop.Entities
+namespace backend_shopia.Entities
 {
-    [Table("Items", Schema = "shop")]
+    [Table("Items", Schema = "shopia")]
     public class Item
         : EntitySoftDeleteTimestampsIdUuidEnabledName
     {

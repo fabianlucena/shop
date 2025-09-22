@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace backend_shop.DTO
+namespace backend_shopia.DTO
 {
     public class FileDTO
     {

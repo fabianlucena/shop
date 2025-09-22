@@ -1,11 +1,11 @@
-﻿using backend_shop.DTO;
-using backend_shop.Entities;
-using backend_shop.Exceptions;
-using backend_shop.IServices;
+﻿using backend_shopia.DTO;
+using backend_shopia.Entities;
+using backend_shopia.Exceptions;
+using backend_shopia.IServices;
 using RFService.IRepo;
 using RFService.Services;
 
-namespace backend_shop.Services
+namespace backend_shopia.Services
 {
     public class PlanLimitService(
         IRepo<PlanLimit> repo

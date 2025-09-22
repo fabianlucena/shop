@@ -1,4 +1,4 @@
-﻿namespace backend_shop.Middlewares
+﻿namespace backend_shopia.Middlewares
 {
     public class EnableBodyBufferingMiddleware(RequestDelegate next)
     {

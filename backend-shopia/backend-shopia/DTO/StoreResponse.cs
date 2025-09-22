@@ -1,6 +1,6 @@
-﻿using backend_shop.Types;
+﻿using backend_shopia.Types;
 
-namespace backend_shop.DTO
+namespace backend_shopia.DTO
 {
     public class StoreResponse
     {

@@ -1,7 +1,7 @@
-﻿using backend_shop.DTO;
-using backend_shop.Entities;
-using backend_shop.Exceptions;
-using backend_shop.IServices;
+﻿using backend_shopia.DTO;
+using backend_shopia.Entities;
+using backend_shopia.Exceptions;
+using backend_shopia.IServices;
 using RFAuth.Exceptions;
 using RFOperators;
 using RFService.ILibs;
@@ -11,7 +11,7 @@ using RFService.Repo;
 using RFService.Services;
 using System.Text.Json;
 
-namespace backend_shop.Services
+namespace backend_shopia.Services
 {
     public class ItemService(
         IRepo<Item> repo,

@@ -1,10 +1,10 @@
 using AutoMapper;
-using backend_shop.DTO;
-using backend_shop.Entities;
-using backend_shop.Exceptions;
-using backend_shop.IServices;
+using backend_shopia.DTO;
+using backend_shopia.Entities;
+using backend_shopia.Exceptions;
+using backend_shopia.IServices;
 
-namespace backend_shop
+namespace backend_shopia
 {
     public class StoreAddRequest_CommerceIdResolverAsync(ICommerceService commerceService)
         : IValueResolver<StoreAddRequest, Store, Int64>

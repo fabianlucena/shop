@@ -1,4 +1,4 @@
-﻿namespace backend_shop.IServices
+﻿namespace backend_shopia.IServices
 {
     public interface IEmbeddingService
     {

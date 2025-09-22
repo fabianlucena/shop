@@ -1,6 +1,6 @@
-﻿using backend_shop.Entities;
+﻿using backend_shopia.Entities;
 
-namespace backend_shop.DTO
+namespace backend_shopia.DTO
 {
     public class CommerceResponse
     {

@@ -1,9 +1,9 @@
-﻿using backend_shop.IServices;
+﻿using backend_shopia.IServices;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 
-namespace backend_shop.Services
+namespace backend_shopia.Services
 {
     public class EmbeddingService(
         string url,

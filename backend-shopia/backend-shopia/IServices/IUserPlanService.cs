@@ -1,8 +1,8 @@
-﻿using backend_shop.DTO;
-using backend_shop.Entities;
+﻿using backend_shopia.DTO;
+using backend_shopia.Entities;
 using RFService.IServices;
 
-namespace backend_shop.IServices
+namespace backend_shopia.IServices
 {
     public interface IUserPlanService
         : IService<UserPlan>,

@@ -2,7 +2,7 @@
 using System.Data;
 using Pgvector;
 
-namespace backend_shop.Types
+namespace backend_shopia.Types
 {
     public class VectorFloatArrayHandler
         : SqlMapper.TypeHandler<float[]>

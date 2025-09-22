@@ -1,9 +1,9 @@
-﻿using backend_shop.Entities;
-using backend_shop.IServices;
+﻿using backend_shopia.Entities;
+using backend_shopia.IServices;
 using RFRBAC.IServices;
 using static RFDapper.Setup;
 
-namespace backend_shop
+namespace backend_shopia
 {
     public static class Setup
     {
@@ -17,7 +17,7 @@ namespace backend_shop
         static IPlanLimitService PlanLimitService => planLimitService ?? throw new Exception();
         static ICategoryService CategoryService => categoryService ?? throw new Exception();
 
-        public static void ConfigureShopDapper(IServiceProvider services)
+        public static void ConfigureShopiaDapper(IServiceProvider services)
         {
             CreateTable<Plan>(services);
             CreateTable<PlanLimit>(services);
@@ -30,17 +30,17 @@ namespace backend_shop
             CreateTable<ItemFile>(services);
         }
 
-        public static void ConfigureShop(IServiceProvider provider)
+        public static void ConfigureShopia(IServiceProvider provider)
         {
             rolePermissionService = provider.GetRequiredService<IRolePermissionService>();
             planService = provider.GetRequiredService<IPlanService>();
             planLimitService = provider.GetRequiredService<IPlanLimitService>();
             categoryService = provider.GetRequiredService<ICategoryService>();
 
-            ConfigureShopAsync().Wait();
+            ConfigureShopiaAsync().Wait();
         }
 
-        public static async Task ConfigureShopAsync()
+        public static async Task ConfigureShopiaAsync()
         {
             var rolesPermissions = new Dictionary<string, IEnumerable<string>>{
                 { "user", [

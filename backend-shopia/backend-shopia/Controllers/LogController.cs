@@ -9,7 +9,7 @@ using RFLoggerProvider.DTO;
 using RFLoggerProvider.Entities;
 using RFLoggerProvider.IServices;
 
-namespace backend_shop.Controllers
+namespace backend_shopia.Controllers
 {
     [ApiController]
     [Route("v1/log")]

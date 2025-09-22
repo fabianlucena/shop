@@ -1,7 +1,7 @@
-﻿using backend_shop.Entities;
+﻿using backend_shopia.Entities;
 using RFService.IServices;
 
-namespace backend_shop.IServices
+namespace backend_shopia.IServices
 {
     public interface ICategoryService
         : IService<Category>,

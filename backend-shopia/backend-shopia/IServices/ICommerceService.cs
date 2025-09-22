@@ -1,10 +1,10 @@
-﻿using backend_shop.Entities;
+﻿using backend_shopia.Entities;
 using Microsoft.AspNetCore.Http;
 using RFAuth.Exceptions;
 using RFService.IServices;
 using RFService.Repo;
 
-namespace backend_shop.IServices
+namespace backend_shopia.IServices
 {
     public interface ICommerceService
         : IService<Commerce>,

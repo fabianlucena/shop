@@ -2,9 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace backend_shop.Entities
+namespace backend_shopia.Entities
 {
-    [Table("PlansLimits", Schema = "shop")]
+    [Table("PlansLimits", Schema = "shopia")]
     public class PlanLimit
         : EntitySoftDeleteTimestampsIdUuidEnabledName
     {

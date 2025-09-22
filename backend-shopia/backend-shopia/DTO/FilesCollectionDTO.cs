@@ -1,4 +1,4 @@
-﻿namespace backend_shop.DTO
+﻿namespace backend_shopia.DTO
 {
     public class FilesCollectionDTO : List<FileDTO>
     {

@@ -3,9 +3,9 @@ using RFService.Entities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace backend_shop.Entities
+namespace backend_shopia.Entities
 {
-    [Table("Users_Plans", Schema = "shop")]
+    [Table("Users_Plans", Schema = "shopia")]
     public class UserPlan
         : EntityTimestampsIdUuidEnabled
     {

@@ -1,8 +1,8 @@
-using backend_shop.Middlewares;
+using backend_shopia.Middlewares;
 using RFAuth;
 using RFHttpExceptionsL10n.Middlewares;
 
-namespace backend_shop
+namespace backend_shopia
 {
     public class Program
     {

@@ -2,9 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace backend_shop.Entities
+namespace backend_shopia.Entities
 {
-    [Table("ItemsFiles", Schema = "shop")]
+    [Table("ItemsFiles", Schema = "shopia")]
     public class ItemFile
         : EntityCreatedAtIdUuidName
     {

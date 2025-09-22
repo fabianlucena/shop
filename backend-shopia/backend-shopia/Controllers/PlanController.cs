@@ -1,8 +1,8 @@
-﻿using backend_shop.IServices;
+﻿using backend_shopia.IServices;
 using Microsoft.AspNetCore.Mvc;
 using RFService.Authorization;
 
-namespace backend_shop.Controllers
+namespace backend_shopia.Controllers
 {
     [ApiController]
     [Route("v1/plan")]

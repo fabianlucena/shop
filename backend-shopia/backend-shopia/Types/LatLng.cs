@@ -1,7 +1,7 @@
 ﻿using NetTopologySuite;
 using NetTopologySuite.Geometries;
 
-namespace backend_shop.Types
+namespace backend_shopia.Types
 {
     public class LatLng(double lat, double lng)
     {
