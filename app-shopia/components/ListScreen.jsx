@@ -4,6 +4,7 @@ import { useFocusEffect } from '@react-navigation/native';
 
 import styles from '../libs/styles';
 
+import { useSession } from './Session';
 import Screen from './Screen';
 import ListItemHeader from './ListItemHeader';
 import ButtonIconEdit from './ButtonIconEdit';
@@ -30,6 +31,7 @@ export default function ListScreen({
 }) {
   const [data, setData] = useState([]);
   const dialog = useDialog();
+  const { addError } = useSession();
 
   useFocusEffect(
     useCallback(() => loadData(), [])
@@ -46,7 +48,7 @@ export default function ListScreen({
         }
         setData(newData);
       })
-      .catch(e => setError(`${loadingError}\n${e.message}`));
+      .catch(e => addError(`${loadingError}\n${e.message}`));
   }
 
   function deleteRow(item) {

@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { useSession } from '../contexts/Session';
+import { useSession } from './Session';
 
 import Messages from './Messages';
 import Background from './Background';

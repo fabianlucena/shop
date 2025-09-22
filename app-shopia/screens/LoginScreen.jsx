@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import styles from '../libs/styles';
 
 import useLogin from '../services/useLogin';
-import { useSession } from '../contexts/Session';
+import { useSession } from '../components/Session';
 
 import TextField from '../components/TextField';
 import Button from '../components/Button';

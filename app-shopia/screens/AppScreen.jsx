@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { useSession } from '../contexts/Session';
+import { useSession } from '../components/Session';
 
 import LoadingScreen from './LoadingScreen';
 import LoginScreen from './LoginScreen';

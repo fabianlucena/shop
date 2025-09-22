@@ -1,6 +1,6 @@
 import FormScreen from '../components/FormScreen';
 import useStore from '../services/useStore';
-import { useSession } from '../contexts/Session';
+import { useSession } from '../components/Session';
 
 export default function StoreFormScreen() {
   const { commerceUuid } = useSession();

@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Api } from '../libs/api';
-import { useSession } from '../contexts/Session';
+import { useSession } from '../components/Session';
 
 export default function useLogin() {
   const { setIsLoggedIn, setPermissions } = useSession();

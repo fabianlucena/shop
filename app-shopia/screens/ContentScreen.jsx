@@ -2,7 +2,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { useSession } from '../contexts/Session';
+import { useSession } from '../components/Session';
 
 import ButtonIconAdd from '../components/ButtonIconAdd';
 
@@ -24,7 +24,7 @@ const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 
 function DrawerNavigator() {
-  const { commerces, commerceUuid, setCommerceUuid } = useSession();
+  const { commerces, commerceUuid, setCommerceUuid, stores } = useSession();
 
   return <Drawer.Navigator
       screenOptions={{
@@ -38,20 +38,24 @@ function DrawerNavigator() {
           <SelectField
             key="selector"
             options={commerces.map(i => ({value: i.uuid, label: i.name}))}
-            placeholder="--- Sin comercio ---"
+            placeholder={commerces.length === 0 ? "--- Debe crear un comercio ---" : "--- Seleccionar comercio ---"}
             value={commerceUuid || ''}
             onChangeValue={setCommerceUuid}
           />
           <DrawerItemList {...props} />
         </DrawerContentScrollView>}
     >
-      <Drawer.Screen name="Explore"        component={ExploreScreen}        options={{ title: 'Explorar' }} />
-      <Drawer.Screen name="ItemsList"      component={ItemListScreen}       options={{ title: 'Mis artículos', headerRight: () => <ButtonIconAdd style={{margin: 10}} size="big" navigate="ItemForm"     /> }}/>
-      <Drawer.Screen name="CommercesList"  component={CommercesListScreen}  options={{ title: 'Mis comercios', headerRight: () => <ButtonIconAdd style={{margin: 10}} size="big" navigate="CommerceForm" /> }}/>
-      <Drawer.Screen name="StoresList"     component={StoresListScreen}     options={{ title: 'Mis locales',   headerRight: () => <ButtonIconAdd style={{margin: 10}} size="big" navigate="StoreForm"    /> }}/>
-      <Drawer.Screen name="Plan"           component={PlanScreen}           options={{ title: 'Mi plan',       headerRight: () => <ButtonIconAdd style={{margin: 10}} size="big" navigate="Plan"         /> }}/>
-      <Drawer.Screen name="ChangePassword" component={ChangePasswordScreen} options={{ title: 'Cambiar contraseña' }}/>
-      <Drawer.Screen name="Logout"         component={LogoutScreen}         options={{ title: 'Salir' }}/>
+        <Drawer.Screen name="Explore"        component={ExploreScreen}        options={{ title: 'Explorar' }} />
+      {stores.length > 0    &&
+        <Drawer.Screen name="ItemsList"      component={ItemListScreen}       options={{ title: 'Mis artículos', headerRight: () => <ButtonIconAdd style={{margin: 10}} size="big" navigate="ItemForm"     /> }}/>
+      || null}
+        <Drawer.Screen name="CommercesList"  component={CommercesListScreen}  options={{ title: 'Mis comercios', headerRight: () => <ButtonIconAdd style={{margin: 10}} size="big" navigate="CommerceForm" /> }}/>
+      {commerceUuid &&
+        <Drawer.Screen name="StoresList"     component={StoresListScreen}     options={{ title: 'Mis locales',   headerRight: () => <ButtonIconAdd style={{margin: 10}} size="big" navigate="StoreForm"    /> }}/>
+      || null}
+        <Drawer.Screen name="Plan"           component={PlanScreen}           options={{ title: 'Mi plan',       headerRight: () => <ButtonIconAdd style={{margin: 10}} size="big" navigate="Plan"         /> }}/>
+        <Drawer.Screen name="ChangePassword" component={ChangePasswordScreen} options={{ title: 'Cambiar contraseña' }}/>
+        <Drawer.Screen name="Logout"         component={LogoutScreen}         options={{ title: 'Salir' }}/>
     </Drawer.Navigator>;
 }
 

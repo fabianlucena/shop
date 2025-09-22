@@ -7,6 +7,7 @@ export default function StoresListScreen() {
       service={useStore()}
       confirmDeletionMessage={item => `¿Desea eliminar el local ${item.name}?`}
       formScreen="StoreForm"
+      loadOptions={{ query: { includeDisabled: true } }}
       elements={[
         {
           style: { width: '100%' },

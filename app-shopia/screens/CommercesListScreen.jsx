@@ -1,9 +1,9 @@
 import ListScreen from '../components/ListScreen';
 import useCommerce from '../services/useCommerce';
-import { useSession } from '../contexts/Session';
+import { useSession } from '../components/Session';
 
 export default function CommercesListScreen() {
-  const { loadCommerce } = useSession();
+  const { loadCommerces } = useSession();
 
   return <ListScreen
       service={useCommerce()}
@@ -21,7 +21,7 @@ export default function CommercesListScreen() {
         },
         {field: 'description'},
       ]}
-      onDeleted={loadCommerce}
-      onEnabled={loadCommerce}
+      onDeleted={loadCommerces}
+      onEnabled={loadCommerces}
     />;
 }

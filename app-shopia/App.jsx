@@ -1,6 +1,6 @@
 import '@expo/metro-runtime';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { SessionProvider } from './contexts/Session';
+import { SessionProvider } from './components/Session';
 import AppScreen from './screens/AppScreen';
 import * as ImagePicker from 'expo-image-picker';
 import { useEffect } from 'react';

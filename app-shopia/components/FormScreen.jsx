@@ -2,8 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { Text, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
-import { useSession } from '../contexts/Session';
-
+import { useSession } from './Session';
 import Screen from './Screen';
 import TextField from './TextField';
 import SwitchField from './SwitchField';

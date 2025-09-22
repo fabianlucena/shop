@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useRoute } from '@react-navigation/native';
 import { Text, ScrollView, View } from 'react-native';
 
-import useSession from '../contexts/Session';
+import useSession from '../components/Session';
 
 import Screen from '../components/Screen';
 import useItem from '../services/useItem';

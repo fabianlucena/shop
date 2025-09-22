@@ -1,6 +1,6 @@
 import styles from '../libs/styles';
 import { View, Text, Pressable } from 'react-native';
-import useSession from '../contexts/Session';
+import useSession from './Session';
 
 export default function Message({
   children,

@@ -1,6 +1,6 @@
 import FormScreen from '../components/FormScreen';
 import useItem from '../services/useItem';
-import { useSession } from '../contexts/Session';
+import { useSession } from '../components/Session';
 
 function validate(data, fields) {
   const minAgeField = fields.find(f => f.name === 'minAge');
