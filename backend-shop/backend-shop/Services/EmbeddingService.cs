@@ -22,7 +22,7 @@ namespace backend_shop.Services
             var payload = new
             {
                 model,
-                input = data,
+                prompt = data,
             };
 
             using var req = new HttpRequestMessage(HttpMethod.Post, "embeddings")
@@ -33,8 +33,9 @@ namespace backend_shop.Services
             using var res = await http.SendAsync(req);
             res.EnsureSuccessStatusCode();
 
-            using var doc = JsonDocument.Parse(await res.Content.ReadAsStringAsync());
-            var emb = doc.RootElement.GetProperty("data")[0].GetProperty("embedding");
+            var text = await res.Content.ReadAsStringAsync();
+            using var doc = JsonDocument.Parse(text);
+            var emb = doc.RootElement.GetProperty("embedding");
             var arr = new float[emb.GetArrayLength()];
             int i = 0;
             foreach (var n in emb.EnumerateArray())
