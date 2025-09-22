@@ -1,4 +1,4 @@
-[submodule "backend-shop/rf-nugets"]
-	path = backend-shop/rf-nugets
+[submodule "backend-shopia/rf-nugets"]
+	path = backend-shopia/rf-nugets
 	url = https://github.com/fabianlucena/rf-nugets
 	branch = main
